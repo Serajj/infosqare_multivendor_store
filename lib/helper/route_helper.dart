@@ -42,7 +42,7 @@ import 'package:sixam_mart_store/view/screens/store/store_screen.dart';
 import 'package:sixam_mart_store/view/screens/store/store_settings_screen.dart';
 import 'package:sixam_mart_store/view/screens/splash/splash_screen.dart';
 import 'package:sixam_mart_store/view/screens/update/update_screen.dart';
-import 'package:sixam_mart_store/view/screens/store_requests/request_screen.dart';
+import 'package:sixam_mart_store/view/screens/design/design.dart';
 import 'package:get/get.dart';
 
 class RouteHelper {
