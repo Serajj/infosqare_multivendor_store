@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:sixam_mart_store/view/base/custom_app_bar.dart';
 import 'package:sixam_mart_store/view/screens/design/design_controller.dart';
 
 import 'package:sixam_mart_store/view/screens/design/design_model.dart';
@@ -21,12 +23,7 @@ class _FollowScreenState extends State<FollowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: const Icon(Icons.arrow_back_ios),
-        title: const Text('Requests'),
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
+      appBar: CustomAppBar(title: 'Requests'.tr),
       body: ValueListenableBuilder<List<User>>(
         valueListenable: _controller.users,
         builder: (context, users, _) {
@@ -43,9 +40,8 @@ class _FollowScreenState extends State<FollowScreen> {
                             controller: _searchController,
                             decoration: InputDecoration(
                   hintText: 'Search',
-                  iconColor: Color.fromARGB(255, 2, 110, 5),
                   prefixIcon: IconButton(
-                    icon: Icon(Icons.search, color: Theme.of(context).primaryColor.withOpacity(0.5),),
+                    icon: Icon(Icons.search, color: Theme.of(context).primaryColor,),
                     onPressed: () {
                       // Perform the search here
                     },
@@ -116,18 +112,18 @@ class _FollowButtonState extends State<FollowButton> {
           }
         });
       },
+      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor,),
+      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+    RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0),
+    )
+  )),
       child: Text(
         isFollowing ? ' Follow ' : ' Confirm ',
         style: TextStyle(
           color: isFollowing ? Colors.white : Colors.white,
         ),
       ),
-      style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Theme.of(context).primaryColor.withOpacity(0.5),),
-      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-    RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(10.0),
-    )
-  )),
     );
   }
 }

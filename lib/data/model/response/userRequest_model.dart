@@ -1,4 +1,4 @@
-class UserData {
+/*class UserData {
     int id;
     String text;
     String email;
@@ -28,4 +28,4 @@ class UserData {
         "image": image,
         "is_followed": isFollowed,
     };
-}
+}*/

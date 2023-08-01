@@ -1,4 +1,4 @@
-import 'dart:convert';
+/*import 'dart:convert';
 
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
@@ -53,7 +53,7 @@ class RequestController extends GetxController {
     }
   }*/
 
-}
+}*/
 
 /*import 'dart:convert';
 import 'package:flutter/services.dart'; 

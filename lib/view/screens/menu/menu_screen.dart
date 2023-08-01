@@ -43,6 +43,7 @@ class MenuScreen extends StatelessWidget {
     }
     menuList.add(MenuModel(icon: Images.language, title: 'language'.tr, route: RouteHelper.getLanguageRoute('menu')));
     menuList.add(MenuModel(icon: Images.maintenance, title: 'Requests'.tr, route: RouteHelper.getCustomerRequest()));
+    menuList.add(MenuModel(icon: Images.categories, title: 'Subscription'.tr, route: RouteHelper.getSubscription()));
     menuList.add(MenuModel(icon: Images.coupon, title: 'coupon'.tr, route: RouteHelper.getCouponRoute()));
     menuList.add(MenuModel(icon: Images.expense, title: 'expense_report'.tr, route: RouteHelper.getExpenseRoute()));
     menuList.add(MenuModel(icon: Images.policy, title: 'privacy_policy'.tr, route: RouteHelper.getPrivacyRoute()));

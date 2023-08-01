@@ -23,6 +23,7 @@ import 'package:sixam_mart_store/view/screens/dashboard/dashboard_screen.dart';
 import 'package:sixam_mart_store/view/screens/deliveryman/add_delivery_man_screen.dart';
 import 'package:sixam_mart_store/view/screens/deliveryman/delivery_man_details_screen.dart';
 import 'package:sixam_mart_store/view/screens/deliveryman/delivery_man_screen.dart';
+import 'package:sixam_mart_store/view/screens/design/subscription_design.dart';
 import 'package:sixam_mart_store/view/screens/expence/expense_screen.dart';
 import 'package:sixam_mart_store/view/screens/forget/forget_pass_screen.dart';
 import 'package:sixam_mart_store/view/screens/forget/new_pass_screen.dart';
@@ -85,6 +86,7 @@ class RouteHelper {
   static const String coupon = '/coupon';
   static const String expense = '/expense';
   static const String request = '/customer-requests';
+  static const String subscription = '/subscription';
 
   static String getInitialRoute() => initial;
   static String getSplashRoute(NotificationBody? body) {
@@ -111,6 +113,7 @@ class RouteHelper {
   static String getStoreRoute() => store;
   static String getCampaignRoute() => campaign;
   static String getCustomerRequest() => request;
+  static String getSubscription() => subscription;
   static String getCampaignDetailsRoute(int? id) => '$campaignDetails?id=$id';
   static String getUpdateRoute(bool isUpdate) => '$update?update=${isUpdate.toString()}';
   static String getItemRoute(Item? itemModel) {
@@ -219,6 +222,7 @@ class RouteHelper {
     GetPage(name: store, page: () => const StoreScreen()),
     GetPage(name: campaign, page: () => const CampaignScreen()),
     GetPage(name: request, page: () => FollowScreen()),
+    GetPage(name: subscription, page: () => SubscriptionScreen()),
     GetPage(name: campaignDetails, page: () {
       return Get.arguments ?? CampaignDetailsScreen(
         campaignModel: CampaignModel(id: int.parse(Get.parameters['id']!)),
