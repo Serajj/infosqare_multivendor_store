@@ -1,32 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sixam_mart_store/controller/customer_list_controller.dart';
+import 'package:sixam_mart_store/data/model/response/customer_list_model.dart';
 import 'package:sixam_mart_store/view/base/custom_app_bar.dart';
-import 'package:sixam_mart_store/view/screens/design/design_controller.dart';
 
-import 'package:sixam_mart_store/view/screens/design/design_model.dart';
 
 class FollowScreen extends StatefulWidget {
+
+  FollowScreen({Key? key}) : super(key: key);
   @override
   _FollowScreenState createState() => _FollowScreenState();
 }
 
 class _FollowScreenState extends State<FollowScreen> {
-  final FollowController _controller = FollowController();
   final TextEditingController _searchController = TextEditingController();
+  //final CustomerListController  controller = Get.put(CustomerListController());
 
   @override
   void initState() {
     super.initState();
-    _controller.fetchUsers(); // Fetch the user list when the screen initializes
+    print("Calling CustomerList API");
+    Get.find<CustomerListController>().getCustomerList('1'); // Fetch the user list when the screen initializes
   }
+
+  bool isFollowing = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: 'Requests'.tr),
-      body: ValueListenableBuilder<List<User>>(
-        valueListenable: _controller.users,
-        builder: (context, users, _) {
+      body: GetBuilder<CustomerListController>(builder: (customerListController){
+
           return Column(
             children: [
               Padding(
@@ -54,19 +58,47 @@ class _FollowScreenState extends State<FollowScreen> {
               Expanded(
                 child: ListView.builder(
                   shrinkWrap: true,
-                  itemCount: users.length,
+                  itemCount: customerListController.customerList!.length,
                   itemBuilder: (context, index) {
-                    final user = users[index];
+                    //final user = users[index];
                     return Container(
                       //height: 30,
                   padding: const EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 5),
                       child: ListTile(
                         leading: CircleAvatar(
-                          backgroundImage: NetworkImage(user.profileImage),
+                          backgroundColor: Theme.of(context).primaryColor,
                         ),
-                        title: Text(user.name),
-                        subtitle: Text(user.username),
-                        trailing: FollowButton(user: user, controller: _controller),
+                        title: Text(customerListController.customerList![index].text),
+                        subtitle: Text(customerListController.customerList![index].email),
+                        trailing: FollowButton(customermodel: customerListController.customerList![index])
+                         /*ElevatedButton(
+                            onPressed: () {
+                              setState(() {
+                                isFollowing = !isFollowing;
+                                if (isFollowing) {
+                                  Get.find<CustomerListController>().followUser();
+                                } else {
+                                  Get.find<CustomerListController>().unfollowUser();
+                                }
+                              });
+                            },
+                            style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                  Theme.of(context).primaryColor,
+                                ),
+                                shape: MaterialStateProperty.all<
+                                        RoundedRectangleBorder>(
+                                    RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                ))),
+                            child: Text(
+                              isFollowing ? ' Follow ' : ' Confirm ',
+                              style: TextStyle(
+                                color:
+                                    isFollowing ? Colors.white : Colors.white,
+                              ),
+                            ),
+                          )*/
                       ),
                     );
                   },
@@ -81,22 +113,21 @@ class _FollowScreenState extends State<FollowScreen> {
 }
 
 class FollowButton extends StatefulWidget {
-  final User user;
-  final FollowController controller;
-
-  FollowButton({required this.user, required this.controller});
+  final CustomerModel customermodel;
+  const FollowButton({Key? key, required this.customermodel}) : super(key: key);
 
   @override
-  _FollowButtonState createState() => _FollowButtonState();
+  State<FollowButton> createState() => _FollowButtonState();
 }
 
 class _FollowButtonState extends State<FollowButton> {
+  @override
   bool isFollowing = false;
 
   @override
   void initState() {
     super.initState();
-    isFollowing = widget.controller.isFollowingUser(widget.user); // Check if the user is already followed
+    isFollowing = Get.find<CustomerListController>().isFollowingUser(widget.customermodel); // Check if the user is already followed
   }
 
   @override
@@ -106,9 +137,9 @@ class _FollowButtonState extends State<FollowButton> {
         setState(() {
           isFollowing = !isFollowing;
           if (isFollowing) {
-            widget.controller.followUser(widget.user);
+            Get.find<CustomerListController>().followUser(widget.customermodel);
           } else {
-            widget.controller.unfollowUser(widget.user);
+            Get.find<CustomerListController>().unfollowUser(widget.customermodel);
           }
         });
       },
