@@ -16,97 +16,84 @@ class _FollowScreenState extends State<FollowScreen> {
   final TextEditingController _searchController = TextEditingController();
   //final CustomerListController  controller = Get.put(CustomerListController());
 
-  @override
+  /*@override
   void initState() {
     super.initState();
     print("Calling CustomerList API");
     Get.find<CustomerListController>().getCustomerList('1'); // Fetch the user list when the screen initializes
-  }
-
-  bool isFollowing = false;
+  }*/
 
   @override
   Widget build(BuildContext context) {
+    List<CustomerModel>? categories;
+    Get.find<CustomerListController>().getCustomerList('1');
     return Scaffold(
       appBar: CustomAppBar(title: 'Requests'.tr),
-      body: GetBuilder<CustomerListController>(builder: (customerListController){
+      body: SafeArea(
+        child: GetBuilder<CustomerListController>(builder: (customerListController){
+             if (customerListController.customerList != null) {
+            categories = [];
+            categories?.addAll(customerListController.customerList!);
+          } else {
 
-          return Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Color.fromARGB(31, 187, 183, 183),
-                  ),
-                  child: TextField(
-                            controller: _searchController,
-                            decoration: InputDecoration(
-                  hintText: 'Search',
-                  prefixIcon: IconButton(
-                    icon: Icon(Icons.search, color: Theme.of(context).primaryColor,),
-                    onPressed: () {
-                      // Perform the search here
-                    },
-                  ),
-                  border: InputBorder.none,
-                            ),
-                          ),
-                ),
-              ),
-              Expanded(
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: customerListController.customerList!.length,
-                  itemBuilder: (context, index) {
-                    //final user = users[index];
-                    return Container(
-                      //height: 30,
-                  padding: const EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 5),
-                      child: ListTile(
-                        leading: CircleAvatar(
-                          backgroundColor: Theme.of(context).primaryColor,
-                        ),
-                        title: Text(customerListController.customerList![index].text),
-                        subtitle: Text(customerListController.customerList![index].email),
-                        trailing: FollowButton(customermodel: customerListController.customerList![index])
-                         /*ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                isFollowing = !isFollowing;
-                                if (isFollowing) {
-                                  Get.find<CustomerListController>().followUser();
-                                } else {
-                                  Get.find<CustomerListController>().unfollowUser();
-                                }
-                              });
-                            },
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                  Theme.of(context).primaryColor,
-                                ),
-                                shape: MaterialStateProperty.all<
-                                        RoundedRectangleBorder>(
-                                    RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ))),
-                            child: Text(
-                              isFollowing ? ' Follow ' : ' Confirm ',
-                              style: TextStyle(
-                                color:
-                                    isFollowing ? Colors.white : Colors.white,
+          }
+
+          return categories != null ? categories!.isNotEmpty ? RefreshIndicator(
+              onRefresh: () async {
+                  await Get.find<CustomerListController>().getCustomerList("1");
+              },
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 10),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      color: Color.fromARGB(31, 187, 183, 183),
+                    ),
+                    child: TextField(
+                              controller: _searchController,
+                              decoration: InputDecoration(
+                    hintText: 'Search',
+                    prefixIcon: IconButton(
+                      icon: Icon(Icons.search, color: Theme.of(context).primaryColor,),
+                      onPressed: () {
+                        // Perform the search here
+                      },
+                    ),
+                    border: InputBorder.none,
                               ),
                             ),
-                          )*/
-                      ),
-                    );
-                  },
+                  ),
                 ),
-              ),
-            ],
-          );
-        },
+                Expanded(
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: customerListController.customerList!.length,
+                    itemBuilder: (context, index) {
+                      //final user = users[index];
+                      return Container(
+                        //height: 30,
+                    padding: const EdgeInsets.only(left: 12, right: 12, top: 7, bottom: 5),
+                        child: ListTile(
+                          leading: (customerListController.customerList?[index].image != null) ? Image.network(customerListController.customerList?[index].image ?? "") : CircleAvatar(
+                            backgroundColor: Theme.of(context).primaryColor,
+                          ),
+                          title: Text(customerListController.customerList![index].text),
+                          subtitle: Text(customerListController.customerList![index].email),
+                          trailing: FollowButton(customermodel: customerListController.customerList![index])
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            ): Center(
+            child: Text('no_category_found'.tr),
+          ) : const Center(child: CircularProgressIndicator());
+          },
+        ),
       ),
     );
   }
