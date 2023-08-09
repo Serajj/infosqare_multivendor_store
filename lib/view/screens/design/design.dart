@@ -25,20 +25,20 @@ class _FollowScreenState extends State<FollowScreen> {
 
   @override
   Widget build(BuildContext context) {
-    List<CustomerModel>? categories;
+    List<CustomerModel>? customers;
     Get.find<CustomerListController>().getCustomerList('1');
     return Scaffold(
       appBar: CustomAppBar(title: 'Requests'.tr),
       body: SafeArea(
         child: GetBuilder<CustomerListController>(builder: (customerListController){
              if (customerListController.customerList != null) {
-            categories = [];
-            categories?.addAll(customerListController.customerList!);
+            customers = [];
+            customers?.addAll(customerListController.customerList!);
           } else {
 
           }
 
-          return categories != null ? categories!.isNotEmpty ? RefreshIndicator(
+          return customers != null ? customers!.isNotEmpty ? RefreshIndicator(
               onRefresh: () async {
                   await Get.find<CustomerListController>().getCustomerList("1");
               },
@@ -90,7 +90,7 @@ class _FollowScreenState extends State<FollowScreen> {
               ],
             ),
             ): Center(
-            child: Text('no_category_found'.tr),
+            child: Text('no data to display'.tr),
           ) : const Center(child: CircularProgressIndicator());
           },
         ),
@@ -108,7 +108,6 @@ class FollowButton extends StatefulWidget {
 }
 
 class _FollowButtonState extends State<FollowButton> {
-  @override
   bool isFollowing = false;
 
   @override
