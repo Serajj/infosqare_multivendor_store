@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sixam_mart_store/view/screens/design/monthly_subscription.dart';
+import 'package:sixam_mart_store/view/screens/user_request/monthly_subscription.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({Key? key}) : super(key: key);
@@ -64,7 +64,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                           color: Theme.of(context).primaryColor,
                           shape: BoxShape.circle),
                       child: CircleAvatar(
-                         backgroundImage: AssetImage("assets/image/logo.png")),
+                          backgroundImage: AssetImage("assets/image/logo.png")),
                     ),
                   ),
 
@@ -90,7 +90,8 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => SubscriptionPlanScreen()),
+                                    builder: (context) =>
+                                        SubscriptionPlanScreen()),
                               );
                             },
                             style: ButtonStyle(

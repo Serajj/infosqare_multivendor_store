@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sixam_mart_store/view/base/custom_app_bar.dart';
-import 'package:sixam_mart_store/view/screens/design/plan_details.dart';
+import 'package:sixam_mart_store/view/screens/user_request/plan_details.dart';
 
 class SubscriptionPlanScreen extends StatefulWidget {
   const SubscriptionPlanScreen({Key? key}) : super(key: key);
@@ -93,7 +93,9 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen>
                           ),
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      SizedBox(
+                        height: 20,
+                      ),
                       Container(
                         height: 360,
                         width: double.infinity,
@@ -110,7 +112,9 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen>
                     ],
                   ),
                 ),
-                SizedBox(height: 30,),
+                SizedBox(
+                  height: 30,
+                ),
                 SizedBox(
                   width: double.infinity,
                   height: 60,
@@ -118,10 +122,9 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen>
                     child: Text("Continue"),
                     onPressed: () {
                       Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SubscriptionScreen1())
-                      );
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SubscriptionScreen1()));
                     },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(
@@ -142,80 +145,115 @@ class _SubscriptionPlanScreenState extends State<SubscriptionPlanScreen>
 
   Container subScriptionPlan(BuildContext context, String amount) {
     return Container(
-                            padding: EdgeInsets.only(left: 20, right: 15, top: 20, bottom: 8),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(amount, style: GoogleFonts.montserrat(
-                                            fontSize: 40.0, fontWeight: FontWeight.w600)),
-                                    SizedBox(width: 18,),
-                                    Text("/Monthly" ,style: GoogleFonts.montserrat(
-                                            fontSize: 15.0, fontWeight: FontWeight.w600)),
-                                  ],
-                                ),
-                                Row(
-                                  children: [
-                                    Text("Free for ever when you host \nwith Debbi. free for freelancers \nwith Client Billing", style: GoogleFonts.montserrat(
-                                                fontSize: 17.0)),
-                                  ],
-                                ),
-                                SizedBox(height: 15,),
-                                Row(
-                                  children: [
-                                    Icon(Icons.done, color: Theme.of(context).primaryColor),
-                                    SizedBox(width: 8,),
-                                    Text("2 Projects", style: GoogleFonts.montserrat(
-                                            fontSize: 17.0, fontWeight: FontWeight.w600)),
-                                  ],
-                                ),
-                                SizedBox(height: 7,),
-                                Row(
-                                  children: [
-                                    Icon(Icons.done, color: Theme.of(context).primaryColor),
-                                    SizedBox(width: 8,),
-                                    Text("Client Billing", style: GoogleFonts.montserrat(
-                                            fontSize: 17.0, fontWeight: FontWeight.w600)),
-                                  ],
-                                ),
-                                SizedBox(height: 7,),
-                                Row(
-                                  children: [
-                                    Icon(Icons.done, color: Theme.of(context).primaryColor),
-                                    SizedBox(width: 8,),
-                                    Text("Free Staging", style: GoogleFonts.montserrat(
-                                            fontSize: 17.0, fontWeight: FontWeight.w600)),
-                                  ],
-                                ),
-                                SizedBox(height: 7,),
-                                Row(
-                                  children: [
-                                    Icon(Icons.done, color: Theme.of(context).primaryColor),
-                                    SizedBox(width: 8,),
-                                    Text("Code export", style: GoogleFonts.montserrat(
-                                            fontSize: 17.0, fontWeight: FontWeight.w600)),
-                                  ],
-                                ),
-                                SizedBox(height: 7,),
-                                Row(
-                                  children: [
-                                    Icon(Icons.done, color: Theme.of(context).primaryColor),
-                                    SizedBox(width: 8,),
-                                    Text("White labeling", style: GoogleFonts.montserrat(
-                                            fontSize: 17.0, fontWeight: FontWeight.w600)),
-                                  ],
-                                ),
-                                SizedBox(height: 7,),
-                                Row(
-                                  children: [
-                                    Icon(Icons.done, color: Theme.of(context).primaryColor),
-                                    SizedBox(width: 8,),
-                                    Text("Site password protection", style: GoogleFonts.montserrat(
-                                            fontSize: 17.0, fontWeight: FontWeight.w600)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          );
+      padding: EdgeInsets.only(left: 20, right: 15, top: 20, bottom: 8),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Text(amount,
+                  style: GoogleFonts.montserrat(
+                      fontSize: 40.0, fontWeight: FontWeight.w600)),
+              SizedBox(
+                width: 18,
+              ),
+              Text("/Monthly",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 15.0, fontWeight: FontWeight.w600)),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                  "Free for ever when you host \nwith Debbi. free for freelancers \nwith Client Billing",
+                  style: GoogleFonts.montserrat(fontSize: 17.0)),
+            ],
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: [
+              Icon(Icons.done, color: Theme.of(context).primaryColor),
+              SizedBox(
+                width: 8,
+              ),
+              Text("2 Projects",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 17.0, fontWeight: FontWeight.w600)),
+            ],
+          ),
+          SizedBox(
+            height: 7,
+          ),
+          Row(
+            children: [
+              Icon(Icons.done, color: Theme.of(context).primaryColor),
+              SizedBox(
+                width: 8,
+              ),
+              Text("Client Billing",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 17.0, fontWeight: FontWeight.w600)),
+            ],
+          ),
+          SizedBox(
+            height: 7,
+          ),
+          Row(
+            children: [
+              Icon(Icons.done, color: Theme.of(context).primaryColor),
+              SizedBox(
+                width: 8,
+              ),
+              Text("Free Staging",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 17.0, fontWeight: FontWeight.w600)),
+            ],
+          ),
+          SizedBox(
+            height: 7,
+          ),
+          Row(
+            children: [
+              Icon(Icons.done, color: Theme.of(context).primaryColor),
+              SizedBox(
+                width: 8,
+              ),
+              Text("Code export",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 17.0, fontWeight: FontWeight.w600)),
+            ],
+          ),
+          SizedBox(
+            height: 7,
+          ),
+          Row(
+            children: [
+              Icon(Icons.done, color: Theme.of(context).primaryColor),
+              SizedBox(
+                width: 8,
+              ),
+              Text("White labeling",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 17.0, fontWeight: FontWeight.w600)),
+            ],
+          ),
+          SizedBox(
+            height: 7,
+          ),
+          Row(
+            children: [
+              Icon(Icons.done, color: Theme.of(context).primaryColor),
+              SizedBox(
+                width: 8,
+              ),
+              Text("Site password protection",
+                  style: GoogleFonts.montserrat(
+                      fontSize: 17.0, fontWeight: FontWeight.w600)),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }

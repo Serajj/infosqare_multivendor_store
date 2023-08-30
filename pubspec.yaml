@@ -50,6 +50,7 @@ dependencies:
   dotted_border: ^2.0.0+1
   carousel_slider: ^4.0.0
   google_fonts: ^4.0.4
+  flutter_launcher_icons: ^0.11.0
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

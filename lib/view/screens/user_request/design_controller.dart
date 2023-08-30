@@ -2,9 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:sixam_mart_store/view/screens/design/design_model.dart';
+import 'package:get/get.dart';
+import 'package:sixam_mart_store/view/screens/user_request/design_model.dart';
 
-class FollowController {
+class FollowController extends GetxController {
   final ValueNotifier<List<User>> _usersNotifier = ValueNotifier([]);
 
   ValueListenable<List<User>> get users => _usersNotifier;
@@ -14,7 +15,8 @@ class FollowController {
 
     List<dynamic> usersData = jsonDecode(jsonData);
 
-    List<User> users = usersData.map((userData) => User.fromJson(userData)).toList();
+    List<User> users =
+        usersData.map((userData) => User.fromJson(userData)).toList();
 
     _usersNotifier.value = users;
   }

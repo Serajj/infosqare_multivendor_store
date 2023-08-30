@@ -5,7 +5,9 @@ class AppConstants {
   static const String appName = 'Manfacturer';
   static const double appVersion = 2.2;
 
-  static const String baseUrl = 'https://connectuz.com';
+  //static const String baseUrl = 'https://connectuz.com';
+  static const String baseUrl = 'http://192.168.29.226:3000';
+
   static const String configUri = '/api/v1/config';
   static const String loginUri = '/api/v1/auth/vendor/login';
   static const String forgetPasswordUri = '/api/v1/auth/vendor/forgot-password';
@@ -15,8 +17,10 @@ class AppConstants {
   static const String allOrdersUri = '/api/v1/vendor/all-orders';
   static const String currentOrdersUri = '/api/v1/vendor/current-orders';
   static const String completedOrdersUri = '/api/v1/vendor/completed-orders';
-  static const String orderDetailsUri = '/api/v1/vendor/order-details?order_id=';
-  static const String updatedOrderStatusUri = '/api/v1/vendor/update-order-status';
+  static const String orderDetailsUri =
+      '/api/v1/vendor/order-details?order_id=';
+  static const String updatedOrderStatusUri =
+      '/api/v1/vendor/update-order-status';
   static const String notificationUri = '/api/v1/vendor/notifications';
   static const String profileUri = '/api/v1/vendor/profile';
   static const String updateProfileUri = '/api/v1/vendor/update-profile';
@@ -41,7 +45,8 @@ class AppConstants {
   static const String vendorReviewUri = '/api/v1/vendor/item/reviews';
   static const String itemReviewUri = '/api/v1/items/reviews';
   static const String updateItemStatusUri = '/api/v1/vendor/item/status';
-  static const String updateVendorStatusUri = '/api/v1/vendor/update-active-status';
+  static const String updateVendorStatusUri =
+      '/api/v1/vendor/update-active-status';
   static const String searchItemListUri = '/api/v1/vendor/item/search';
   static const String placeOrderUri = '/api/v1/vendor/pos/place-order';
   static const String posOrderUri = '/api/v1/vendor/pos/orders';
@@ -60,33 +65,42 @@ class AppConstants {
   static const String termsAndConditionsUri = '/terms-and-conditions';
   static const String vendorRemoveUri = '/api/v1/vendor/remove-account';
   static const String zoneListUri = '/api/v1/zone/list';
-  static const String searchLocationUri = '/api/v1/config/place-api-autocomplete';
+  static const String searchLocationUri =
+      '/api/v1/config/place-api-autocomplete';
   static const String placeDetailsUri = '/api/v1/config/place-api-details';
   static const String zoneUri = '/api/v1/config/get-zone-id';
   static const String restaurantRegisterUri = '/api/v1/auth/vendor/register';
   static const String currentOrderDetailsUri = '/api/v1/vendor/order?order_id=';
   static const String modulesUri = '/api/v1/module';
   static const String updateOrderUri = '/api/v1/vendor/update-order-amount';
-  static const String orderCancellationUri = '/api/v1/customer/order/cancellation-reasons';
+  static const String orderCancellationUri =
+      '/api/v1/customer/order/cancellation-reasons';
   static const String addCouponUri = '/api/v1/vendor/coupon/store';
   static const String couponListUri = '/api/v1/vendor/coupon/list';
-  static const String couponDetailsUri = '/api/v1/vendor/coupon/view-without-translate';
+  static const String couponDetailsUri =
+      '/api/v1/vendor/coupon/view-without-translate';
   static const String couponChangeStatusUri = '/api/v1/vendor/coupon/status';
   static const String couponDeleteUri = '/api/v1/vendor/coupon/delete';
   static const String couponUpdateUri = '/api/v1/vendor/coupon/update';
   static const String expenseListUri = '/api/v1/vendor/get-expense';
-  static const String updateProductRecommendedUri = '/api/v1/vendor/item/recommended';
+  static const String updateProductRecommendedUri =
+      '/api/v1/vendor/item/recommended';
   static const String updateProductOrganicUri = '/api/v1/vendor/item/organic';
   static const String geocodeUri = '/api/v1/config/geocode-api';
   static const String itemDetailsUri = '/api/v1/vendor/item/details';
   static const String customersUri = '/api/v1/vendor/customers';
 
+  static const String allRequests = '/api/v1/vreqst/all_request';
+  static const String followReq = '/api/v1/vreqst/followUser';
+  static const String unfollowReq = '/api/v1/vreqst/unfollowUser';
+  static const String acceptReq = '/api/v1/vreqst/accept';
+
   //chat url
   static const String getConversationListUri = '/api/v1/vendor/message/list';
   static const String getMessageListUri = '/api/v1/vendor/message/details';
   static const String sendMessageUri = '/api/v1/vendor/message/send';
-  static const String searchConversationListUri = '/api/v1/vendor/message/search-list';
-
+  static const String searchConversationListUri =
+      '/api/v1/vendor/message/search-list';
 
   // Shared Key
   static const String theme = '6am_mart_store_theme';
@@ -128,8 +142,20 @@ class AppConstants {
   static const String vendor = 'vendor';
 
   static List<LanguageModel> languages = [
-    LanguageModel(imageUrl: Images.english, languageName: 'English', countryCode: 'US', languageCode: 'en'),
-    LanguageModel(imageUrl: Images.arabic, languageName: 'Arabic', countryCode: 'SA', languageCode: 'ar'),
-    LanguageModel(imageUrl: Images.arabic, languageName: 'Spanish', countryCode: 'ES', languageCode: 'es'),
+    LanguageModel(
+        imageUrl: Images.english,
+        languageName: 'English',
+        countryCode: 'US',
+        languageCode: 'en'),
+    LanguageModel(
+        imageUrl: Images.arabic,
+        languageName: 'Arabic',
+        countryCode: 'SA',
+        languageCode: 'ar'),
+    LanguageModel(
+        imageUrl: Images.arabic,
+        languageName: 'Spanish',
+        countryCode: 'ES',
+        languageCode: 'es'),
   ];
 }

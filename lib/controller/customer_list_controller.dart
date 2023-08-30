@@ -4,48 +4,67 @@ import 'package:sixam_mart_store/data/model/response/customer_list_model.dart';
 import 'package:sixam_mart_store/data/repository/customer_list_repo.dart';
 import 'package:get/get.dart';
 
-class CustomerListController extends GetxController implements GetxService {
-  final CustomerListRepo customerListRepo;
-  CustomerListController({required this.customerListRepo});
+import '../data/model/response/user_follow_model.dart';
+import 'auth_controller.dart';
+import 'store_controller.dart';
 
-  String? _offset;
-  List<String> _offsetList = [];
-  bool _paginate = false;
-  int? _pageSize;
-  bool _isLoading = false;
+class CustomerListController extends GetxController {
+  RxInt offset = 1.obs;
+  CustomerListRepo customerListRepo = CustomerListRepo(apiClient: Get.find());
+
+  CustomerListController() {}
+
   List<CustomerModel>? _customerList;
+  RxList<UserFollow> dataList = <UserFollow>[].obs;
 
   List<CustomerModel>? get customerList => _customerList;
-  bool get isLoading => _isLoading;
+  RxBool isLoading = true.obs;
 
-  Future<void> getCustomerList(String offset) async {
-    print("API CALLING GET CUSTOMERLIST");
-    if(offset == '1') {
-      _offsetList = [];
-      _offset = "1";
-      _customerList = null;
-      update();
+  Future<void> fetchCustomersList() async {
+    if (offset.value == 0) {
+      isLoading.value = true;
     }
-    if (!_offsetList.contains(offset)) {
-      _offsetList.add(offset);
-      Response response = await customerListRepo.fetchRequestInfoList(offset);
-      print("customerList APi Response $response");
-      if (response.statusCode == 200) {
-        if (offset == '1') {
-          _customerList = [];
-        }
-        _customerList!.addAll(PaginationCustomerModel.fromJson(response.body).data.data);
-        _pageSize = PaginationCustomerModel.fromJson(response.body).totalSize;
-        _isLoading = false;
-        update();
-      } else {
-        ApiChecker.checkApi(response);
-      }
-    } else {
-      if(isLoading) {
-        _isLoading = false;
-        update();
-      }
+    int storeId = Get.find<AuthController>().profileModel!.stores![0].id ?? 0;
+    Response response =
+        await customerListRepo.fetchRequestInfoList(offset.value, storeId);
+
+    if (response.statusCode == 200) {
+      dataList.addAll(response.body['data']['data']
+          .map<UserFollow>((element) => UserFollow.fromJson(element))
+          .toList());
     }
+
+    isLoading.value = false;
+  }
+
+  Future<void> loadMore() async {
+    offset.value++;
+    fetchCustomersList();
+  }
+
+  Future<void> followUser(UserFollow user, int index) async {
+    int storeId = Get.find<AuthController>().profileModel!.stores![0].id ?? 0;
+    int userId = user.id ?? 0;
+    Response response = await customerListRepo.followCustomer(userId, storeId);
+
+    if (response.statusCode == 200) {
+      print("Followed");
+      print(response.body['data']);
+      dataList.value[index].isFollowed = 1;
+    }
+    print(storeId);
+  }
+
+  Future<void> unfollowUser(UserFollow user, int index) async {
+    int storeId = Get.find<AuthController>().profileModel!.stores![0].id ?? 0;
+    int userId = user.id ?? 0;
+    Response response =
+        await customerListRepo.unfollowCustomer(userId, storeId);
+    if (response.statusCode == 200) {
+      print("UnFollowed");
+      print(response.body['data']);
+      dataList.value[index].isFollowed = 0;
+    }
+    print(storeId);
   }
 }
