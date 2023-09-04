@@ -15,8 +15,7 @@ class FollowScreen extends StatefulWidget {
 
 class _FollowScreenState extends State<FollowScreen> {
   final TextEditingController _searchController = TextEditingController();
-  CustomerListController customerListController =
-      Get.put(CustomerListController());
+  CustomerListController customerListController = Get.find();
   final ScrollController scrollController = ScrollController();
 
   @override
@@ -57,6 +56,11 @@ class _FollowScreenState extends State<FollowScreen> {
                       ),
                       border: InputBorder.none,
                     ),
+                    onChanged: (value) async {
+                      customerListController.search.value = value;
+                      print(value);
+                      customerListController.fetchCustomersList();
+                    },
                   ),
                 ),
               ),

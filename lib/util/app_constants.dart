@@ -94,6 +94,8 @@ class AppConstants {
   static const String followReq = '/api/v1/vreqst/followUser';
   static const String unfollowReq = '/api/v1/vreqst/unfollowUser';
   static const String acceptReq = '/api/v1/vreqst/accept';
+  static const String unfollowUser = "/api/v1/vreqst/unfollowUser";
+  static const String followers = "/api/v1/vreqst/getFollwowerCountStore";
 
   //chat url
   static const String getConversationListUri = '/api/v1/vendor/message/list';

@@ -22,11 +22,12 @@ import 'package:sixam_mart_store/view/base/custom_snackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sixam_mart_store/view/base/follower_count_dialog.dart';
 
 class AuthController extends GetxController implements GetxService {
   final AuthRepo authRepo;
   AuthController({required this.authRepo}) {
-   _notification = authRepo.isNotificationActive();
+    _notification = authRepo.isNotificationActive();
   }
 
   bool _isLoading = false;
@@ -41,7 +42,15 @@ class AuthController extends GetxController implements GetxService {
   List<ZoneModel>? _zoneList;
   List<int>? _zoneIds;
   List<PredictionModel> _predictionList = [];
-  Position _pickPosition = Position(longitude: 0, latitude: 0, timestamp: DateTime.now(), accuracy: 1, altitude: 1, heading: 1, speed: 1, speedAccuracy: 1);
+  Position _pickPosition = Position(
+      longitude: 0,
+      latitude: 0,
+      timestamp: DateTime.now(),
+      accuracy: 1,
+      altitude: 1,
+      heading: 1,
+      speed: 1,
+      speedAccuracy: 1);
   String? _pickAddress = '';
   bool _loading = false;
   bool _inZone = false;
@@ -98,65 +107,65 @@ class AuthController extends GetxController implements GetxService {
   String get storeTimeUnit => _storeTimeUnit;
   bool get showPassView => _showPassView;
 
-  void showHidePass({bool isUpdate = true}){
-    _showPassView = ! _showPassView;
-    if(isUpdate) {
+  void showHidePass({bool isUpdate = true}) {
+    _showPassView = !_showPassView;
+    if (isUpdate) {
       update();
     }
   }
 
-  void validPassCheck(String pass, {bool isUpdate = true}){
+  void validPassCheck(String pass, {bool isUpdate = true}) {
     _lengthCheck = false;
     _numberCheck = false;
     _uppercaseCheck = false;
     _lowercaseCheck = false;
     _spatialCheck = false;
 
-    if(pass.length > 7){
+    if (pass.length > 7) {
       _lengthCheck = true;
     }
-    if(pass.contains(RegExp(r'[a-z]'))){
+    if (pass.contains(RegExp(r'[a-z]'))) {
       _lowercaseCheck = true;
     }
-    if(pass.contains(RegExp(r'[A-Z]'))){
+    if (pass.contains(RegExp(r'[A-Z]'))) {
       _uppercaseCheck = true;
     }
-    if(pass.contains(RegExp(r'[ .!@#$&*~&^%]'))){
+    if (pass.contains(RegExp(r'[ .!@#$&*~&^%]'))) {
       _spatialCheck = true;
     }
-    if(pass.contains(RegExp(r'[\d+]'))){
+    if (pass.contains(RegExp(r'[\d+]'))) {
       _numberCheck = true;
     }
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
 
-  void storeStatusChange(double value, {bool isUpdate = true}){
+  void storeStatusChange(double value, {bool isUpdate = true}) {
     _storeStatus = value;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
 
-  void minTimeChange(String time){
+  void minTimeChange(String time) {
     _storeMinTime = time;
     update();
   }
 
-  void maxTimeChange(String time){
+  void maxTimeChange(String time) {
     _storeMaxTime = time;
     update();
   }
 
-  void timeUnitChange(String unit){
+  void timeUnitChange(String unit) {
     _storeTimeUnit = unit;
     update();
   }
 
-  void changeVendorType(int index, {bool isUpdate = true}){
+  void changeVendorType(int index, {bool isUpdate = true}) {
     _vendorTypeIndex = index;
-    if(isUpdate) {
+    if (isUpdate) {
       update();
     }
   }
@@ -166,15 +175,16 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  Future<ResponseModel> login(String? email, String password, String type) async {
+  Future<ResponseModel> login(
+      String? email, String password, String type) async {
     _isLoading = true;
     update();
     Response response = await authRepo.login(email, password, type);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
-      authRepo.saveUserToken(response.body['token'], response.body['zone_wise_topic'], type);
-      if(response.body['role'] != null && type == 'employee'){
-      }
+      authRepo.saveUserToken(
+          response.body['token'], response.body['zone_wise_topic'], type);
+      if (response.body['role'] != null && type == 'employee') {}
       await authRepo.updateToken();
       getProfile();
       responseModel = ResponseModel(true, 'successful');
@@ -190,7 +200,9 @@ class AuthController extends GetxController implements GetxService {
     Response response = await authRepo.getProfileInfo();
     if (response.statusCode == 200) {
       _profileModel = ProfileModel.fromJson(response.body);
-      Get.find<SplashController>().setModule(_profileModel!.stores![0].module!.id, _profileModel!.stores![0].module!.moduleType);
+      Get.find<SplashController>().setModule(
+          _profileModel!.stores![0].module!.id,
+          _profileModel!.stores![0].module!.moduleType);
       authRepo.updateHeader(_profileModel!.stores![0].module!.id);
       allowModulePermission(_profileModel!.roles);
     } else {
@@ -201,7 +213,7 @@ class AuthController extends GetxController implements GetxService {
 
   void allowModulePermission(List<String>? roles) {
     debugPrint('----------permission-------->>$roles');
-    if(roles != null && roles.isNotEmpty){
+    if (roles != null && roles.isNotEmpty) {
       List<String> module = roles;
       if (kDebugMode) {
         print(module);
@@ -221,17 +233,31 @@ class AuthController extends GetxController implements GetxService {
         pos: module.contains('pos'),
         chat: module.contains('chat'),
       );
-    }else{
-      _modulePermissionBody = ModulePermissionBody(item: true, order: true, storeSetup: true, addon: true, wallet: true,
-        bankInfo: true, employee: true, myShop: true, customRole: true, campaign: true, reviews: true, pos: true, chat: true,
+    } else {
+      _modulePermissionBody = ModulePermissionBody(
+        item: true,
+        order: true,
+        storeSetup: true,
+        addon: true,
+        wallet: true,
+        bankInfo: true,
+        employee: true,
+        myShop: true,
+        customRole: true,
+        campaign: true,
+        reviews: true,
+        pos: true,
+        chat: true,
       );
     }
   }
 
-  Future<bool> updateUserInfo(ProfileModel updateUserModel, String token) async {
+  Future<bool> updateUserInfo(
+      ProfileModel updateUserModel, String token) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.updateProfile(updateUserModel, _pickedFile, token);
+    Response response =
+        await authRepo.updateProfile(updateUserModel, _pickedFile, token);
     _isLoading = false;
     bool isSuccess;
     if (response.statusCode == 200) {
@@ -248,31 +274,35 @@ class AuthController extends GetxController implements GetxService {
 
   void pickImage() async {
     XFile? picked = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(picked != null) {
+    if (picked != null) {
       _pickedFile = picked;
     }
     update();
   }
 
   void pickImageForReg(bool isLogo, bool isRemove) async {
-    if(isRemove) {
+    if (isRemove) {
       _pickedLogo = null;
       _pickedCover = null;
-    }else {
+    } else {
       if (isLogo) {
-        _pickedLogo = await ImagePicker().pickImage(source: ImageSource.gallery);
+        _pickedLogo =
+            await ImagePicker().pickImage(source: ImageSource.gallery);
       } else {
-        _pickedCover = await ImagePicker().pickImage(source: ImageSource.gallery);
+        _pickedCover =
+            await ImagePicker().pickImage(source: ImageSource.gallery);
       }
       update();
     }
   }
 
-  Future<bool> changePassword(ProfileModel updatedUserModel, String password) async {
+  Future<bool> changePassword(
+      ProfileModel updatedUserModel, String password) async {
     _isLoading = true;
     update();
     bool isSuccess;
-    Response response = await authRepo.changePassword(updatedUserModel, password);
+    Response response =
+        await authRepo.changePassword(updatedUserModel, password);
     _isLoading = false;
     if (response.statusCode == 200) {
       Get.back();
@@ -321,10 +351,12 @@ class AuthController extends GetxController implements GetxService {
     return responseModel;
   }
 
-  Future<ResponseModel> resetPassword(String? resetToken, String? email, String password, String confirmPassword) async {
+  Future<ResponseModel> resetPassword(String? resetToken, String? email,
+      String password, String confirmPassword) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.resetPassword(resetToken, email, password, confirmPassword);
+    Response response = await authRepo.resetPassword(
+        resetToken, email, password, confirmPassword);
     ResponseModel responseModel;
     if (response.statusCode == 200) {
       responseModel = ResponseModel(true, response.body["message"]);
@@ -344,7 +376,6 @@ class AuthController extends GetxController implements GetxService {
     _verificationCode = query;
     update();
   }
-
 
   bool _isActiveRememberMe = false;
 
@@ -371,9 +402,11 @@ class AuthController extends GetxController implements GetxService {
   String getUserNumber() {
     return authRepo.getUserNumber();
   }
+
   String getUserPassword() {
     return authRepo.getUserPassword();
   }
+
   String getUserType() {
     return authRepo.getUserType();
   }
@@ -413,10 +446,10 @@ class AuthController extends GetxController implements GetxService {
     Response response = await authRepo.deleteVendor();
     _isLoading = false;
     if (response.statusCode == 200) {
-      showCustomSnackBar('your_account_remove_successfully'.tr,isError: false);
+      showCustomSnackBar('your_account_remove_successfully'.tr, isError: false);
       Get.find<AuthController>().clearSharedData();
       Get.offAllNamed(RouteHelper.getSignInRoute());
-    }else{
+    } else {
       Get.back();
       ApiChecker.checkApi(response);
     }
@@ -445,11 +478,13 @@ class AuthController extends GetxController implements GetxService {
   Future<void> registerStore(StoreBody storeBody) async {
     _isLoading = true;
     update();
-    Response response = await authRepo.registerRestaurant(storeBody, _pickedLogo, _pickedCover);
-    if(response.statusCode == 200) {
+    Response response =
+        await authRepo.registerRestaurant(storeBody, _pickedLogo, _pickedCover);
+    if (response.statusCode == 200) {
       Get.offAllNamed(RouteHelper.getSignInRoute());
-      showCustomSnackBar('restaurant_registration_successful'.tr, isError: false);
-    }else {
+      showCustomSnackBar('restaurant_registration_successful'.tr,
+          isError: false);
+    } else {
       ApiChecker.checkApi(response);
     }
     _isLoading = false;
@@ -462,22 +497,25 @@ class AuthController extends GetxController implements GetxService {
     update();
   }
 
-  void setLocation(LatLng location) async{
+  void setLocation(LatLng location) async {
     ZoneResponseModel response = await getZone(
-      location.latitude.toString(), location.longitude.toString(), false,
+      location.latitude.toString(),
+      location.longitude.toString(),
+      false,
     );
-    _storeAddress = await getAddressFromGeocode(LatLng(location.latitude, location.longitude));
+    _storeAddress = await getAddressFromGeocode(
+        LatLng(location.latitude, location.longitude));
 
-    if(response.isSuccess && response.zoneIds.isNotEmpty) {
+    if (response.isSuccess && response.zoneIds.isNotEmpty) {
       _restaurantLocation = location;
       _zoneIds = response.zoneIds;
-      for(int index=0; index<_zoneList!.length; index++) {
-        if(_zoneIds!.contains(_zoneList![index].id)) {
+      for (int index = 0; index < _zoneList!.length; index++) {
+        if (_zoneIds!.contains(_zoneList![index].id)) {
           _selectedZoneIndex = index;
           break;
         }
       }
-    }else {
+    } else {
       _restaurantLocation = null;
       _zoneIds = null;
     }
@@ -487,30 +525,32 @@ class AuthController extends GetxController implements GetxService {
   Future<String> getAddressFromGeocode(LatLng latLng) async {
     Response response = await authRepo.getAddressFromGeocode(latLng);
     String address = 'Unknown Location Found';
-    if(response.statusCode == 200 && response.body['status'] == 'OK') {
+    if (response.statusCode == 200 && response.body['status'] == 'OK') {
       address = response.body['results'][0]['formatted_address'].toString();
-    }else {
+    } else {
       showCustomSnackBar(response.body['error_message'] ?? response.bodyString);
     }
     return address;
   }
 
-  Future<void> zoomToFit(GoogleMapController controller, List<LatLng> list, {double padding = 0.5}) async {
+  Future<void> zoomToFit(GoogleMapController controller, List<LatLng> list,
+      {double padding = 0.5}) async {
     LatLngBounds bounds = _computeBounds(list);
     LatLng centerBounds = LatLng(
-      (bounds.northeast.latitude + bounds.southwest.latitude)/2,
-      (bounds.northeast.longitude + bounds.southwest.longitude)/2,
+      (bounds.northeast.latitude + bounds.southwest.latitude) / 2,
+      (bounds.northeast.longitude + bounds.southwest.longitude) / 2,
     );
 
-    controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(target: centerBounds, zoom: GetPlatform.isWeb ? 10 : 16)));
+    controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target: centerBounds, zoom: GetPlatform.isWeb ? 10 : 16)));
 
     bool keepZoomingOut = true;
 
     int count = 0;
-    while(keepZoomingOut) {
+    while (keepZoomingOut) {
       count++;
       final LatLngBounds screenBounds = await controller.getVisibleRegion();
-      if(_fits(bounds, screenBounds) || count == 200) {
+      if (_fits(bounds, screenBounds) || count == 200) {
         keepZoomingOut = false;
         final double zoomLevel = await controller.getZoomLevel() - padding;
         controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -518,8 +558,7 @@ class AuthController extends GetxController implements GetxService {
           zoom: zoomLevel,
         )));
         break;
-      }
-      else {
+      } else {
         // Zooming out by 0.1 zoom level per iteration
         final double zoomLevel = await controller.getZoomLevel() - 0.1;
         controller.moveCamera(CameraUpdate.newCameraPosition(CameraPosition(
@@ -531,13 +570,20 @@ class AuthController extends GetxController implements GetxService {
   }
 
   bool _fits(LatLngBounds fitBounds, LatLngBounds screenBounds) {
-    final bool northEastLatitudeCheck = screenBounds.northeast.latitude >= fitBounds.northeast.latitude;
-    final bool northEastLongitudeCheck = screenBounds.northeast.longitude >= fitBounds.northeast.longitude;
+    final bool northEastLatitudeCheck =
+        screenBounds.northeast.latitude >= fitBounds.northeast.latitude;
+    final bool northEastLongitudeCheck =
+        screenBounds.northeast.longitude >= fitBounds.northeast.longitude;
 
-    final bool southWestLatitudeCheck = screenBounds.southwest.latitude <= fitBounds.southwest.latitude;
-    final bool southWestLongitudeCheck = screenBounds.southwest.longitude <= fitBounds.southwest.longitude;
+    final bool southWestLatitudeCheck =
+        screenBounds.southwest.latitude <= fitBounds.southwest.latitude;
+    final bool southWestLongitudeCheck =
+        screenBounds.southwest.longitude <= fitBounds.southwest.longitude;
 
-    return northEastLatitudeCheck && northEastLongitudeCheck && southWestLatitudeCheck && southWestLongitudeCheck;
+    return northEastLatitudeCheck &&
+        northEastLongitudeCheck &&
+        southWestLatitudeCheck &&
+        southWestLongitudeCheck;
   }
 
   LatLngBounds _computeBounds(List<LatLng> list) {
@@ -557,75 +603,88 @@ class AuthController extends GetxController implements GetxService {
     return LatLngBounds(southwest: LatLng(s, w), northeast: LatLng(n, e));
   }
 
-  Future<List<PredictionModel>> searchLocation(BuildContext context, String text) async {
-    if(text.isNotEmpty) {
+  Future<List<PredictionModel>> searchLocation(
+      BuildContext context, String text) async {
+    if (text.isNotEmpty) {
       Response response = await authRepo.searchLocation(text);
       if (response.statusCode == 200 && response.body['status'] == 'OK') {
         _predictionList = [];
-        response.body['predictions'].forEach((prediction) => _predictionList.add(PredictionModel.fromJson(prediction)));
+        response.body['predictions'].forEach((prediction) =>
+            _predictionList.add(PredictionModel.fromJson(prediction)));
       } else {
-        showCustomSnackBar(response.body['error_message'] ?? response.bodyString);
+        showCustomSnackBar(
+            response.body['error_message'] ?? response.bodyString);
       }
     }
     return _predictionList;
   }
 
-  Future<Position> setSuggestedLocation(String? placeID, String? address, GoogleMapController? mapController) async {
+  Future<Position> setSuggestedLocation(String? placeID, String? address,
+      GoogleMapController? mapController) async {
     _isLoading = true;
     update();
 
     LatLng latLng = const LatLng(0, 0);
     Response response = await authRepo.getPlaceDetails(placeID);
-    if(response.statusCode == 200) {
-      PlaceDetailsModel placeDetails = PlaceDetailsModel.fromJson(response.body);
-      if(placeDetails.status == 'OK') {
-        latLng = LatLng(placeDetails.result!.geometry!.location!.lat!, placeDetails.result!.geometry!.location!.lng!);
+    if (response.statusCode == 200) {
+      PlaceDetailsModel placeDetails =
+          PlaceDetailsModel.fromJson(response.body);
+      if (placeDetails.status == 'OK') {
+        latLng = LatLng(placeDetails.result!.geometry!.location!.lat!,
+            placeDetails.result!.geometry!.location!.lng!);
       }
     }
 
     _pickPosition = Position(
-      latitude: latLng.latitude, longitude: latLng.longitude,
-      timestamp: DateTime.now(), accuracy: 1, altitude: 1, heading: 1, speed: 1, speedAccuracy: 1,
+      latitude: latLng.latitude,
+      longitude: latLng.longitude,
+      timestamp: DateTime.now(),
+      accuracy: 1,
+      altitude: 1,
+      heading: 1,
+      speed: 1,
+      speedAccuracy: 1,
     );
 
     _pickAddress = address;
 
-    if(mapController != null) {
-      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: latLng, zoom: 16)));
+    if (mapController != null) {
+      mapController.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: latLng, zoom: 16)));
     }
     _isLoading = false;
     update();
     return _pickPosition;
   }
 
-  Future<ZoneResponseModel> getZone(String lat, String long, bool markerLoad, {bool updateInAddress = false}) async {
-    if(markerLoad) {
+  Future<ZoneResponseModel> getZone(String lat, String long, bool markerLoad,
+      {bool updateInAddress = false}) async {
+    if (markerLoad) {
       _loading = true;
-    }else {
+    } else {
       _isLoading = true;
     }
 
-    if(!updateInAddress){
+    if (!updateInAddress) {
       update();
     }
     ZoneResponseModel responseModel;
     Response response = await authRepo.getZone(lat, long);
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _inZone = true;
       _zoneID = int.parse(jsonDecode(response.body['zone_id'])[0].toString());
       List<int> zoneIds = [];
-      jsonDecode(response.body['zone_id']).forEach((zoneId){
+      jsonDecode(response.body['zone_id']).forEach((zoneId) {
         zoneIds.add(int.parse(zoneId.toString()));
       });
-      responseModel = ZoneResponseModel(true, '' , zoneIds);
-
-    }else {
+      responseModel = ZoneResponseModel(true, '', zoneIds);
+    } else {
       _inZone = false;
       responseModel = ZoneResponseModel(false, response.statusText, []);
     }
-    if(markerLoad) {
+    if (markerLoad) {
       _loading = false;
-    }else {
+    } else {
       _isLoading = false;
     }
     update();
@@ -640,14 +699,15 @@ class AuthController extends GetxController implements GetxService {
   AddressModel? getUserAddress() {
     AddressModel? addressModel;
     try {
-      addressModel = AddressModel.fromJson(jsonDecode(authRepo.getUserAddress()!));
-    }catch(_) {}
+      addressModel =
+          AddressModel.fromJson(jsonDecode(authRepo.getUserAddress()!));
+    } catch (_) {}
     return addressModel;
   }
 
   void setDeliveryTimeTypeIndex(String? type, bool notify) {
     _deliveryTimeTypeIndex = _deliveryTimeTypeList.indexOf(type);
-    if(notify) {
+    if (notify) {
       update();
     }
   }
@@ -656,10 +716,22 @@ class AuthController extends GetxController implements GetxService {
     Response response = await authRepo.getModules(zoneId);
     if (response.statusCode == 200) {
       _moduleList = [];
-      response.body.forEach((storeCategory) => _moduleList!.add(ModuleModel.fromJson(storeCategory)));
+      response.body.forEach((storeCategory) =>
+          _moduleList!.add(ModuleModel.fromJson(storeCategory)));
     } else {
       ApiChecker.checkApi(response);
     }
     update();
+  }
+
+  Future<int> checkFollower() async {
+    int storeId = profileModel!.stores![0].id ?? 0;
+    Response response = await authRepo.getFollowersCount(storeId.toString());
+    if (response.statusCode == 200 && response.body['status'] == 'OK') {
+      _predictionList = [];
+      return response.body['count'];
+    } else {
+      return 0;
+    }
   }
 }

@@ -17,53 +17,76 @@ class AuthRepo {
   AuthRepo({required this.apiClient, required this.sharedPreferences});
 
   Future<Response> login(String? email, String password, String type) async {
-    return await apiClient.postData(AppConstants.loginUri, {"email": email, "password": password, 'vendor_type': type});
+    return await apiClient.postData(AppConstants.loginUri,
+        {"email": email, "password": password, 'vendor_type': type});
   }
 
   Future<Response> getProfileInfo() async {
     return await apiClient.getData(AppConstants.profileUri);
   }
 
-  Future<Response> updateProfile(ProfileModel userInfoModel, XFile? data, String token) async {
+  Future<Response> updateProfile(
+      ProfileModel userInfoModel, XFile? data, String token) async {
     Map<String, String> fields = {};
     fields.addAll(<String, String>{
-      '_method': 'put', 'f_name': userInfoModel.fName!, 'l_name': userInfoModel.lName!,
-      'phone': userInfoModel.phone!, 'token': getUserToken()
+      '_method': 'put',
+      'f_name': userInfoModel.fName!,
+      'l_name': userInfoModel.lName!,
+      'phone': userInfoModel.phone!,
+      'token': getUserToken()
     });
     return await apiClient.postMultipartData(
-      AppConstants.updateProfileUri, fields, [MultipartBody('image', data)],
+      AppConstants.updateProfileUri,
+      fields,
+      [MultipartBody('image', data)],
     );
   }
 
-  Future<Response> changePassword(ProfileModel userInfoModel, String password) async {
-    return await apiClient.postData(AppConstants.updateProfileUri, {'_method': 'put', 'f_name': userInfoModel.fName,
-      'l_name': userInfoModel.lName, 'phone': userInfoModel.phone, 'password': password, 'token': getUserToken()});
+  Future<Response> changePassword(
+      ProfileModel userInfoModel, String password) async {
+    return await apiClient.postData(AppConstants.updateProfileUri, {
+      '_method': 'put',
+      'f_name': userInfoModel.fName,
+      'l_name': userInfoModel.lName,
+      'phone': userInfoModel.phone,
+      'password': password,
+      'token': getUserToken()
+    });
   }
 
   Future<Response> updateToken() async {
     String? deviceToken;
     if (GetPlatform.isIOS) {
-      FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
-      NotificationSettings settings = await FirebaseMessaging.instance.requestPermission(
-        alert: true, announcement: false, badge: true, carPlay: false,
-        criticalAlert: false, provisional: false, sound: true,
+      FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+          alert: true, badge: true, sound: true);
+      NotificationSettings settings =
+          await FirebaseMessaging.instance.requestPermission(
+        alert: true,
+        announcement: false,
+        badge: true,
+        carPlay: false,
+        criticalAlert: false,
+        provisional: false,
+        sound: true,
       );
-      if(settings.authorizationStatus == AuthorizationStatus.authorized) {
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
         deviceToken = await _saveDeviceToken();
       }
-    }else {
+    } else {
       deviceToken = await _saveDeviceToken();
     }
-    if(!GetPlatform.isWeb) {
+    if (!GetPlatform.isWeb) {
       FirebaseMessaging.instance.subscribeToTopic(AppConstants.topic);
-      FirebaseMessaging.instance.subscribeToTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
+      FirebaseMessaging.instance.subscribeToTopic(
+          sharedPreferences.getString(AppConstants.zoneTopic)!);
     }
-    return await apiClient.postData(AppConstants.tokenUri, {"_method": "put", "token": getUserToken(), "fcm_token": deviceToken});
+    return await apiClient.postData(AppConstants.tokenUri,
+        {"_method": "put", "token": getUserToken(), "fcm_token": deviceToken});
   }
 
   Future<String?> _saveDeviceToken() async {
     String? deviceToken = '';
-    if(!GetPlatform.isWeb) {
+    if (!GetPlatform.isWeb) {
       deviceToken = (await FirebaseMessaging.instance.getToken())!;
     }
     if (kDebugMode) {
@@ -73,22 +96,33 @@ class AuthRepo {
   }
 
   Future<Response> forgetPassword(String? email) async {
-    return await apiClient.postData(AppConstants.forgetPasswordUri, {"email": email});
+    return await apiClient
+        .postData(AppConstants.forgetPasswordUri, {"email": email});
   }
 
   Future<Response> verifyToken(String? email, String token) async {
-    return await apiClient.postData(AppConstants.verifyTokenUri, {"email": email, "reset_token": token});
+    return await apiClient.postData(
+        AppConstants.verifyTokenUri, {"email": email, "reset_token": token});
   }
 
-  Future<Response> resetPassword(String? resetToken, String? email, String password, String confirmPassword) async {
+  Future<Response> resetPassword(String? resetToken, String? email,
+      String password, String confirmPassword) async {
     return await apiClient.postData(
       AppConstants.resetPasswordUri,
-      {"_method": "put", "email": email, "reset_token": resetToken, "password": password, "confirm_password": confirmPassword},
+      {
+        "_method": "put",
+        "email": email,
+        "reset_token": resetToken,
+        "password": password,
+        "confirm_password": confirmPassword
+      },
     );
   }
 
-  Future<bool> saveUserToken(String token, String zoneTopic, String type) async {
-    apiClient.updateHeader(token, sharedPreferences.getString(AppConstants.languageCode), null, type);
+  Future<bool> saveUserToken(
+      String token, String zoneTopic, String type) async {
+    apiClient.updateHeader(token,
+        sharedPreferences.getString(AppConstants.languageCode), null, type);
     sharedPreferences.setString(AppConstants.zoneTopic, zoneTopic);
     sharedPreferences.setString(AppConstants.type, type);
     return await sharedPreferences.setString(AppConstants.token, token);
@@ -100,7 +134,9 @@ class AuthRepo {
 
   void updateHeader(int? moduleID) {
     apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.token), sharedPreferences.getString(AppConstants.languageCode), moduleID,
+      sharedPreferences.getString(AppConstants.token),
+      sharedPreferences.getString(AppConstants.languageCode),
+      moduleID,
       sharedPreferences.getString(AppConstants.type),
     );
   }
@@ -114,9 +150,11 @@ class AuthRepo {
   }
 
   Future<bool> clearSharedData() async {
-    if(!GetPlatform.isWeb) {
-      apiClient.postData(AppConstants.tokenUri, {"_method": "put", "token": getUserToken(), "fcm_token": '@'});
-      FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
+    if (!GetPlatform.isWeb) {
+      apiClient.postData(AppConstants.tokenUri,
+          {"_method": "put", "token": getUserToken(), "fcm_token": '@'});
+      FirebaseMessaging.instance.unsubscribeFromTopic(
+          sharedPreferences.getString(AppConstants.zoneTopic)!);
     }
     await sharedPreferences.remove(AppConstants.token);
     await sharedPreferences.remove(AppConstants.userAddress);
@@ -124,7 +162,8 @@ class AuthRepo {
     return true;
   }
 
-  Future<void> saveUserNumberAndPassword(String number, String password, String type) async {
+  Future<void> saveUserNumberAndPassword(
+      String number, String password, String type) async {
     try {
       await sharedPreferences.setString(AppConstants.userPassword, password);
       await sharedPreferences.setString(AppConstants.userNumber, number);
@@ -151,12 +190,13 @@ class AuthRepo {
   }
 
   void setNotificationActive(bool isActive) {
-    if(isActive) {
+    if (isActive) {
       updateToken();
-    }else {
-      if(!GetPlatform.isWeb) {
+    } else {
+      if (!GetPlatform.isWeb) {
         FirebaseMessaging.instance.unsubscribeFromTopic(AppConstants.topic);
-        FirebaseMessaging.instance.unsubscribeFromTopic(sharedPreferences.getString(AppConstants.zoneTopic)!);
+        FirebaseMessaging.instance.unsubscribeFromTopic(
+            sharedPreferences.getString(AppConstants.zoneTopic)!);
       }
     }
     sharedPreferences.setBool(AppConstants.notification, isActive);
@@ -180,18 +220,23 @@ class AuthRepo {
     return await apiClient.getData(AppConstants.zoneListUri);
   }
 
-  Future<Response> registerRestaurant(StoreBody store, XFile? logo, XFile? cover) async {
+  Future<Response> registerRestaurant(
+      StoreBody store, XFile? logo, XFile? cover) async {
     return apiClient.postMultipartData(
-      AppConstants.restaurantRegisterUri, store.toJson(), [MultipartBody('logo', logo), MultipartBody('cover_photo', cover)],
+      AppConstants.restaurantRegisterUri,
+      store.toJson(),
+      [MultipartBody('logo', logo), MultipartBody('cover_photo', cover)],
     );
   }
 
   Future<Response> searchLocation(String text) async {
-    return await apiClient.getData('${AppConstants.searchLocationUri}?search_text=$text');
+    return await apiClient
+        .getData('${AppConstants.searchLocationUri}?search_text=$text');
   }
 
   Future<Response> getPlaceDetails(String? placeID) async {
-    return await apiClient.getData('${AppConstants.placeDetailsUri}?placeid=$placeID');
+    return await apiClient
+        .getData('${AppConstants.placeDetailsUri}?placeid=$placeID');
   }
 
   Future<Response> getZone(String lat, String lng) async {
@@ -200,10 +245,10 @@ class AuthRepo {
 
   Future<bool> saveUserAddress(String address, List<int>? zoneIDs) async {
     apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.token),
-      sharedPreferences.getString(AppConstants.languageCode), null,
-        sharedPreferences.getString(AppConstants.type)
-    );
+        sharedPreferences.getString(AppConstants.token),
+        sharedPreferences.getString(AppConstants.languageCode),
+        null,
+        sharedPreferences.getString(AppConstants.type));
     return await sharedPreferences.setString(AppConstants.userAddress, address);
   }
 
@@ -212,11 +257,17 @@ class AuthRepo {
   }
 
   Future<Response> getModules(int? zoneId) async {
-    return await apiClient.getData('${AppConstants.modulesUri}?zone_id=$zoneId');
+    return await apiClient
+        .getData('${AppConstants.modulesUri}?zone_id=$zoneId');
   }
 
   Future<Response> getAddressFromGeocode(LatLng latLng) async {
-    return await apiClient.getData('${AppConstants.geocodeUri}?lat=${latLng.latitude}&lng=${latLng.longitude}');
+    return await apiClient.getData(
+        '${AppConstants.geocodeUri}?lat=${latLng.latitude}&lng=${latLng.longitude}');
   }
 
+  Future<Response> getFollowersCount(String? storeId) async {
+    return await apiClient
+        .getData('${AppConstants.followers}?store_id=$storeId');
+  }
 }
