@@ -5,8 +5,8 @@ class AppConstants {
   static const String appName = 'Manfacturer';
   static const double appVersion = 2.2;
 
-  //static const String baseUrl = 'https://connectuz.com';
-  static const String baseUrl = 'http://192.168.29.226:3000';
+  static const String baseUrl = 'https://connectuz.com';
+  //static const String baseUrl = 'http://192.168.29.226:3000';
 
   static const String configUri = '/api/v1/config';
   static const String loginUri = '/api/v1/auth/vendor/login';
