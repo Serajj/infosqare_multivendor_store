@@ -90,7 +90,7 @@ class _FollowingAndFollowedScreenState
                                 return ListTile(
                                   leading: CircleAvatar(
                                     backgroundImage: NetworkImage(
-                                        "https://connectuz.com/public/assets/admin/img/160x160/img1.jpg"),
+                                        "https://connectuz.com/public/assets/admini/img/160x160/img1.jpg"),
                                   ),
                                   title: Text(customerListController
                                       .dataListAccepted[index].user!.fName

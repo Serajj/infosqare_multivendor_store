@@ -727,7 +727,7 @@ class AuthController extends GetxController implements GetxService {
   Future<int> checkFollower() async {
     int storeId = profileModel!.stores![0].id ?? 0;
     Response response = await authRepo.getFollowersCount(storeId.toString());
-    if (response.statusCode == 200 && response.body['status'] == 'OK') {
+    if (response.statusCode == 200 && response.body['status']) {
       _predictionList = [];
       return response.body['count'];
     } else {

@@ -41,7 +41,9 @@ class CustomerListController extends GetxController {
         offset.value, storeId, search.value);
 
     if (response.statusCode == 200) {
-      dataList.addAll(response.body['data']['data']
+      dynamic data = response.body['data'];
+
+      dataList.addAll(data
           .map<UserFollow>((element) => UserFollow.fromJson(element))
           .toList());
     }

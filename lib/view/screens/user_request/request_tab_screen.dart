@@ -93,7 +93,7 @@ class _RequestTabScreenState extends State<RequestTabScreen> {
                                     ListTile(
                                       leading: CircleAvatar(
                                         backgroundImage: NetworkImage(
-                                            "https://connectuz.com/public/assets/admin/img/160x160/img1.jpg"),
+                                            "https://api.connectuz.com/public/assets/admini/img/160x160/img1.jpg"),
                                       ),
                                       title: Text(customerListController
                                               .dataListRecieved[index]
