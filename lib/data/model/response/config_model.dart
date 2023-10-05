@@ -38,46 +38,46 @@ class ConfigModel {
   ModuleConfig? moduleConfig;
   bool? prescriptionOrderStatus;
 
-  ConfigModel(
-      {this.businessName,
-        this.footerText,
-        this.logo,
-        this.address,
-        this.phone,
-        this.email,
-        this.baseUrls,
-        this.country,
-        this.defaultLocation,
-        this.currencySymbol,
-        this.currencySymbolDirection,
-        this.appMinimumVersionAndroid,
-        this.appUrlAndroid,
-        this.appMinimumVersionIos,
-        this.appUrlIos,
-        this.customerVerification,
-        this.scheduleOrder,
-        this.orderDeliveryVerification,
-        this.cashOnDelivery,
-        this.digitalPayment,
-        this.perKmShippingCharge,
-        this.minimumShippingCharge,
-        this.freeDeliveryOver,
-        this.demo,
-        this.maintenanceMode,
-        this.orderConfirmationModel,
-        this.showDmEarning,
-        this.canceledByDeliveryman,
-        this.timeformat,
-        this.language,
-        this.toggleVegNonVeg,
-        this.toggleDmRegistration,
-        this.toggleStoreRegistration,
-        this.scheduleOrderSlotDuration,
-        this.digitAfterDecimalPoint,
-        this.moduleConfig,
-        this.canceledByStore,
-        this.prescriptionOrderStatus,
-      });
+  ConfigModel({
+    this.businessName,
+    this.footerText,
+    this.logo,
+    this.address,
+    this.phone,
+    this.email,
+    this.baseUrls,
+    this.country,
+    this.defaultLocation,
+    this.currencySymbol,
+    this.currencySymbolDirection,
+    this.appMinimumVersionAndroid,
+    this.appUrlAndroid,
+    this.appMinimumVersionIos,
+    this.appUrlIos,
+    this.customerVerification,
+    this.scheduleOrder,
+    this.orderDeliveryVerification,
+    this.cashOnDelivery,
+    this.digitalPayment,
+    this.perKmShippingCharge,
+    this.minimumShippingCharge,
+    this.freeDeliveryOver,
+    this.demo,
+    this.maintenanceMode,
+    this.orderConfirmationModel,
+    this.showDmEarning,
+    this.canceledByDeliveryman,
+    this.timeformat,
+    this.language,
+    this.toggleVegNonVeg,
+    this.toggleDmRegistration,
+    this.toggleStoreRegistration,
+    this.scheduleOrderSlotDuration,
+    this.digitAfterDecimalPoint,
+    this.moduleConfig,
+    this.canceledByStore,
+    this.prescriptionOrderStatus,
+  });
 
   ConfigModel.fromJson(Map<String, dynamic> json) {
     businessName = json['business_name'];
@@ -86,18 +86,21 @@ class ConfigModel {
     address = json['address'];
     phone = json['phone'];
     email = json['email'];
-    baseUrls = json['base_urls'] != null
-        ? BaseUrls.fromJson(json['base_urls'])
-        : null;
+    baseUrls =
+        json['base_urls'] != null ? BaseUrls.fromJson(json['base_urls']) : null;
     country = json['country'];
     defaultLocation = json['default_location'] != null
         ? DefaultLocation.fromJson(json['default_location'])
         : null;
     currencySymbol = json['currency_symbol'];
     currencySymbolDirection = json['currency_symbol_direction'];
-    appMinimumVersionAndroid = json['app_minimum_version_android_store'] != null ? json['app_minimum_version_android_store'].toDouble() : 0.0;
+    appMinimumVersionAndroid = json['app_minimum_version_android_store'] != null
+        ? json['app_minimum_version_android_store'].toDouble()
+        : 0.0;
     appUrlAndroid = json['app_url_android_store'];
-    appMinimumVersionIos = json['app_minimum_version_ios_store'] != null ? json['app_minimum_version_ios_store'].toDouble() : 0.0;
+    appMinimumVersionIos = json['app_minimum_version_ios_store'] != null
+        ? json['app_minimum_version_ios_store'].toDouble()
+        : 0.0;
     appUrlIos = json['app_url_ios_store'];
     customerVerification = json['customer_verification'];
     scheduleOrder = json['schedule_order'];
@@ -122,7 +125,9 @@ class ConfigModel {
     toggleVegNonVeg = json['toggle_veg_non_veg'];
     toggleDmRegistration = json['toggle_dm_registration'];
     toggleStoreRegistration = json['toggle_store_registration'];
-    scheduleOrderSlotDuration = json['schedule_order_slot_duration'] == 0 ? 30 : json['schedule_order_slot_duration'];
+    scheduleOrderSlotDuration = json['schedule_order_slot_duration'] == 0
+        ? 30
+        : json['schedule_order_slot_duration'];
     digitAfterDecimalPoint = json['digit_after_decimal_point'];
     canceledByStore = json['canceled_by_store'];
     moduleConfig = json['module_config'] != null
@@ -190,6 +195,8 @@ class BaseUrls {
   String? reviewImageUrl;
   String? notificationImageUrl;
   String? vendorImageUrl;
+  String? qrImageUrl;
+  String? upiId;
   String? storeImageUrl;
   String? storeCoverPhotoUrl;
   String? deliveryManImageUrl;
@@ -198,26 +205,30 @@ class BaseUrls {
   String? moduleImageUrl;
   String? orderAttachmentUrl;
 
-  BaseUrls(
-      {this.itemImageUrl,
-        this.customerImageUrl,
-        this.bannerImageUrl,
-        this.categoryImageUrl,
-        this.reviewImageUrl,
-        this.notificationImageUrl,
-        this.vendorImageUrl,
-        this.storeImageUrl,
-        this.storeCoverPhotoUrl,
-        this.deliveryManImageUrl,
-        this.chatImageUrl,
-        this.campaignImageUrl,
-        this.moduleImageUrl,
-        this.orderAttachmentUrl,
-      });
+  BaseUrls({
+    this.itemImageUrl,
+    this.customerImageUrl,
+    this.qrImageUrl,
+    this.upiId,
+    this.bannerImageUrl,
+    this.categoryImageUrl,
+    this.reviewImageUrl,
+    this.notificationImageUrl,
+    this.vendorImageUrl,
+    this.storeImageUrl,
+    this.storeCoverPhotoUrl,
+    this.deliveryManImageUrl,
+    this.chatImageUrl,
+    this.campaignImageUrl,
+    this.moduleImageUrl,
+    this.orderAttachmentUrl,
+  });
 
   BaseUrls.fromJson(Map<String, dynamic> json) {
     itemImageUrl = json['item_image_url'];
     customerImageUrl = json['customer_image_url'];
+    qrImageUrl = json['qr_image_url'];
+    upiId = json['upi_id_url'];
     bannerImageUrl = json['banner_image_url'];
     categoryImageUrl = json['category_image_url'];
     reviewImageUrl = json['review_image_url'];
@@ -298,7 +309,9 @@ class ModuleConfig {
 
   ModuleConfig.fromJson(Map<String, dynamic> json) {
     moduleType = json['module_type'].cast<String>();
-    module = json[moduleType![0]] != null ? Module.fromJson(json[moduleType![0]]) : null;
+    module = json[moduleType![0]] != null
+        ? Module.fromJson(json[moduleType![0]])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -326,24 +339,26 @@ class Module {
   bool? newVariation;
   String? description;
 
-  Module(
-      {this.orderStatus,
-        this.orderPlaceToScheduleInterval,
-        this.addOn,
-        this.stock,
-        this.vegNonVeg,
-        this.unit,
-        this.orderAttachment,
-        this.alwaysOpen,
-        this.itemAvailableTime,
-        this.showRestaurantText,
-        this.isParcel,
-        this.newVariation,
-        this.description,
-      });
+  Module({
+    this.orderStatus,
+    this.orderPlaceToScheduleInterval,
+    this.addOn,
+    this.stock,
+    this.vegNonVeg,
+    this.unit,
+    this.orderAttachment,
+    this.alwaysOpen,
+    this.itemAvailableTime,
+    this.showRestaurantText,
+    this.isParcel,
+    this.newVariation,
+    this.description,
+  });
 
   Module.fromJson(Map<String, dynamic> json) {
-    orderStatus = json['order_status'] != null ? OrderStatus.fromJson(json['order_status']) : null;
+    orderStatus = json['order_status'] != null
+        ? OrderStatus.fromJson(json['order_status'])
+        : null;
     orderPlaceToScheduleInterval = json['order_place_to_schedule_interval'];
     addOn = json['add_on'];
     stock = json['stock'];

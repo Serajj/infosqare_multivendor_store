@@ -10,6 +10,10 @@ class AppConstants {
 
   static const String configUri = '/api/v1/config';
   static const String loginUri = '/api/v1/auth/vendor/login';
+  static const String membershipUri = '/api/v1/customer/get-member';
+  static const String uploadpaymentreceipt = '/api/v1/add_membership_payment';
+  static const String getmanualPayment = '/api/v1/get_membership_status';
+
   static const String forgetPasswordUri = '/api/v1/auth/vendor/forgot-password';
   static const String verifyTokenUri = '/api/v1/auth/vendor/verify-token';
   static const String resetPasswordUri = '/api/v1/auth/vendor/reset-password';

@@ -45,6 +45,8 @@ import 'package:sixam_mart_store/view/screens/splash/splash_screen.dart';
 import 'package:sixam_mart_store/view/screens/update/update_screen.dart';
 import 'package:get/get.dart';
 import 'package:sixam_mart_store/view/screens/user_request/user_request.dart';
+import '../view/screens/membership/membership_payment_screen.dart';
+import '../view/screens/membership/membership_screen.dart';
 import '../view/screens/user_request/follow_screen.dart';
 
 class RouteHelper {
@@ -62,6 +64,8 @@ class RouteHelper {
   static const String notification = '/notification';
   static const String bankInfo = '/bank-info';
   static const String wallet = '/wallet';
+  static const String membership = "/membership";
+  static const String membershipPayment = "/membership_payment";
   static const String withdrawHistory = '/withdraw-history';
   static const String store = '/store';
   static const String campaign = '/campaign';
@@ -162,6 +166,9 @@ class RouteHelper {
     String data = base64Encode(encoded);
     return '$itemDetails?data=$data';
   }
+
+  static String getMembershipRoute() => membership;
+  static String getMembershipPaymentRoute() => membershipPayment;
 
   static String getPosRoute() => pos;
   static String getDeliveryManRoute() => deliveryMan;
@@ -411,5 +418,8 @@ class RouteHelper {
         page: () => const StoreRegistrationScreen()),
     GetPage(name: coupon, page: () => const CouponScreen()),
     GetPage(name: expense, page: () => const ExpenseScreen()),
+    GetPage(name: membership, page: () => const MembershipScreen()),
+    GetPage(
+        name: membershipPayment, page: () => const MembershipPaymentScreen()),
   ];
 }

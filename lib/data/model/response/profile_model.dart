@@ -28,36 +28,42 @@ class ProfileModel {
   List<String>? roles;
   EmployeeInfo? employeeInfo;
   List<Translation>? translations;
+  String? membershipId;
+  String? membershipStart;
+  String? membershipEnd;
 
-  ProfileModel(
-      {this.id,
-        this.fName,
-        this.lName,
-        this.phone,
-        this.email,
-        this.createdAt,
-        this.updatedAt,
-        this.bankName,
-        this.branch,
-        this.holderName,
-        this.accountNo,
-        this.image,
-        this.orderCount,
-        this.todaysOrderCount,
-        this.thisWeekOrderCount,
-        this.thisMonthOrderCount,
-        this.memberSinceDays,
-        this.cashInHands,
-        this.balance,
-        this.totalEarning,
-        this.todaysEarning,
-        this.thisWeekEarning,
-        this.thisMonthEarning,
-        this.stores,
-        this.roles,
-        this.employeeInfo,
-        this.translations,
-      });
+  ProfileModel({
+    this.id,
+    this.fName,
+    this.lName,
+    this.phone,
+    this.email,
+    this.createdAt,
+    this.updatedAt,
+    this.bankName,
+    this.branch,
+    this.holderName,
+    this.accountNo,
+    this.image,
+    this.orderCount,
+    this.todaysOrderCount,
+    this.thisWeekOrderCount,
+    this.thisMonthOrderCount,
+    this.memberSinceDays,
+    this.cashInHands,
+    this.balance,
+    this.totalEarning,
+    this.todaysEarning,
+    this.thisWeekEarning,
+    this.thisMonthEarning,
+    this.stores,
+    this.roles,
+    this.employeeInfo,
+    this.translations,
+    this.membershipId,
+    this.membershipStart,
+    this.membershipEnd,
+  });
 
   ProfileModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -83,17 +89,20 @@ class ProfileModel {
     todaysEarning = json['todays_earning'].toDouble();
     thisWeekEarning = json['this_week_earning'].toDouble();
     thisMonthEarning = json['this_month_earning'].toDouble();
+    membershipId = json['membership_id'].toString();
+    membershipStart = json['membership_started_at'].toString();
+    membershipEnd = json['membership_end_at'].toString();
     if (json['stores'] != null) {
       stores = [];
       json['stores'].forEach((v) {
         stores!.add(Store.fromJson(v));
       });
     }
-    if(json['roles'] != null) {
+    if (json['roles'] != null) {
       roles = [];
       json['roles'].forEach((v) => roles!.add(v));
     }
-    if(json['employee_info'] != null){
+    if (json['employee_info'] != null) {
       employeeInfo = EmployeeInfo.fromJson(json['employee_info']);
     }
     if (json['translations'] != null) {
@@ -181,47 +190,47 @@ class Store {
   bool? prescriptionStatus;
   bool? cutlery;
 
-  Store(
-      {this.id,
-        this.name,
-        this.phone,
-        this.email,
-        this.logo,
-        this.latitude,
-        this.longitude,
-        this.address,
-        this.minimumOrder,
-        this.scheduleOrder,
-        this.currency,
-        this.createdAt,
-        this.updatedAt,
-        this.freeDelivery,
-        this.coverPhoto,
-        this.delivery,
-        this.takeAway,
-        this.tax,
-        this.reviewsSection,
-        this.itemSection,
-        this.avgRating,
-        this.ratingCount,
-        this.active,
-        this.gstStatus,
-        this.gstCode,
-        this.selfDeliverySystem,
-        this.posSystem,
-        this.minimumShippingCharge,
-        this.maximumShippingCharge,
-        this.perKmShippingCharge,
-        this.deliveryTime,
-        this.veg,
-        this.nonVeg,
-        this.orderPlaceToScheduleInterval,
-        this.module,
-        this.discount,
-        this.schedules,
-        this.prescriptionStatus,
-        this.cutlery,
-      });
+  Store({
+    this.id,
+    this.name,
+    this.phone,
+    this.email,
+    this.logo,
+    this.latitude,
+    this.longitude,
+    this.address,
+    this.minimumOrder,
+    this.scheduleOrder,
+    this.currency,
+    this.createdAt,
+    this.updatedAt,
+    this.freeDelivery,
+    this.coverPhoto,
+    this.delivery,
+    this.takeAway,
+    this.tax,
+    this.reviewsSection,
+    this.itemSection,
+    this.avgRating,
+    this.ratingCount,
+    this.active,
+    this.gstStatus,
+    this.gstCode,
+    this.selfDeliverySystem,
+    this.posSystem,
+    this.minimumShippingCharge,
+    this.maximumShippingCharge,
+    this.perKmShippingCharge,
+    this.deliveryTime,
+    this.veg,
+    this.nonVeg,
+    this.orderPlaceToScheduleInterval,
+    this.module,
+    this.discount,
+    this.schedules,
+    this.prescriptionStatus,
+    this.cutlery,
+  });
 
   Store.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -251,15 +260,20 @@ class Store {
     gstCode = json['gst_code'];
     selfDeliverySystem = json['self_delivery_system'];
     posSystem = json['pos_system'];
-    minimumShippingCharge = json['minimum_shipping_charge'] != null ? json['minimum_shipping_charge'].toDouble() : 0.0;
+    minimumShippingCharge = json['minimum_shipping_charge'] != null
+        ? json['minimum_shipping_charge'].toDouble()
+        : 0.0;
     maximumShippingCharge = json['maximum_shipping_charge']?.toDouble();
-    perKmShippingCharge = json['per_km_shipping_charge'] != null ? json['per_km_shipping_charge'].toDouble() : 0.0;
+    perKmShippingCharge = json['per_km_shipping_charge'] != null
+        ? json['per_km_shipping_charge'].toDouble()
+        : 0.0;
     deliveryTime = json['delivery_time'];
     veg = json['veg'];
     nonVeg = json['non_veg'];
     orderPlaceToScheduleInterval = json['order_place_to_schedule_interval'];
     module = json['module'] != null ? Module.fromJson(json['module']) : null;
-    discount = json['discount'] != null ? Discount.fromJson(json['discount']) : null;
+    discount =
+        json['discount'] != null ? Discount.fromJson(json['discount']) : null;
     if (json['schedules'] != null) {
       schedules = <Schedules>[];
       json['schedules'].forEach((v) {
@@ -320,6 +334,7 @@ class Store {
     return data;
   }
 }
+
 class EmployeeInfo {
   int? id;
   String? fName;
@@ -330,16 +345,16 @@ class EmployeeInfo {
   int? employeeRoleId;
   int? storeId;
 
-  EmployeeInfo(
-      {this.id,
-        this.fName,
-        this.lName,
-        this.phone,
-        this.email,
-        this.image,
-        this.employeeRoleId,
-        this.storeId,
-      });
+  EmployeeInfo({
+    this.id,
+    this.fName,
+    this.lName,
+    this.phone,
+    this.email,
+    this.image,
+    this.employeeRoleId,
+    this.storeId,
+  });
 
   EmployeeInfo.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -382,17 +397,17 @@ class Discount {
 
   Discount(
       {this.id,
-        this.startDate,
-        this.endDate,
-        this.startTime,
-        this.endTime,
-        this.minPurchase,
-        this.maxDiscount,
-        this.discount,
-        this.discountType,
-        this.storeId,
-        this.createdAt,
-        this.updatedAt});
+      this.startDate,
+      this.endDate,
+      this.startTime,
+      this.endTime,
+      this.minPurchase,
+      this.maxDiscount,
+      this.discount,
+      this.discountType,
+      this.storeId,
+      this.createdAt,
+      this.updatedAt});
 
   Discount.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -435,11 +450,7 @@ class Schedules {
   String? closingTime;
 
   Schedules(
-      {this.id,
-        this.storeId,
-        this.day,
-        this.openingTime,
-        this.closingTime});
+      {this.id, this.storeId, this.day, this.openingTime, this.closingTime});
 
   Schedules.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -472,13 +483,13 @@ class Module {
 
   Module(
       {this.id,
-        this.moduleName,
-        this.moduleType,
-        this.thumbnail,
-        this.status,
-        this.storesCount,
-        this.createdAt,
-        this.updatedAt});
+      this.moduleName,
+      this.moduleType,
+      this.thumbnail,
+      this.status,
+      this.storesCount,
+      this.createdAt,
+      this.updatedAt});
 
   Module.fromJson(Map<String, dynamic> json) {
     id = json['id'];
