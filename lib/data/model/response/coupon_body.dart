@@ -1,4 +1,4 @@
-import 'package:sixam_mart_store/data/model/response/item_model.dart';
+import 'package:connectuz_store/data/model/response/item_model.dart';
 
 class CouponBody {
   int? id;
@@ -23,29 +23,29 @@ class CouponBody {
   int? restaurantId;
   List<Translation>? translations;
 
-  CouponBody(
-      {this.id,
-        this.title,
-        this.code,
-        this.startDate,
-        this.expireDate,
-        this.minPurchase,
-        this.maxDiscount,
-        this.discount,
-        this.discountType,
-        this.couponType,
-        this.limit,
-        this.status,
-        this.createdAt,
-        this.updatedAt,
-        this.data,
-        this.totalUses,
-        this.createdBy,
-        this.customerId,
-        this.slug,
-        this.restaurantId,
-        this.translations,
-      });
+  CouponBody({
+    this.id,
+    this.title,
+    this.code,
+    this.startDate,
+    this.expireDate,
+    this.minPurchase,
+    this.maxDiscount,
+    this.discount,
+    this.discountType,
+    this.couponType,
+    this.limit,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+    this.data,
+    this.totalUses,
+    this.createdBy,
+    this.customerId,
+    this.slug,
+    this.restaurantId,
+    this.translations,
+  });
 
   CouponBody.fromJson(Map<String, dynamic> json) {
     id = json['id'];

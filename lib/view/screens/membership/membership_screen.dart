@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart_store/data/model/response/profile_model.dart';
+import 'package:connectuz_store/data/model/response/profile_model.dart';
 
 import '../../../controller/auth_controller.dart';
 import '../../../controller/membership_controller.dart';
@@ -42,8 +42,8 @@ class _MembershipScreenState extends State<MembershipScreen> {
         title: Text('Membership'),
       ),
       // floatingActionButton: FloatingActionButton(onPressed: () {
-      //   membershipController.getSubmittedStatus();
-      //   print(membershipController.manualPayment.value.id.toString());
+      //   membershipController.getMembershipList();
+      //   print(membershipController.dataList.length.toString());
       // }),
       body: (userInfo.membershipId == "null" || userInfo.membershipId == null)
           ? Obx(() => Column(

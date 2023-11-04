@@ -1,12 +1,12 @@
 /*import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart_store/controller/request_controller.dart';
-import 'package:sixam_mart_store/data/model/body/request_model.dart';
+import 'package:connectuz_store/controller/request_controller.dart';
+import 'package:connectuz_store/data/model/body/request_model.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sixam_mart_store/data/repository/request_repo.dart';
-import 'package:sixam_mart_store/util/dimensions.dart';
-import 'package:sixam_mart_store/view/base/custom_app_bar.dart';
-import 'package:sixam_mart_store/view/screens/store_requests/widget/button_widget.dart';
+import 'package:connectuz_store/data/repository/request_repo.dart';
+import 'package:connectuz_store/util/dimensions.dart';
+import 'package:connectuz_store/view/base/custom_app_bar.dart';
+import 'package:connectuz_store/view/screens/store_requests/widget/button_widget.dart';
 
 class FollowScreen extends StatefulWidget {
   @override

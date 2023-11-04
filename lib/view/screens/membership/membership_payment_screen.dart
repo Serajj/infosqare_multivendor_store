@@ -73,9 +73,10 @@ class _MembershipPaymentScreenState extends State<MembershipPaymentScreen> {
     var amount = membershipController.selectedMembership.value.price ?? 0;
 
 // Concatenate the variables to form the UPI URL
-    var url = "upi://pay?pa=" +
-        recipientId +
-        "&pn=${recipientName}&mc=${merchantCode}&tid=${transactionId}&tr=${transactionRefId}&tn=${paymentDescription}&am=${amount}";
+    var url =
+        Get.find<SplashController>().configModel!.baseUrls!.upiId.toString() +
+            "&am=" +
+            amount.toString();
 
     if (await canLaunch(url)) {
       await launch(url);
@@ -323,12 +324,7 @@ class _MembershipPaymentScreenState extends State<MembershipPaymentScreen> {
               ),
             ),
             Center(
-              child: Text("UPI ID : " +
-                  Get.find<SplashController>()
-                      .configModel!
-                      .baseUrls!
-                      .upiId
-                      .toString()),
+              child: Text(""),
             ),
             SizedBox(
               height: 20,

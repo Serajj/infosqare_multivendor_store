@@ -1,4 +1,4 @@
-import 'package:sixam_mart_store/data/model/response/order_model.dart';
+import 'package:connectuz_store/data/model/response/order_model.dart';
 
 class ReviewModel {
   int? id;
@@ -13,14 +13,14 @@ class ReviewModel {
 
   ReviewModel(
       {this.id,
-        this.comment,
-        this.rating,
-        this.itemName,
-        this.itemImage,
-        this.customerName,
-        this.createdAt,
-        this.updatedAt,
-        this.customer});
+      this.comment,
+      this.rating,
+      this.itemName,
+      this.itemImage,
+      this.customerName,
+      this.createdAt,
+      this.updatedAt,
+      this.customer});
 
   ReviewModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -31,9 +31,8 @@ class ReviewModel {
     customerName = json['customer_name'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    customer = json['customer'] != null
-        ? Customer.fromJson(json['customer'])
-        : null;
+    customer =
+        json['customer'] != null ? Customer.fromJson(json['customer']) : null;
   }
 
   Map<String, dynamic> toJson() {

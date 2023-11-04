@@ -1,18 +1,19 @@
-import 'package:sixam_mart_store/data/model/response/language_model.dart';
-import 'package:sixam_mart_store/util/images.dart';
+import 'package:connectuz_store/data/model/response/language_model.dart';
+import 'package:connectuz_store/util/images.dart';
 
 class AppConstants {
-  static const String appName = 'Manfacturer';
+  static const String appName = 'Manufacturer';
   static const double appVersion = 2.2;
 
-  //static const String baseUrl = 'https://api.connectuz.com';
-  static const String baseUrl = 'http://192.168.29.226:3000';
+  static const String baseUrl = 'https://api.connectuz.com';
+  //static const String baseUrl = 'http://192.168.29.226:3000';
 
   static const String configUri = '/api/v1/config';
   static const String loginUri = '/api/v1/auth/vendor/login';
-  static const String membershipUri = '/api/v1/customer/get-member';
-  static const String uploadpaymentreceipt = '/api/v1/add_membership_payment';
-  static const String getmanualPayment = '/api/v1/get_membership_status';
+  static const String membershipUri = '/api/v1/vendor/get-member';
+  static const String uploadpaymentreceipt =
+      '/api/v1/vendor/add_membership_payment';
+  static const String getmanualPayment = '/api/v1/vendor/get_membership_status';
 
   static const String forgetPasswordUri = '/api/v1/auth/vendor/forgot-password';
   static const String verifyTokenUri = '/api/v1/auth/vendor/verify-token';

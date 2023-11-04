@@ -1,11 +1,11 @@
-import 'package:sixam_mart_store/controller/auth_controller.dart';
-import 'package:sixam_mart_store/controller/campaign_controller.dart';
-import 'package:sixam_mart_store/controller/delivery_man_controller.dart';
-import 'package:sixam_mart_store/controller/order_controller.dart';
-import 'package:sixam_mart_store/controller/store_controller.dart';
-import 'package:sixam_mart_store/util/dimensions.dart';
-import 'package:sixam_mart_store/util/styles.dart';
-import 'package:sixam_mart_store/view/base/custom_button.dart';
+import 'package:connectuz_store/controller/auth_controller.dart';
+import 'package:connectuz_store/controller/campaign_controller.dart';
+import 'package:connectuz_store/controller/delivery_man_controller.dart';
+import 'package:connectuz_store/controller/order_controller.dart';
+import 'package:connectuz_store/controller/store_controller.dart';
+import 'package:connectuz_store/util/dimensions.dart';
+import 'package:connectuz_store/util/styles.dart';
+import 'package:connectuz_store/view/base/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 

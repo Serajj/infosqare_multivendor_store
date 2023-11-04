@@ -1,9 +1,9 @@
-import 'package:sixam_mart_store/controller/auth_controller.dart';
-import 'package:sixam_mart_store/data/api/api_checker.dart';
-import 'package:sixam_mart_store/data/model/body/bank_info_body.dart';
-import 'package:sixam_mart_store/data/model/response/bank_repo.dart';
-import 'package:sixam_mart_store/data/model/response/withdraw_model.dart';
-import 'package:sixam_mart_store/view/base/custom_snackbar.dart';
+import 'package:connectuz_store/controller/auth_controller.dart';
+import 'package:connectuz_store/data/api/api_checker.dart';
+import 'package:connectuz_store/data/model/body/bank_info_body.dart';
+import 'package:connectuz_store/data/model/response/bank_repo.dart';
+import 'package:connectuz_store/data/model/response/withdraw_model.dart';
+import 'package:connectuz_store/view/base/custom_snackbar.dart';
 import 'package:get/get.dart';
 
 class BankController extends GetxController implements GetxService {
@@ -29,11 +29,11 @@ class BankController extends GetxController implements GetxService {
     _isLoading = true;
     update();
     Response response = await bankRepo.updateBankInfo(bankInfoBody);
-    if(response.statusCode == 200) {
-     Get.find<AuthController>().getProfile();
-     Get.back();
-     showCustomSnackBar('bank_info_updated'.tr, isError: false);
-    }else {
+    if (response.statusCode == 200) {
+      Get.find<AuthController>().getProfile();
+      Get.back();
+      showCustomSnackBar('bank_info_updated'.tr, isError: false);
+    } else {
       ApiChecker.checkApi(response);
     }
     _isLoading = false;
@@ -42,7 +42,7 @@ class BankController extends GetxController implements GetxService {
 
   Future<void> getWithdrawList() async {
     Response response = await bankRepo.getWithdrawList();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _withdrawList = [];
       _allWithdrawList = [];
       _pendingWithdraw = 0;
@@ -51,13 +51,13 @@ class BankController extends GetxController implements GetxService {
         WithdrawModel withdrawModel = WithdrawModel.fromJson(withdraw);
         _withdrawList!.add(withdrawModel);
         _allWithdrawList.add(withdrawModel);
-        if(withdrawModel.status == 'Pending') {
+        if (withdrawModel.status == 'Pending') {
           _pendingWithdraw = _pendingWithdraw + withdrawModel.amount!;
-        }else if(withdrawModel.status == 'Approved') {
+        } else if (withdrawModel.status == 'Approved') {
           _withdrawn = _withdrawn + withdrawModel.amount!;
         }
       });
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
@@ -66,11 +66,11 @@ class BankController extends GetxController implements GetxService {
   void filterWithdrawList(int index) {
     _filterIndex = index;
     _withdrawList = [];
-    if(index == 0) {
+    if (index == 0) {
       _withdrawList!.addAll(_allWithdrawList);
-    }else {
+    } else {
       for (var withdraw in _allWithdrawList) {
-        if(withdraw.status == _statusList[index]) {
+        if (withdraw.status == _statusList[index]) {
           _withdrawList!.add(withdraw);
         }
       }
@@ -82,16 +82,15 @@ class BankController extends GetxController implements GetxService {
     _isLoading = true;
     update();
     Response response = await bankRepo.requestWithdraw(amount);
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       Get.back();
       getWithdrawList();
       Get.find<AuthController>().getProfile();
       showCustomSnackBar('request_sent_successfully'.tr, isError: false);
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     _isLoading = false;
     update();
   }
-
 }

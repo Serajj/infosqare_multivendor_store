@@ -1,7 +1,7 @@
 // import 'package:flutter/material.dart';
-// import 'package:sixam_mart_store/controller/auth_controller.dart';
-// import 'package:sixam_mart_store/util/dimensions.dart';
-// import 'package:sixam_mart_store/util/styles.dart';
+// import 'package:connectuz_store/controller/auth_controller.dart';
+// import 'package:connectuz_store/util/dimensions.dart';
+// import 'package:connectuz_store/util/styles.dart';
 // class StoreTypeWidget extends StatelessWidget {
 //   final AuthController authController;
 //   final String title;

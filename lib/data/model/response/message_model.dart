@@ -1,7 +1,6 @@
 import 'dart:convert';
 
-import 'package:sixam_mart_store/data/model/response/conversation_model.dart';
-
+import 'package:connectuz_store/data/model/response/conversation_model.dart';
 
 class MessageModel {
   int? totalSize;
@@ -11,14 +10,22 @@ class MessageModel {
   Conversation? conversation;
   List<Message>? messages;
 
-  MessageModel({this.totalSize, this.limit, this.offset, this.messages, this.status, this.conversation});
+  MessageModel(
+      {this.totalSize,
+      this.limit,
+      this.offset,
+      this.messages,
+      this.status,
+      this.conversation});
 
   MessageModel.fromJson(Map<String, dynamic> json) {
     totalSize = json['total_size'];
     limit = json['limit'];
     offset = json['offset'];
     status = json['status'];
-    conversation = json['conversation'] != null ? Conversation.fromJson(json['conversation']) : null;
+    conversation = json['conversation'] != null
+        ? Conversation.fromJson(json['conversation'])
+        : null;
     if (json['messages'] != null) {
       messages = <Message>[];
       json['messages'].forEach((v) {
@@ -69,7 +76,7 @@ class Message {
     conversationId = json['conversation_id'];
     senderId = json['sender_id'];
     message = json['message'];
-    if(json['file'] != null && json['file'] != 'null'){
+    if (json['file'] != null && json['file'] != 'null') {
       files = jsonDecode(json['file']).cast<String>();
     }
     isSeen = json['is_seen'];

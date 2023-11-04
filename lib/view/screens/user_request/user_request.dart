@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart_store/view/screens/user_request/follow_screen.dart';
-import 'package:sixam_mart_store/view/screens/user_request/following_and_followed_screen.dart';
-import 'package:sixam_mart_store/view/screens/user_request/request_tab_screen.dart';
+import 'package:connectuz_store/view/screens/user_request/follow_screen.dart';
+import 'package:connectuz_store/view/screens/user_request/following_and_followed_screen.dart';
+import 'package:connectuz_store/view/screens/user_request/request_tab_screen.dart';
 
 import '../../../controller/customer_list_controller.dart';
 

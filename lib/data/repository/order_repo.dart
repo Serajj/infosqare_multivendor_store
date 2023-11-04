@@ -1,6 +1,6 @@
-import 'package:sixam_mart_store/data/api/api_client.dart';
-import 'package:sixam_mart_store/data/model/body/update_status_body.dart';
-import 'package:sixam_mart_store/util/app_constants.dart';
+import 'package:connectuz_store/data/api/api_client.dart';
+import 'package:connectuz_store/data/model/body/update_status_body.dart';
+import 'package:connectuz_store/util/app_constants.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 import 'package:get/state_manager.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -23,11 +23,13 @@ class OrderRepo extends GetxService {
   }
 
   Future<Response> getPaginatedOrderList(int offset, String status) async {
-    return await apiClient.getData('${AppConstants.completedOrdersUri}?status=$status&offset=$offset&limit=10');
+    return await apiClient.getData(
+        '${AppConstants.completedOrdersUri}?status=$status&offset=$offset&limit=10');
   }
 
   Future<Response> updateOrderStatus(UpdateStatusBody updateStatusBody) {
-    return apiClient.postData(AppConstants.updatedOrderStatusUri, updateStatusBody.toJson());
+    return apiClient.postData(
+        AppConstants.updatedOrderStatusUri, updateStatusBody.toJson());
   }
 
   Future<Response> getOrderDetails(int orderID) {
@@ -43,7 +45,7 @@ class OrderRepo extends GetxService {
   }
 
   Future<Response> getCancelReasons() async {
-    return await apiClient.getData('${AppConstants.orderCancellationUri}?offset=1&limit=30&type=store');
+    return await apiClient.getData(
+        '${AppConstants.orderCancellationUri}?offset=1&limit=30&type=store');
   }
-
 }

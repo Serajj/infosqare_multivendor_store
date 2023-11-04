@@ -1,6 +1,6 @@
-import 'package:sixam_mart_store/data/api/api_client.dart';
-import 'package:sixam_mart_store/data/model/response/item_model.dart';
-import 'package:sixam_mart_store/util/app_constants.dart';
+import 'package:connectuz_store/data/api/api_client.dart';
+import 'package:connectuz_store/data/model/response/item_model.dart';
+import 'package:connectuz_store/util/app_constants.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 
 class AddonRepo {
@@ -22,5 +22,4 @@ class AddonRepo {
   Future<Response> deleteAddon(int? addonID) {
     return apiClient.deleteData('${AppConstants.deleteAddonUri}?id=$addonID');
   }
-
 }

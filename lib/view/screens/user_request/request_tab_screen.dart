@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart_store/view/screens/user_request/follow_button.dart';
+import 'package:connectuz_store/view/screens/user_request/follow_button.dart';
 
 import '../../../controller/customer_list_controller.dart';
 

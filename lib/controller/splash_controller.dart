@@ -1,7 +1,7 @@
-import 'package:sixam_mart_store/controller/auth_controller.dart';
-import 'package:sixam_mart_store/data/api/api_checker.dart';
-import 'package:sixam_mart_store/data/model/response/config_model.dart';
-import 'package:sixam_mart_store/data/repository/splash_repo.dart';
+import 'package:connectuz_store/controller/auth_controller.dart';
+import 'package:connectuz_store/data/api/api_checker.dart';
+import 'package:connectuz_store/data/model/response/config_model.dart';
+import 'package:connectuz_store/data/repository/splash_repo.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
@@ -27,11 +27,11 @@ class SplashController extends GetxController implements GetxService {
   Future<bool> getConfigData() async {
     Response response = await splashRepo.getConfigData();
     bool isSuccess = false;
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _data = response.body;
       _configModel = ConfigModel.fromJson(response.body);
       isSuccess = true;
-    }else {
+    } else {
       ApiChecker.checkApi(response);
       isSuccess = false;
     }
@@ -58,14 +58,16 @@ class SplashController extends GetxController implements GetxService {
   bool isRestaurantClosed() {
     DateTime open = DateFormat('hh:mm').parse('');
     DateTime close = DateFormat('hh:mm').parse('');
-    DateTime openTime = DateTime(_currentTime.year, _currentTime.month, _currentTime.day, open.hour, open.minute);
-    DateTime closeTime = DateTime(_currentTime.year, _currentTime.month, _currentTime.day, close.hour, close.minute);
-    if(closeTime.isBefore(openTime)) {
+    DateTime openTime = DateTime(_currentTime.year, _currentTime.month,
+        _currentTime.day, open.hour, open.minute);
+    DateTime closeTime = DateTime(_currentTime.year, _currentTime.month,
+        _currentTime.day, close.hour, close.minute);
+    if (closeTime.isBefore(openTime)) {
       closeTime = closeTime.add(const Duration(days: 1));
     }
-    if(_currentTime.isAfter(openTime) && _currentTime.isBefore(closeTime)) {
+    if (_currentTime.isAfter(openTime) && _currentTime.isBefore(closeTime)) {
       return false;
-    }else {
+    } else {
       return true;
     }
   }
@@ -77,27 +79,40 @@ class SplashController extends GetxController implements GetxService {
   Future<void> setModule(int? moduleID, String? moduleType) async {
     _moduleID = moduleID;
     _moduleType = moduleType;
-    if(moduleType != null) {
-      _configModel!.moduleConfig!.module = Module.fromJson(_data!['module_config'][moduleType]);
+    if (moduleType != null) {
+      _configModel!.moduleConfig!.module =
+          Module.fromJson(_data!['module_config'][moduleType]);
     }
     update();
   }
 
   Module getModuleConfig(String? moduleType) {
     Module module = Module.fromJson(_data!['module_config'][moduleType]);
-    if(moduleType == 'food') {
+    if (moduleType == 'food') {
       module.newVariation = true;
-    }else {
+    } else {
       module.newVariation = false;
     }
     return module;
   }
 
   Module getStoreModuleConfig() {
-    Module module = Module.fromJson(_data!['module_config'][Get.find<AuthController>().profileModel!.stores!.first.module!.moduleType]);
-    if(Get.find<AuthController>().profileModel!.stores!.first.module!.moduleType == 'food') {
+    Module module = Module.fromJson(_data!['module_config'][
+        Get.find<AuthController>()
+            .profileModel!
+            .stores!
+            .first
+            .module!
+            .moduleType]);
+    if (Get.find<AuthController>()
+            .profileModel!
+            .stores!
+            .first
+            .module!
+            .moduleType ==
+        'food') {
       module.newVariation = true;
-    }else {
+    } else {
       module.newVariation = false;
     }
     return module;
@@ -107,9 +122,11 @@ class SplashController extends GetxController implements GetxService {
     _htmlText = null;
     Response response = await splashRepo.getHtmlText(isPrivacyPolicy);
     if (response.statusCode == 200) {
-      if(response.body != null && response.body.isNotEmpty && response.body is String) {
+      if (response.body != null &&
+          response.body.isNotEmpty &&
+          response.body is String) {
         _htmlText = response.body.replaceAll('href=', 'target="_blank" href=');
-      }else {
+      } else {
         _htmlText = '';
       }
     } else {
@@ -117,5 +134,4 @@ class SplashController extends GetxController implements GetxService {
     }
     update();
   }
-
 }

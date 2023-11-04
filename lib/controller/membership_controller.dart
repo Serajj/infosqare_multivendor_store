@@ -4,7 +4,6 @@ import '../data/model/response/manual_payment.dart';
 import '../data/model/response/membership_model.dart';
 import '../data/repository/membership_repo.dart';
 
-
 class MembershipController extends GetxController implements GetxService {
   final MembershipRepo membershipRepo;
   MembershipController({required this.membershipRepo});

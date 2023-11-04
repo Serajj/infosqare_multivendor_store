@@ -1,4 +1,4 @@
-import 'package:sixam_mart_store/data/model/response/item_model.dart';
+import 'package:connectuz_store/data/model/response/item_model.dart';
 
 class CartModel {
   double? price;
@@ -11,8 +11,16 @@ class CartModel {
   bool? isCampaign;
   Item? item;
 
-  CartModel({this.price, this.discountedPrice, this.variation, this.discountAmount, this.quantity,
-    this.addOnIds, this.addOns, this.isCampaign, this.item});
+  CartModel(
+      {this.price,
+      this.discountedPrice,
+      this.variation,
+      this.discountAmount,
+      this.quantity,
+      this.addOnIds,
+      this.addOns,
+      this.isCampaign,
+      this.item});
 
   CartModel.fromJson(Map<String, dynamic> json) {
     price = json['price'].toDouble();

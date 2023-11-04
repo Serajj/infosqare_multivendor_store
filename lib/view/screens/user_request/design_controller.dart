@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart_store/view/screens/user_request/design_model.dart';
+import 'package:connectuz_store/view/screens/user_request/design_model.dart';
 
 class FollowController extends GetxController {
   final ValueNotifier<List<User>> _usersNotifier = ValueNotifier([]);

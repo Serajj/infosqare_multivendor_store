@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:sixam_mart_store/controller/splash_controller.dart';
+import 'package:connectuz_store/controller/splash_controller.dart';
 
 class ItemModel {
   int? _totalSize;
@@ -81,43 +81,43 @@ class Item {
   int? recommendedStatus;
   int? organicStatus;
 
-  Item(
-      {this.id,
-        this.name,
-        this.description,
-        this.image,
-        this.images,
-        this.categoryId,
-        this.categoryIds,
-        this.variations,
-        this.foodVariations,
-        this.addOns,
-        this.attributes,
-        this.choiceOptions,
-        this.price,
-        this.tax,
-        this.discount,
-        this.discountType,
-        this.availableTimeStarts,
-        this.availableTimeEnds,
-        this.setMenu,
-        this.status,
-        this.storeId,
-        this.createdAt,
-        this.updatedAt,
-        this.storeName,
-        this.storeDiscount,
-        this.scheduleOrder,
-        this.avgRating,
-        this.ratingCount,
-        this.veg,
-        this.unitType,
-        this.stock,
-        this.translations,
-        this.tags,
-        this.recommendedStatus,
-        this.organicStatus,
-      });
+  Item({
+    this.id,
+    this.name,
+    this.description,
+    this.image,
+    this.images,
+    this.categoryId,
+    this.categoryIds,
+    this.variations,
+    this.foodVariations,
+    this.addOns,
+    this.attributes,
+    this.choiceOptions,
+    this.price,
+    this.tax,
+    this.discount,
+    this.discountType,
+    this.availableTimeStarts,
+    this.availableTimeEnds,
+    this.setMenu,
+    this.status,
+    this.storeId,
+    this.createdAt,
+    this.updatedAt,
+    this.storeName,
+    this.storeDiscount,
+    this.scheduleOrder,
+    this.avgRating,
+    this.ratingCount,
+    this.veg,
+    this.unitType,
+    this.stock,
+    this.translations,
+    this.tags,
+    this.recommendedStatus,
+    this.organicStatus,
+  });
 
   Item.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -132,12 +132,14 @@ class Item {
         categoryIds!.add(CategoryIds.fromJson(v));
       });
     }
-    if(Get.find<SplashController>().getStoreModuleConfig().newVariation! && json['food_variations'] != null && json['food_variations'] is !String) {
+    if (Get.find<SplashController>().getStoreModuleConfig().newVariation! &&
+        json['food_variations'] != null &&
+        json['food_variations'] is! String) {
       foodVariations = [];
       json['food_variations'].forEach((v) {
         foodVariations!.add(FoodVariation.fromJson(v));
       });
-    }else if(json['variations'] != null) {
+    } else if (json['variations'] != null) {
       variations = [];
       json['variations'].forEach((v) {
         variations!.add(Variation.fromJson(v));
@@ -149,9 +151,10 @@ class Item {
         addOns!.add(AddOns.fromJson(v));
       });
     }
-    if(json['attributes'] != null) {
+    if (json['attributes'] != null) {
       attributes = [];
-      json['attributes'].forEach((attr) => attributes!.add(int.parse(attr.toString())));
+      json['attributes']
+          .forEach((attr) => attributes!.add(int.parse(attr.toString())));
     }
     if (json['choice_options'] != null) {
       choiceOptions = [];
@@ -190,7 +193,9 @@ class Item {
         tags!.add(Tag.fromJson(v));
       });
     }
-    recommendedStatus = json['recommended'] != null ? int.parse(json['recommended'].toString()) : 0;
+    recommendedStatus = json['recommended'] != null
+        ? int.parse(json['recommended'].toString())
+        : 0;
     organicStatus = json['organic'];
   }
 
@@ -205,9 +210,10 @@ class Item {
     if (categoryIds != null) {
       data['category_ids'] = categoryIds!.map((v) => v.toJson()).toList();
     }
-    if(Get.find<SplashController>().getStoreModuleConfig().newVariation! && foodVariations != null) {
+    if (Get.find<SplashController>().getStoreModuleConfig().newVariation! &&
+        foodVariations != null) {
       data['food_variations'] = foodVariations!.map((v) => v.toJson()).toList();
-    }else if(variations != null) {
+    } else if (variations != null) {
       data['variations'] = variations!.map((v) => v.toJson()).toList();
     }
     if (addOns != null) {
@@ -215,8 +221,7 @@ class Item {
     }
     data['attributes'] = attributes;
     if (choiceOptions != null) {
-      data['choice_options'] =
-          choiceOptions!.map((v) => v.toJson()).toList();
+      data['choice_options'] = choiceOptions!.map((v) => v.toJson()).toList();
     }
     data['price'] = price;
     data['tax'] = tax;
@@ -377,7 +382,13 @@ class FoodVariation {
   String? required;
   List<VariationValue>? variationValues;
 
-  FoodVariation({this.name, this.type, this.min, this.max, this.required, this.variationValues});
+  FoodVariation(
+      {this.name,
+      this.type,
+      this.min,
+      this.max,
+      this.required,
+      this.variationValues});
 
   FoodVariation.fromJson(Map<String, dynamic> json) {
     name = json['name'];

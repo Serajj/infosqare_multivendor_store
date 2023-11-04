@@ -1,7 +1,7 @@
-import 'package:sixam_mart_store/data/api/api_checker.dart';
-import 'package:sixam_mart_store/data/model/response/campaign_model.dart';
-import 'package:sixam_mart_store/data/repository/campaign_repo.dart';
-import 'package:sixam_mart_store/view/base/custom_snackbar.dart';
+import 'package:connectuz_store/data/api/api_checker.dart';
+import 'package:connectuz_store/data/model/response/campaign_model.dart';
+import 'package:connectuz_store/data/repository/campaign_repo.dart';
+import 'package:connectuz_store/view/base/custom_snackbar.dart';
 import 'package:get/get.dart';
 
 class CampaignController extends GetxController implements GetxService {
@@ -17,14 +17,14 @@ class CampaignController extends GetxController implements GetxService {
 
   Future<void> getCampaignList() async {
     Response response = await campaignRepo.getCampaignList();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _campaignList = [];
       _allCampaignList = [];
       response.body.forEach((campaign) {
         _campaignList!.add(CampaignModel.fromJson(campaign));
         _allCampaignList.add(CampaignModel.fromJson(campaign));
       });
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
@@ -32,13 +32,13 @@ class CampaignController extends GetxController implements GetxService {
 
   void filterCampaign(String status) {
     _campaignList = [];
-    if(status == 'joined') {
+    if (status == 'joined') {
       for (var campaign in _allCampaignList) {
-        if(campaign.isJoined!) {
+        if (campaign.isJoined!) {
           _campaignList!.add(campaign);
         }
       }
-    }else {
+    } else {
       _campaignList!.addAll(_allCampaignList);
     }
     update();
@@ -49,13 +49,13 @@ class CampaignController extends GetxController implements GetxService {
     update();
     Response response = await campaignRepo.joinCampaign(campaignID);
     Get.back();
-    if(response.statusCode == 200) {
-      if(fromDetails) {
+    if (response.statusCode == 200) {
+      if (fromDetails) {
         Get.back();
       }
       showCustomSnackBar('successfully_joined'.tr, isError: false);
       getCampaignList();
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     _isLoading = false;
@@ -67,17 +67,16 @@ class CampaignController extends GetxController implements GetxService {
     update();
     Response response = await campaignRepo.leaveCampaign(campaignID);
     Get.back();
-    if(response.statusCode == 200) {
-      if(fromDetails) {
+    if (response.statusCode == 200) {
+      if (fromDetails) {
         Get.back();
       }
       showCustomSnackBar('successfully_leave'.tr, isError: false);
       getCampaignList();
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     _isLoading = false;
     update();
   }
-
 }

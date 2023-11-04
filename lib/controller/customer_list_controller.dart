@@ -1,7 +1,7 @@
-import 'package:sixam_mart_store/data/api/api_checker.dart';
-import 'package:sixam_mart_store/data/api/api_client.dart';
-import 'package:sixam_mart_store/data/model/response/customer_list_model.dart';
-import 'package:sixam_mart_store/data/repository/customer_list_repo.dart';
+import 'package:connectuz_store/data/api/api_checker.dart';
+import 'package:connectuz_store/data/api/api_client.dart';
+import 'package:connectuz_store/data/model/response/customer_list_model.dart';
+import 'package:connectuz_store/data/repository/customer_list_repo.dart';
 import 'package:get/get.dart';
 
 import '../data/model/response/follower_model.dart';

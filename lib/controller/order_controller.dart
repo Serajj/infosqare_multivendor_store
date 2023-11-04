@@ -1,14 +1,14 @@
-import 'package:sixam_mart_store/controller/auth_controller.dart';
-import 'package:sixam_mart_store/controller/splash_controller.dart';
-import 'package:sixam_mart_store/data/api/api_checker.dart';
-import 'package:sixam_mart_store/data/model/body/update_status_body.dart';
-import 'package:sixam_mart_store/data/model/response/item_model.dart';
-import 'package:sixam_mart_store/data/model/response/order_cancellation_body.dart';
-import 'package:sixam_mart_store/data/model/response/order_details_model.dart';
-import 'package:sixam_mart_store/data/model/response/order_model.dart';
-import 'package:sixam_mart_store/data/model/response/running_order_model.dart';
-import 'package:sixam_mart_store/data/repository/order_repo.dart';
-import 'package:sixam_mart_store/view/base/custom_snackbar.dart';
+import 'package:connectuz_store/controller/auth_controller.dart';
+import 'package:connectuz_store/controller/splash_controller.dart';
+import 'package:connectuz_store/data/api/api_checker.dart';
+import 'package:connectuz_store/data/model/body/update_status_body.dart';
+import 'package:connectuz_store/data/model/response/item_model.dart';
+import 'package:connectuz_store/data/model/response/order_cancellation_body.dart';
+import 'package:connectuz_store/data/model/response/order_details_model.dart';
+import 'package:connectuz_store/data/model/response/order_model.dart';
+import 'package:connectuz_store/data/model/response/running_order_model.dart';
+import 'package:connectuz_store/data/repository/order_repo.dart';
+import 'package:connectuz_store/view/base/custom_snackbar.dart';
 import 'package:get/get.dart';
 
 class OrderController extends GetxController implements GetxService {
@@ -55,46 +55,45 @@ class OrderController extends GetxController implements GetxService {
   List<Data>? get orderCancelReasons => _orderCancelReasons;
   String? get cancelReason => _cancelReason;
 
-  void setOrderCancelReason(String? reason){
+  void setOrderCancelReason(String? reason) {
     _cancelReason = reason;
     update();
   }
 
-  Future<void> getOrderCancelReasons()async {
+  Future<void> getOrderCancelReasons() async {
     Response response = await orderRepo.getCancelReasons();
     if (response.statusCode == 200) {
-      OrderCancellationBody orderCancellationBody = OrderCancellationBody.fromJson(response.body);
+      OrderCancellationBody orderCancellationBody =
+          OrderCancellationBody.fromJson(response.body);
       _orderCancelReasons = [];
       for (var element in orderCancellationBody.data!) {
         _orderCancelReasons!.add(element);
       }
-
-    }else{
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
   }
 
-  void clearPreviousData(){
+  void clearPreviousData() {
     _orderDetailsModel = null;
     _orderModel = null;
   }
 
-  Future<void> getOrderDetails(int orderId) async{
+  Future<void> getOrderDetails(int orderId) async {
     Response response = await orderRepo.getOrderWithId(orderId);
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _orderModel = OrderModel.fromJson(response.body);
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
-
   }
 
   Future<void> getAllOrders() async {
     _historyIndex = 0;
     Response response = await orderRepo.getAllOrders();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _allOrderList = [];
       _orderList = [];
       response.body.forEach((order) {
@@ -102,7 +101,7 @@ class OrderController extends GetxController implements GetxService {
         _allOrderList.add(orderModel);
         _orderList!.add(orderModel);
       });
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
@@ -110,13 +109,20 @@ class OrderController extends GetxController implements GetxService {
 
   Future<void> getCurrentOrders() async {
     Response response = await orderRepo.getCurrentOrders();
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       _runningOrderList = [];
       _runningOrders = [
         RunningOrderModel(status: 'pending', orderList: []),
         RunningOrderModel(status: 'confirmed', orderList: []),
-        RunningOrderModel(status: Get.find<SplashController>().configModel!.moduleConfig!.module!.showRestaurantText!
-            ? 'cooking' : 'processing', orderList: []),
+        RunningOrderModel(
+            status: Get.find<SplashController>()
+                    .configModel!
+                    .moduleConfig!
+                    .module!
+                    .showRestaurantText!
+                ? 'cooking'
+                : 'processing',
+            orderList: []),
         RunningOrderModel(status: 'ready_for_handover', orderList: []),
         RunningOrderModel(status: 'food_on_the_way', orderList: []),
       ];
@@ -126,7 +132,7 @@ class OrderController extends GetxController implements GetxService {
       });
       _campaignOnly = true;
       toggleCampaignOnly();
-    }else {
+    } else {
       ApiChecker.checkApi(response);
     }
     update();
@@ -147,22 +153,24 @@ class OrderController extends GetxController implements GetxService {
   // }
 
   Future<void> getPaginatedOrders(int offset, bool reload) async {
-    if(offset == 1 || reload) {
+    if (offset == 1 || reload) {
       _offsetList = [];
       _offset = 1;
-      if(reload) {
+      if (reload) {
         _historyOrderList = null;
       }
       update();
     }
     if (!_offsetList.contains(offset)) {
       _offsetList.add(offset);
-      Response response = await orderRepo.getPaginatedOrderList(offset, _statusList[_historyIndex]);
+      Response response = await orderRepo.getPaginatedOrderList(
+          offset, _statusList[_historyIndex]);
       if (response.statusCode == 200) {
         if (offset == 1) {
           _historyOrderList = [];
         }
-        _historyOrderList!.addAll(PaginatedOrderModel.fromJson(response.body).orders!);
+        _historyOrderList!
+            .addAll(PaginatedOrderModel.fromJson(response.body).orders!);
         _pageSize = PaginatedOrderModel.fromJson(response.body).totalSize;
         _paginate = false;
         update();
@@ -170,7 +178,7 @@ class OrderController extends GetxController implements GetxService {
         ApiChecker.checkApi(response);
       }
     } else {
-      if(_paginate) {
+      if (_paginate) {
         _paginate = false;
         update();
       }
@@ -191,11 +199,13 @@ class OrderController extends GetxController implements GetxService {
     getPaginatedOrders(1, true);
   }
 
-  Future<bool> updateOrderStatus(int? orderID, String status, {bool back = false, String? reason, String? processingTime}) async {
+  Future<bool> updateOrderStatus(int? orderID, String status,
+      {bool back = false, String? reason, String? processingTime}) async {
     _isLoading = true;
     update();
     UpdateStatusBody updateStatusBody = UpdateStatusBody(
-      orderId: orderID, status: status,
+      orderId: orderID,
+      status: status,
       otp: status == 'delivered' ? _otp : null,
       processingTime: processingTime,
       reason: reason,
@@ -203,15 +213,15 @@ class OrderController extends GetxController implements GetxService {
     Response response = await orderRepo.updateOrderStatus(updateStatusBody);
     Get.back();
     bool isSuccess;
-    if(response.statusCode == 200) {
-      if(back) {
+    if (response.statusCode == 200) {
+      if (back) {
         Get.back();
       }
       getCurrentOrders();
       Get.find<AuthController>().getProfile();
       showCustomSnackBar(response.body['message'], isError: false);
       isSuccess = true;
-    }else {
+    } else {
       ApiChecker.checkApi(response);
       isSuccess = false;
     }
@@ -220,27 +230,28 @@ class OrderController extends GetxController implements GetxService {
     return isSuccess;
   }
 
-  Future<bool> updateOrderAmount(int orderID, String amount, bool isItemPrice) async {
+  Future<bool> updateOrderAmount(
+      int orderID, String amount, bool isItemPrice) async {
     _isLoading = true;
     update();
-    Map<String, String> body = <String,String>{};
-    if(isItemPrice){
+    Map<String, String> body = <String, String>{};
+    if (isItemPrice) {
       body['_method'] = 'PUT';
       body['order_id'] = orderID.toString();
       body['order_amount'] = amount;
-    }else{
+    } else {
       body['_method'] = 'PUT';
       body['order_id'] = orderID.toString();
       body['discount_amount'] = amount;
     }
     Response response = await orderRepo.updateOrderAmount(body);
     bool isSuccess;
-    if(response.statusCode == 200) {
+    if (response.statusCode == 200) {
       await getOrderDetails(orderID);
       Get.back();
       showCustomSnackBar(response.body['message'], isError: false);
       isSuccess = true;
-    }else {
+    } else {
       ApiChecker.checkApi(response);
       isSuccess = false;
     }
@@ -252,16 +263,17 @@ class OrderController extends GetxController implements GetxService {
   Future<void> getOrderItemsDetails(int orderID) async {
     _orderDetailsModel = null;
 
-    if(_orderModel != null && !_orderModel!.prescriptionOrder!){
+    if (_orderModel != null && !_orderModel!.prescriptionOrder!) {
       Response response = await orderRepo.getOrderDetails(orderID);
-      if(response.statusCode == 200) {
+      if (response.statusCode == 200) {
         _orderDetailsModel = [];
-        response.body.forEach((orderDetails) => _orderDetailsModel!.add(OrderDetailsModel.fromJson(orderDetails)));
-      }else {
+        response.body.forEach((orderDetails) =>
+            _orderDetailsModel!.add(OrderDetailsModel.fromJson(orderDetails)));
+      } else {
         ApiChecker.checkApi(response);
       }
       update();
-    }else{
+    } else {
       _orderDetailsModel = [];
     }
   }
@@ -279,18 +291,29 @@ class OrderController extends GetxController implements GetxService {
     _runningOrders![3].orderList = [];
     _runningOrders![4].orderList = [];
     for (var order in _runningOrderList!) {
-      if(order.orderStatus == 'pending' && (Get.find<SplashController>().configModel!.orderConfirmationModel != 'deliveryman'
-          || order.orderType == 'take_away' || Get.find<AuthController>().profileModel!.stores![0].selfDeliverySystem == 1)
-          && (_campaignOnly ? order.itemCampaign == 1 : true)) {
+      if (order.orderStatus == 'pending' &&
+          (Get.find<SplashController>().configModel!.orderConfirmationModel !=
+                  'deliveryman' ||
+              order.orderType == 'take_away' ||
+              Get.find<AuthController>()
+                      .profileModel!
+                      .stores![0]
+                      .selfDeliverySystem ==
+                  1) &&
+          (_campaignOnly ? order.itemCampaign == 1 : true)) {
         _runningOrders![0].orderList.add(order);
-      }else if((order.orderStatus == 'confirmed' || (order.orderStatus == 'accepted' && order.confirmed != null))
-          && (_campaignOnly ? order.itemCampaign == 1 : true)) {
+      } else if ((order.orderStatus == 'confirmed' ||
+              (order.orderStatus == 'accepted' && order.confirmed != null)) &&
+          (_campaignOnly ? order.itemCampaign == 1 : true)) {
         _runningOrders![1].orderList.add(order);
-      }else if(order.orderStatus == 'processing' && (_campaignOnly ? order.itemCampaign == 1 : true)) {
+      } else if (order.orderStatus == 'processing' &&
+          (_campaignOnly ? order.itemCampaign == 1 : true)) {
         _runningOrders![2].orderList.add(order);
-      }else if(order.orderStatus == 'handover' && (_campaignOnly ? order.itemCampaign == 1 : true)) {
+      } else if (order.orderStatus == 'handover' &&
+          (_campaignOnly ? order.itemCampaign == 1 : true)) {
         _runningOrders![3].orderList.add(order);
-      }else if(order.orderStatus == 'picked_up' && (_campaignOnly ? order.itemCampaign == 1 : true)) {
+      } else if (order.orderStatus == 'picked_up' &&
+          (_campaignOnly ? order.itemCampaign == 1 : true)) {
         _runningOrders![4].orderList.add(order);
       }
     }
@@ -299,7 +322,7 @@ class OrderController extends GetxController implements GetxService {
 
   void setOtp(String otp) {
     _otp = otp;
-    if(otp != '') {
+    if (otp != '') {
       update();
     }
   }
@@ -322,24 +345,28 @@ class OrderController extends GetxController implements GetxService {
 
   String getVariationText(OrderDetailsModel details) {
     String variationText = '';
-    if(details.variation!.isNotEmpty) {
-      if(details.variation!.isNotEmpty) {
+    if (details.variation!.isNotEmpty) {
+      if (details.variation!.isNotEmpty) {
         List<String> variationTypes = details.variation![0].type!.split('-');
-        if(variationTypes.length == details.itemDetails!.choiceOptions!.length) {
+        if (variationTypes.length ==
+            details.itemDetails!.choiceOptions!.length) {
           int index = 0;
           for (var choice in details.itemDetails!.choiceOptions!) {
-            variationText = '$variationText${(index == 0) ? '' : ',  '}${choice.title} - ${variationTypes[index]}';
+            variationText =
+                '$variationText${(index == 0) ? '' : ',  '}${choice.title} - ${variationTypes[index]}';
             index = index + 1;
           }
-        }else {
+        } else {
           variationText = details.itemDetails!.variations![0].type!;
         }
       }
-    }else if(details.foodVariation!.isNotEmpty) {
-      for(FoodVariation variation in details.foodVariation!) {
-        variationText += '${variationText.isNotEmpty ? ', ' : ''}${variation.name} (';
-        for(VariationValue value in variation.variationValues!) {
-          variationText += '${variationText.endsWith('(') ? '' : ', '}${value.level}';
+    } else if (details.foodVariation!.isNotEmpty) {
+      for (FoodVariation variation in details.foodVariation!) {
+        variationText +=
+            '${variationText.isNotEmpty ? ', ' : ''}${variation.name} (';
+        for (VariationValue value in variation.variationValues!) {
+          variationText +=
+              '${variationText.endsWith('(') ? '' : ', '}${value.level}';
         }
         variationText += ')';
       }
@@ -350,9 +377,9 @@ class OrderController extends GetxController implements GetxService {
   String getAddOnText(OrderDetailsModel details) {
     String addOnText = '';
     for (var addOn in details.addOns!) {
-      addOnText = '$addOnText${(addOnText.isEmpty) ? '' : ',  '}${addOn.name} X ${addOn.quantity} = ${addOn.price! * addOn.quantity!}';
+      addOnText =
+          '$addOnText${(addOnText.isEmpty) ? '' : ',  '}${addOn.name} X ${addOn.quantity} = ${addOn.price! * addOn.quantity!}';
     }
     return addOnText;
   }
-
 }

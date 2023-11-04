@@ -1,4 +1,4 @@
-package com.sixamtech.sixam_mart_store_app
+package com.connectuz.store
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sixam_mart_store/view/base/custom_app_bar.dart';
-import 'package:sixam_mart_store/view/screens/user_request/plan_details.dart';
+import 'package:connectuz_store/view/base/custom_app_bar.dart';
+import 'package:connectuz_store/view/screens/user_request/plan_details.dart';
 
 class SubscriptionPlanScreen extends StatefulWidget {
   const SubscriptionPlanScreen({Key? key}) : super(key: key);

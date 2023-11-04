@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:sixam_mart_store/data/api/api_client.dart';
-import 'package:sixam_mart_store/util/app_constants.dart';
+import 'package:connectuz_store/data/api/api_client.dart';
+import 'package:connectuz_store/util/app_constants.dart';
 
 class CustomerListRepo {
   final ApiClient apiClient;

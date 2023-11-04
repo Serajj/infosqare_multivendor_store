@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:sixam_mart_store/data/model/response/user_follow_model.dart';
-import 'package:sixam_mart_store/view/base/custom_app_bar.dart';
+import 'package:connectuz_store/data/model/response/user_follow_model.dart';
+import 'package:connectuz_store/view/base/custom_app_bar.dart';
 
 import '../../../controller/customer_list_controller.dart';
 import 'design_controller.dart';

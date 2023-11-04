@@ -1,12 +1,12 @@
 import 'dart:async';
-import 'package:sixam_mart_store/util/dimensions.dart';
-import 'package:sixam_mart_store/util/images.dart';
-import 'package:sixam_mart_store/view/screens/bank/wallet_screen.dart';
-import 'package:sixam_mart_store/view/screens/dashboard/widget/bottom_nav_item.dart';
-import 'package:sixam_mart_store/view/screens/home/home_screen.dart';
-import 'package:sixam_mart_store/view/screens/menu/menu_screen.dart';
-import 'package:sixam_mart_store/view/screens/order/order_history_screen.dart';
-import 'package:sixam_mart_store/view/screens/store/store_screen.dart';
+import 'package:connectuz_store/util/dimensions.dart';
+import 'package:connectuz_store/util/images.dart';
+import 'package:connectuz_store/view/screens/bank/wallet_screen.dart';
+import 'package:connectuz_store/view/screens/dashboard/widget/bottom_nav_item.dart';
+import 'package:connectuz_store/view/screens/home/home_screen.dart';
+import 'package:connectuz_store/view/screens/menu/menu_screen.dart';
+import 'package:connectuz_store/view/screens/order/order_history_screen.dart';
+import 'package:connectuz_store/view/screens/store/store_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
@@ -79,7 +79,6 @@ class DashboardScreenState extends State<DashboardScreen> {
     //     _orderCount = Get.find<OrderController>().runningOrders.length;
     //   }
     // });
-
   }
 
   // @override
@@ -92,46 +91,70 @@ class DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if(_pageIndex != 0) {
+        if (_pageIndex != 0) {
           _setPage(0);
           return false;
-        }else {
+        } else {
           return true;
         }
       },
       child: Scaffold(
-
-        floatingActionButton: !GetPlatform.isMobile ? null : FloatingActionButton(
-          elevation: 5,
-          backgroundColor: _pageIndex == 2 ? Theme.of(context).primaryColor : Theme.of(context).cardColor,
-          onPressed: () {
-            _setPage(2);
-          },
-          child: Image.asset(
-            Images.restaurant, height: 20, width: 20,
-            color: _pageIndex == 2 ? Theme.of(context).cardColor : Theme.of(context).disabledColor,
-          ),
-        ),
-        floatingActionButtonLocation: !GetPlatform.isMobile ? null : FloatingActionButtonLocation.centerDocked,
-
-        bottomNavigationBar: !GetPlatform.isMobile ? const SizedBox() : BottomAppBar(
-          elevation: 5,
-          notchMargin: 5,
-          shape: const CircularNotchedRectangle(),
-
-          child: Padding(
-            padding: const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
-            child: Row(children: [
-              BottomNavItem(iconData: Icons.home, isSelected: _pageIndex == 0, onTap: () => _setPage(0)),
-              BottomNavItem(iconData: Icons.shopping_bag, isSelected: _pageIndex == 1, onTap: () => _setPage(1)),
-              const Expanded(child: SizedBox()),
-              BottomNavItem(iconData: Icons.monetization_on, isSelected: _pageIndex == 3, onTap: () => _setPage(3)),
-              BottomNavItem(iconData: Icons.menu, isSelected: _pageIndex == 4, onTap: () {
-                Get.bottomSheet(const MenuScreen(), backgroundColor: Colors.transparent, isScrollControlled: true);
-              }),
-            ]),
-          ),
-        ),
+        floatingActionButton: !GetPlatform.isMobile
+            ? null
+            : FloatingActionButton(
+                elevation: 5,
+                backgroundColor: _pageIndex == 2
+                    ? Theme.of(context).primaryColor
+                    : Theme.of(context).cardColor,
+                onPressed: () {
+                  _setPage(2);
+                },
+                child: Image.asset(
+                  Images.restaurant,
+                  height: 20,
+                  width: 20,
+                  color: _pageIndex == 2
+                      ? Theme.of(context).cardColor
+                      : Theme.of(context).disabledColor,
+                ),
+              ),
+        floatingActionButtonLocation: !GetPlatform.isMobile
+            ? null
+            : FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: !GetPlatform.isMobile
+            ? const SizedBox()
+            : BottomAppBar(
+                elevation: 5,
+                notchMargin: 5,
+                shape: const CircularNotchedRectangle(),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.all(Dimensions.paddingSizeExtraSmall),
+                  child: Row(children: [
+                    BottomNavItem(
+                        iconData: Icons.home,
+                        isSelected: _pageIndex == 0,
+                        onTap: () => _setPage(0)),
+                    BottomNavItem(
+                        iconData: Icons.shopping_bag,
+                        isSelected: _pageIndex == 1,
+                        onTap: () => _setPage(1)),
+                    const Expanded(child: SizedBox()),
+                    BottomNavItem(
+                        iconData: Icons.monetization_on,
+                        isSelected: _pageIndex == 3,
+                        onTap: () => _setPage(3)),
+                    BottomNavItem(
+                        iconData: Icons.menu,
+                        isSelected: _pageIndex == 4,
+                        onTap: () {
+                          Get.bottomSheet(const MenuScreen(),
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true);
+                        }),
+                  ]),
+                ),
+              ),
         body: PageView.builder(
           controller: _pageController,
           itemCount: _screens.length,

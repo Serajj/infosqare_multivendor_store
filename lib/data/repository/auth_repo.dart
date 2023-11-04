@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:sixam_mart_store/data/api/api_client.dart';
-import 'package:sixam_mart_store/data/model/body/store_body.dart';
-import 'package:sixam_mart_store/data/model/response/profile_model.dart';
-import 'package:sixam_mart_store/util/app_constants.dart';
+import 'package:connectuz_store/data/api/api_client.dart';
+import 'package:connectuz_store/data/model/body/store_body.dart';
+import 'package:connectuz_store/data/model/response/profile_model.dart';
+import 'package:connectuz_store/util/app_constants.dart';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';

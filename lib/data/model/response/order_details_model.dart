@@ -1,4 +1,4 @@
-import 'package:sixam_mart_store/data/model/response/item_model.dart';
+import 'package:connectuz_store/data/model/response/item_model.dart';
 
 class OrderDetailsModel {
   int? id;
@@ -21,37 +21,39 @@ class OrderDetailsModel {
 
   OrderDetailsModel(
       {this.id,
-        this.itemId,
-        this.orderId,
-        this.price,
-        this.itemDetails,
-        this.variation,
-        this.foodVariation,
-        this.addOns,
-        this.discountOnItem,
-        this.discountType,
-        this.quantity,
-        this.taxAmount,
-        this.variant,
-        this.createdAt,
-        this.updatedAt,
-        this.itemCampaignId,
-        this.totalAddOnPrice});
+      this.itemId,
+      this.orderId,
+      this.price,
+      this.itemDetails,
+      this.variation,
+      this.foodVariation,
+      this.addOns,
+      this.discountOnItem,
+      this.discountType,
+      this.quantity,
+      this.taxAmount,
+      this.variant,
+      this.createdAt,
+      this.updatedAt,
+      this.itemCampaignId,
+      this.totalAddOnPrice});
 
   OrderDetailsModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     itemId = json['item_id'];
     orderId = json['order_id'];
     price = json['price'] != null ? json['price'].toDouble() : 0.0;
-    itemDetails = json['item_details'] != null ? Item.fromJson(json['item_details']) : null;
+    itemDetails = json['item_details'] != null
+        ? Item.fromJson(json['item_details'])
+        : null;
     variation = [];
     foodVariation = [];
     if (json['variation'] != null && json['variation'].isNotEmpty) {
-      if(json['variation'][0]['values'] != null) {
+      if (json['variation'][0]['values'] != null) {
         json['variation'].forEach((v) {
           foodVariation!.add(FoodVariation.fromJson(v));
         });
-      }else {
+      } else {
         json['variation'].forEach((v) {
           variation!.add(Variation.fromJson(v));
         });
@@ -85,7 +87,7 @@ class OrderDetailsModel {
     }
     if (variation != null) {
       data['variation'] = variation!.map((v) => v.toJson()).toList();
-    }else if(foodVariation != null) {
+    } else if (foodVariation != null) {
       data['variation'] = foodVariation!.map((v) => v.toJson()).toList();
     }
     if (addOns != null) {

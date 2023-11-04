@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:sixam_mart_store/data/api/api_checker.dart';
-import 'package:sixam_mart_store/data/model/response/cart_model.dart';
-import 'package:sixam_mart_store/data/model/response/item_model.dart';
-import 'package:sixam_mart_store/data/repository/pos_repo.dart';
+import 'package:connectuz_store/data/api/api_checker.dart';
+import 'package:connectuz_store/data/model/response/cart_model.dart';
+import 'package:connectuz_store/data/model/response/item_model.dart';
+import 'package:connectuz_store/data/repository/pos_repo.dart';
 import 'package:get/get.dart';
 
 class PosController extends GetxController implements GetxService {
@@ -29,11 +29,12 @@ class PosController extends GetxController implements GetxService {
 
   Future<List<Item>> searchItem(String searchText) async {
     List<Item> searchProductList = [];
-    if(searchText.isNotEmpty) {
+    if (searchText.isNotEmpty) {
       Response response = await posRepo.searchItemList(searchText);
       if (response.statusCode == 200) {
         searchProductList = [];
-        response.body.forEach((item) => searchProductList.add(Item.fromJson(item)));
+        response.body
+            .forEach((item) => searchProductList.add(Item.fromJson(item)));
       } else {
         ApiChecker.checkApi(response);
       }
@@ -42,10 +43,11 @@ class PosController extends GetxController implements GetxService {
   }
 
   void addToCart(CartModel cartModel, int? index) {
-    if(index != null) {
-      _amount = _amount - (_cartList[index].discountedPrice! * _cartList[index].quantity!);
-      _cartList.replaceRange(index, index+1, [cartModel]);
-    }else {
+    if (index != null) {
+      _amount = _amount -
+          (_cartList[index].discountedPrice! * _cartList[index].quantity!);
+      _cartList.replaceRange(index, index + 1, [cartModel]);
+    } else {
       _cartList.add(cartModel);
     }
     _amount = _amount + (cartModel.discountedPrice! * cartModel.quantity!);
@@ -65,7 +67,8 @@ class PosController extends GetxController implements GetxService {
   }
 
   void removeFromCart(int index) {
-    _amount = _amount - (_cartList[index].discountedPrice! * _cartList[index].quantity!);
+    _amount = _amount -
+        (_cartList[index].discountedPrice! * _cartList[index].quantity!);
     _cartList.removeAt(index);
     update();
   }
@@ -82,12 +85,15 @@ class PosController extends GetxController implements GetxService {
   }
 
   bool isExistInCart(CartModel cartModel, bool isUpdate, int cartIndex) {
-    for(int index=0; index<_cartList.length; index++) {
-      if(_cartList[index].item!.id == cartModel.item!.id && (_cartList[index].variation!.isNotEmpty ? _cartList[index].variation![0].type
-          == cartModel.variation![0].type : true)) {
-        if((isUpdate && index == cartIndex)) {
+    for (int index = 0; index < _cartList.length; index++) {
+      if (_cartList[index].item!.id == cartModel.item!.id &&
+          (_cartList[index].variation!.isNotEmpty
+              ? _cartList[index].variation![0].type ==
+                  cartModel.variation![0].type
+              : true)) {
+        if ((isUpdate && index == cartIndex)) {
           return false;
-        }else {
+        } else {
           return true;
         }
       }
@@ -99,16 +105,17 @@ class PosController extends GetxController implements GetxService {
     _variationIndex = [];
     _addOnQtyList = [];
     _addOnActiveList = [];
-    if(cart != null) {
+    if (cart != null) {
       _quantity = cart.quantity;
       List<String> variationTypes = [];
-      if(cart.variation!.isNotEmpty && cart.variation![0].type != null) {
+      if (cart.variation!.isNotEmpty && cart.variation![0].type != null) {
         variationTypes.addAll(cart.variation![0].type!.split('-'));
       }
       int varIndex = 0;
       for (var choiceOption in product!.choiceOptions!) {
-        for(int index=0; index<choiceOption.options!.length; index++) {
-          if(choiceOption.options![index].trim().replaceAll(' ', '') == variationTypes[varIndex].trim()) {
+        for (int index = 0; index < choiceOption.options!.length; index++) {
+          if (choiceOption.options![index].trim().replaceAll(' ', '') ==
+              variationTypes[varIndex].trim()) {
             _variationIndex!.add(index);
             break;
           }
@@ -120,15 +127,16 @@ class PosController extends GetxController implements GetxService {
         addOnIdList.add(addOnId.id);
       }
       for (var addOn in product.addOns!) {
-        if(addOnIdList.contains(addOn.id)) {
+        if (addOnIdList.contains(addOn.id)) {
           _addOnActiveList.add(true);
-          _addOnQtyList.add(cart.addOnIds![addOnIdList.indexOf(addOn.id)].quantity);
-        }else {
+          _addOnQtyList
+              .add(cart.addOnIds![addOnIdList.indexOf(addOn.id)].quantity);
+        } else {
           _addOnActiveList.add(false);
           _addOnQtyList.add(1);
         }
       }
-    }else {
+    } else {
       _quantity = 1;
       for (var element in product!.choiceOptions!) {
         if (kDebugMode) {
@@ -177,7 +185,7 @@ class PosController extends GetxController implements GetxService {
   void setDiscount(String discount) {
     try {
       _discount = double.parse(discount);
-    }catch(e) {
+    } catch (e) {
       _discount = 0;
     }
     update();
@@ -186,10 +194,9 @@ class PosController extends GetxController implements GetxService {
   void setTax(String tax) {
     try {
       _tax = double.parse(tax);
-    }catch(e) {
+    } catch (e) {
       _tax = 0;
     }
     update();
   }
-
 }

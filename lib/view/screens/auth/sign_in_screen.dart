@@ -1,12 +1,12 @@
-import 'package:sixam_mart_store/controller/auth_controller.dart';
-import 'package:sixam_mart_store/controller/splash_controller.dart';
-import 'package:sixam_mart_store/helper/route_helper.dart';
-import 'package:sixam_mart_store/util/dimensions.dart';
-import 'package:sixam_mart_store/util/images.dart';
-import 'package:sixam_mart_store/util/styles.dart';
-import 'package:sixam_mart_store/view/base/custom_button.dart';
-import 'package:sixam_mart_store/view/base/custom_snackbar.dart';
-import 'package:sixam_mart_store/view/base/custom_text_field.dart';
+import 'package:connectuz_store/controller/auth_controller.dart';
+import 'package:connectuz_store/controller/splash_controller.dart';
+import 'package:connectuz_store/helper/route_helper.dart';
+import 'package:connectuz_store/util/dimensions.dart';
+import 'package:connectuz_store/util/images.dart';
+import 'package:connectuz_store/util/styles.dart';
+import 'package:connectuz_store/view/base/custom_button.dart';
+import 'package:connectuz_store/view/base/custom_snackbar.dart';
+import 'package:connectuz_store/view/base/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -28,18 +28,18 @@ class _SignInScreenState extends State<SignInScreen> {
     super.initState();
     _emailController.text = Get.find<AuthController>().getUserNumber();
     _passwordController.text = Get.find<AuthController>().getUserPassword();
-    if(Get.find<AuthController>().getUserType() == 'employee'){
+    if (Get.find<AuthController>().getUserType() == 'employee') {
       Get.find<AuthController>().changeVendorType(1, isUpdate: false);
-    }else{
+    } else {
       Get.find<AuthController>().changeVendorType(0, isUpdate: false);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      body: SafeArea(child: Center(
+      body: SafeArea(
+          child: Center(
         child: Scrollbar(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -48,15 +48,15 @@ class _SignInScreenState extends State<SignInScreen> {
               child: SizedBox(
                 width: 1170,
                 child: GetBuilder<AuthController>(builder: (authController) {
-
                   return Column(children: [
-
                     Image.asset(Images.logo, width: 200),
                     // SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
                     // Center(child: Text(AppConstants.APP_NAME, style: robotoMedium.copyWith(fontSize: Dimensions.FONT_SIZE_LARGE))),
                     const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
-                    Text('sign_in'.tr.toUpperCase(), style: robotoBold.copyWith(fontSize: Dimensions.fontSizeOverLarge)),
+                    Text('sign_in'.tr.toUpperCase(),
+                        style: robotoBold.copyWith(
+                            fontSize: Dimensions.fontSizeOverLarge)),
                     const SizedBox(height: Dimensions.paddingSizeExtraSmall),
 
                     const SizedBox(height: 50),
@@ -70,15 +70,27 @@ class _SignInScreenState extends State<SignInScreen> {
                             onTap: () => authController.changeVendorType(0),
                             child: Column(children: [
                               Expanded(
-                                child: Center(child: Text(
+                                child: Center(
+                                    child: Text(
                                   'store_owner'.tr,
-                                  style: robotoMedium.copyWith(color: authController.vendorTypeIndex == 0
-                                      ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.3)),
+                                  style: robotoMedium.copyWith(
+                                      color: authController.vendorTypeIndex == 0
+                                          ? Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color
+                                          : Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color!
+                                              .withOpacity(0.3)),
                                 )),
                               ),
                               Container(
                                 height: 2,
-                                color: authController.vendorTypeIndex == 0 ? Theme.of(context).primaryColor : Colors.transparent,
+                                color: authController.vendorTypeIndex == 0
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.transparent,
                               ),
                             ]),
                           ),
@@ -88,15 +100,27 @@ class _SignInScreenState extends State<SignInScreen> {
                             onTap: () => authController.changeVendorType(1),
                             child: Column(children: [
                               Expanded(
-                                child: Center(child: Text(
+                                child: Center(
+                                    child: Text(
                                   'store_employee'.tr,
-                                  style: robotoMedium.copyWith(color: authController.vendorTypeIndex == 1
-                                      ? Theme.of(context).textTheme.bodyLarge!.color : Theme.of(context).textTheme.bodyLarge!.color!.withOpacity(0.3)),
+                                  style: robotoMedium.copyWith(
+                                      color: authController.vendorTypeIndex == 1
+                                          ? Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color
+                                          : Theme.of(context)
+                                              .textTheme
+                                              .bodyLarge!
+                                              .color!
+                                              .withOpacity(0.3)),
                                 )),
                               ),
                               Container(
                                 height: 2,
-                                color: authController.vendorTypeIndex == 1 ? Theme.of(context).primaryColor : Colors.transparent,
+                                color: authController.vendorTypeIndex == 1
+                                    ? Theme.of(context).primaryColor
+                                    : Colors.transparent,
                               ),
                             ]),
                           ),
@@ -106,7 +130,6 @@ class _SignInScreenState extends State<SignInScreen> {
                     const SizedBox(height: 50),
 
                     Column(children: [
-
                       CustomTextField(
                         hintText: 'email'.tr,
                         controller: _emailController,
@@ -115,9 +138,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         inputType: TextInputType.emailAddress,
                         prefixIcon: Images.mail,
                       ),
-
                       const SizedBox(height: 20),
-
                       CustomTextField(
                         hintText: 'password'.tr,
                         controller: _passwordController,
@@ -126,9 +147,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         inputType: TextInputType.visiblePassword,
                         prefixIcon: Images.lock,
                         isPassword: true,
-                        onSubmit: (text) => GetPlatform.isWeb ? _login(authController) : null,
+                        onSubmit: (text) =>
+                            GetPlatform.isWeb ? _login(authController) : null,
                       ),
-
                     ]),
                     const SizedBox(height: 10),
 
@@ -139,7 +160,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           leading: Checkbox(
                             activeColor: Theme.of(context).primaryColor,
                             value: authController.isActiveRememberMe,
-                            onChanged: (bool? isChecked) => authController.toggleRememberMe(),
+                            onChanged: (bool? isChecked) =>
+                                authController.toggleRememberMe(),
                           ),
                           title: Text('remember_me'.tr),
                           contentPadding: EdgeInsets.zero,
@@ -147,36 +169,60 @@ class _SignInScreenState extends State<SignInScreen> {
                           horizontalTitleGap: 0,
                         ),
                       ),
-                      authController.vendorTypeIndex == 1 ? const SizedBox() : TextButton(
-                        onPressed: () => Get.toNamed(RouteHelper.getForgotPassRoute()),
-                        child: Text('${'forgot_password'.tr}?'),
-                      ),
+                      authController.vendorTypeIndex == 1
+                          ? const SizedBox()
+                          : TextButton(
+                              onPressed: () =>
+                                  Get.toNamed(RouteHelper.getForgotPassRoute()),
+                              child: Text('${'forgot_password'.tr}?'),
+                            ),
                     ]),
                     const SizedBox(height: Dimensions.paddingSizeExtraLarge),
 
+                    !authController.isLoading
+                        ? CustomButton(
+                            buttonText: 'sign_in'.tr,
+                            onPressed: () => _login(authController),
+                          )
+                        : const Center(child: CircularProgressIndicator()),
+                    SizedBox(
+                        height:
+                            Get.find<SplashController>().configModel != null &&
+                                    Get.find<SplashController>()
+                                        .configModel!
+                                        .toggleStoreRegistration!
+                                ? Dimensions.paddingSizeSmall
+                                : 0),
 
-                    !authController.isLoading ? CustomButton(
-                      buttonText: 'sign_in'.tr,
-                      onPressed: () => _login(authController),
-                    ) : const Center(child: CircularProgressIndicator()),
-                    SizedBox(height: Get.find<SplashController>().configModel != null && Get.find<SplashController>().configModel!.toggleStoreRegistration! ? Dimensions.paddingSizeSmall : 0),
-
-                    Get.find<SplashController>().configModel != null && Get.find<SplashController>().configModel!.toggleStoreRegistration! ? TextButton(
-                      style: TextButton.styleFrom(
-                        minimumSize: const Size(1, 40),
-                      ),
-                      onPressed: () async {
-                        Get.toNamed(RouteHelper.getRestaurantRegistrationRoute());
-                      },
-                      child: RichText(text: TextSpan(children: [
-                        TextSpan(text: '${'join_as'.tr} ', style: robotoRegular.copyWith(color: Theme.of(context).disabledColor)),
-                        TextSpan(
-                          text: 'store'.tr,
-                          style: robotoMedium.copyWith(color: Theme.of(context).textTheme.bodyLarge!.color),
-                        ),
-                      ])),
-                    ) : const SizedBox(),
-
+                    Get.find<SplashController>().configModel != null &&
+                            Get.find<SplashController>()
+                                .configModel!
+                                .toggleStoreRegistration!
+                        ? TextButton(
+                            style: TextButton.styleFrom(
+                              minimumSize: const Size(1, 40),
+                            ),
+                            onPressed: () async {
+                              Get.toNamed(
+                                  RouteHelper.getRestaurantRegistrationRoute());
+                            },
+                            child: RichText(
+                                text: TextSpan(children: [
+                              TextSpan(
+                                  text: '${'join_as'.tr} ',
+                                  style: robotoRegular.copyWith(
+                                      color: Theme.of(context).disabledColor)),
+                              TextSpan(
+                                text: 'store'.tr,
+                                style: robotoMedium.copyWith(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
+                                        .color),
+                              ),
+                            ])),
+                          )
+                        : const SizedBox(),
                   ]);
                 }),
               ),
@@ -193,13 +239,13 @@ class _SignInScreenState extends State<SignInScreen> {
     String type = authController.vendorTypeIndex == 0 ? 'owner' : 'employee';
     if (email.isEmpty) {
       showCustomSnackBar('enter_email_address'.tr);
-    }else if (!GetUtils.isEmail(email)) {
+    } else if (!GetUtils.isEmail(email)) {
       showCustomSnackBar('enter_a_valid_email_address'.tr);
-    }else if (password.isEmpty) {
+    } else if (password.isEmpty) {
       showCustomSnackBar('enter_password'.tr);
-    }else if (password.length < 6) {
+    } else if (password.length < 6) {
       showCustomSnackBar('password_should_be'.tr);
-    }else {
+    } else {
       authController.login(email, password, type).then((status) async {
         if (status.isSuccess) {
           if (authController.isActiveRememberMe) {
@@ -209,7 +255,7 @@ class _SignInScreenState extends State<SignInScreen> {
           }
           await Get.find<AuthController>().getProfile();
           Get.offAllNamed(RouteHelper.getInitialRoute());
-        }else {
+        } else {
           showCustomSnackBar(status.message);
         }
       });

@@ -1,4 +1,4 @@
-import 'package:sixam_mart_store/data/model/response/item_model.dart';
+import 'package:connectuz_store/data/model/response/item_model.dart';
 
 class ProfileModel {
   int? id;

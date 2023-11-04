@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:sixam_mart_store/view/screens/user_request/monthly_subscription.dart';
+import 'package:connectuz_store/view/screens/user_request/monthly_subscription.dart';
 
 class SubscriptionScreen extends StatefulWidget {
   const SubscriptionScreen({Key? key}) : super(key: key);

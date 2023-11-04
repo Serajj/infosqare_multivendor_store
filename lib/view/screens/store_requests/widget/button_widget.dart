@@ -1,7 +1,7 @@
 /*import 'package:flutter/material.dart';
 //import 'package:get/get.dart';
-import 'package:sixam_mart_store/controller/request_controller.dart';
-import 'package:sixam_mart_store/data/model/body/request_model.dart';
+import 'package:connectuz_store/controller/request_controller.dart';
+import 'package:connectuz_store/data/model/body/request_model.dart';
 //import 'package:sixam_mart/view/base/custom_button.dart';
 
 class FollowButton extends StatefulWidget {

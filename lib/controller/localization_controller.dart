@@ -1,7 +1,7 @@
-import 'package:sixam_mart_store/controller/auth_controller.dart';
-import 'package:sixam_mart_store/controller/store_controller.dart';
-import 'package:sixam_mart_store/data/api/api_client.dart';
-import 'package:sixam_mart_store/util/app_constants.dart';
+import 'package:connectuz_store/controller/auth_controller.dart';
+import 'package:connectuz_store/controller/store_controller.dart';
+import 'package:connectuz_store/data/api/api_client.dart';
+import 'package:connectuz_store/util/app_constants.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,11 +10,13 @@ class LocalizationController extends GetxController {
   final ApiClient apiClient;
   final SharedPreferences sharedPreferences;
 
-  LocalizationController({required this.sharedPreferences, required this.apiClient}) {
+  LocalizationController(
+      {required this.sharedPreferences, required this.apiClient}) {
     loadCurrentLanguage();
   }
 
-  Locale _locale = Locale(AppConstants.languages[0].languageCode!, AppConstants.languages[0].countryCode);
+  Locale _locale = Locale(AppConstants.languages[0].languageCode!,
+      AppConstants.languages[0].countryCode);
   bool _isLtr = true;
   int _selectedIndex = 0;
 
@@ -25,18 +27,20 @@ class LocalizationController extends GetxController {
   void setLanguage(Locale locale) {
     Get.updateLocale(locale);
     _locale = locale;
-    if(_locale.languageCode == 'ar') {
+    if (_locale.languageCode == 'ar') {
       _isLtr = false;
-    }else {
+    } else {
       _isLtr = true;
     }
     apiClient.updateHeader(
-      sharedPreferences.getString(AppConstants.token), locale.languageCode,
-      Get.find<AuthController>().profileModel != null ? Get.find<AuthController>().profileModel!.stores![0].module!.id : null,
-        sharedPreferences.getString(AppConstants.type)
-    );
+        sharedPreferences.getString(AppConstants.token),
+        locale.languageCode,
+        Get.find<AuthController>().profileModel != null
+            ? Get.find<AuthController>().profileModel!.stores![0].module!.id
+            : null,
+        sharedPreferences.getString(AppConstants.type));
     saveLanguage(_locale);
-    if(Get.find<AuthController>().isLoggedIn()){
+    if (Get.find<AuthController>().isLoggedIn()) {
       Get.find<StoreController>().getItemList('1', 'all');
     }
     update();
@@ -48,11 +52,14 @@ class LocalizationController extends GetxController {
   }
 
   void loadCurrentLanguage() async {
-    _locale = Locale(sharedPreferences.getString(AppConstants.languageCode) ?? AppConstants.languages[0].languageCode!,
-        sharedPreferences.getString(AppConstants.countryCode) ?? AppConstants.languages[0].countryCode);
+    _locale = Locale(
+        sharedPreferences.getString(AppConstants.languageCode) ??
+            AppConstants.languages[0].languageCode!,
+        sharedPreferences.getString(AppConstants.countryCode) ??
+            AppConstants.languages[0].countryCode);
     _isLtr = _locale.languageCode != 'ar';
-    for(int index = 0; index < AppConstants.languages.length; index++) {
-      if(_locale.languageCode == AppConstants.languages[index].languageCode) {
+    for (int index = 0; index < AppConstants.languages.length; index++) {
+      if (_locale.languageCode == AppConstants.languages[index].languageCode) {
         _selectedIndex = index;
         break;
       }

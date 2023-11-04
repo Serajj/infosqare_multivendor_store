@@ -1,7 +1,7 @@
-import 'package:sixam_mart_store/data/api/api_checker.dart';
-import 'package:sixam_mart_store/data/model/response/notification_model.dart';
-import 'package:sixam_mart_store/data/repository/notification_repo.dart';
-import 'package:sixam_mart_store/helper/date_converter.dart';
+import 'package:connectuz_store/data/api/api_checker.dart';
+import 'package:connectuz_store/data/model/response/notification_model.dart';
+import 'package:connectuz_store/data/repository/notification_repo.dart';
+import 'package:connectuz_store/helper/date_converter.dart';
 import 'package:get/get.dart';
 
 class NotificationController extends GetxController implements GetxService {
@@ -26,12 +26,13 @@ class NotificationController extends GetxController implements GetxService {
         _notificationList!.add(notification);
       });
       _notificationList!.sort((NotificationModel n1, NotificationModel n2) {
-        return DateConverter.dateTimeStringToDate(n1.createdAt!).compareTo(DateConverter.dateTimeStringToDate(n2.createdAt!));
+        return DateConverter.dateTimeStringToDate(n1.createdAt!)
+            .compareTo(DateConverter.dateTimeStringToDate(n2.createdAt!));
       });
       _notificationList = _notificationList!.reversed.toList();
 
-      _hasNotification = _notificationList!.length != getSeenNotificationCount();
-
+      _hasNotification =
+          _notificationList!.length != getSeenNotificationCount();
     } else {
       ApiChecker.checkApi(response);
     }
