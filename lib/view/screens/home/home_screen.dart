@@ -3,6 +3,7 @@ import 'package:connectuz_store/controller/notification_controller.dart';
 import 'package:connectuz_store/controller/order_controller.dart';
 import 'package:connectuz_store/controller/splash_controller.dart';
 import 'package:connectuz_store/data/model/response/order_model.dart';
+import 'package:connectuz_store/helper/firebase_dynamic_link_server.dart';
 import 'package:connectuz_store/helper/price_converter.dart';
 import 'package:connectuz_store/helper/route_helper.dart';
 import 'package:connectuz_store/util/app_constants.dart';
@@ -17,6 +18,9 @@ import 'package:connectuz_store/view/screens/home/widget/order_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer_animation/shimmer_animation.dart';
+import 'package:share_plus/share_plus.dart';
+
+import '../../../controller/store_controller.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -61,6 +65,27 @@ class HomeScreen extends StatelessWidget {
               fontSize: Dimensions.fontSizeDefault,
             )),
         actions: [
+          IconButton(
+            onPressed: () async {
+              String? storeId = Get.find<AuthController>()
+                      .profileModel!
+                      .stores![0]
+                      .id
+                      .toString() ??
+                  "";
+              String id =
+                  await FirebaseDynamicLinkService.createDynamicLink(storeId);
+              // String shareUrl =
+              //     '${AppConstants.webHostedUrl}${Get.find<StoreController>().filteringUrl(slug ?? '')}';
+              Share.share(id);
+            },
+            icon: Container(
+              child: Icon(
+                Icons.share,
+                color: Colors.black,
+              ),
+            ),
+          ),
           IconButton(
             icon: GetBuilder<NotificationController>(
                 builder: (notificationController) {

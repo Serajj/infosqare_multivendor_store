@@ -42,7 +42,7 @@ class CustomerListController extends GetxController {
 
     if (response.statusCode == 200) {
       dynamic data = response.body['data'];
-
+      dataList.clear();
       dataList.addAll(data
           .map<UserFollow>((element) => UserFollow.fromJson(element))
           .toList());
@@ -66,6 +66,7 @@ class CustomerListController extends GetxController {
       print(response.body);
       print(
           "===============================================================================<");
+      dataListRecieved.clear();
       dataListRecieved.addAll(response.body['data']
           .map<Follower>((element) => Follower.fromJson(element))
           .toList());
@@ -89,6 +90,7 @@ class CustomerListController extends GetxController {
       print(response.body);
       print(
           "===============================================================================<");
+      dataListAccepted.clear();
       dataListAccepted.addAll(response.body['data']
           .map<Follower>((element) => Follower.fromJson(element))
           .toList());

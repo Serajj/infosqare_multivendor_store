@@ -7,7 +7,7 @@ class AppConstants {
 
   static const String baseUrl = 'https://api.connectuz.com';
   //static const String baseUrl = 'http://192.168.29.226:3000';
-
+  static const String webHostedUrl = "https://connectuz.com";
   static const String configUri = '/api/v1/config';
   static const String loginUri = '/api/v1/auth/vendor/login';
   static const String membershipUri = '/api/v1/vendor/get-member';
@@ -154,15 +154,15 @@ class AppConstants {
         languageName: 'English',
         countryCode: 'US',
         languageCode: 'en'),
-    LanguageModel(
-        imageUrl: Images.arabic,
-        languageName: 'Arabic',
-        countryCode: 'SA',
-        languageCode: 'ar'),
-    LanguageModel(
-        imageUrl: Images.arabic,
-        languageName: 'Spanish',
-        countryCode: 'ES',
-        languageCode: 'es'),
+    // LanguageModel(
+    //     imageUrl: Images.arabic,
+    //     languageName: 'Arabic',
+    //     countryCode: 'SA',
+    //     languageCode: 'ar'),
+    // LanguageModel(
+    //     imageUrl: Images.arabic,
+    //     languageName: 'Spanish',
+    //     countryCode: 'ES',
+    //     languageCode: 'es'),
   ];
 }

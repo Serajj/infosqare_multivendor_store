@@ -183,6 +183,7 @@ class Store {
   String? deliveryTime;
   int? veg;
   int? nonVeg;
+  String? slug;
   int? orderPlaceToScheduleInterval;
   Module? module;
   Discount? discount;
@@ -230,6 +231,7 @@ class Store {
     this.schedules,
     this.prescriptionStatus,
     this.cutlery,
+    this.slug,
   });
 
   Store.fromJson(Map<String, dynamic> json) {
@@ -282,6 +284,7 @@ class Store {
     }
     prescriptionStatus = json['prescription_order'];
     cutlery = json['cutlery'];
+    slug = json['slug'];
   }
 
   Map<String, dynamic> toJson() {

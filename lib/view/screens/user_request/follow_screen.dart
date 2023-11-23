@@ -29,6 +29,10 @@ class _FollowScreenState extends State<FollowScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.refresh),
+      ),
       body: GetBuilder<CustomerListController>(
         builder: (customerListController) {
           return Column(

@@ -26,7 +26,7 @@
         </intent>
     </queries>
 
-    <application android:label="Connectuz Store" android:requestLegacyExternalStorage="true" android:usesCleartextTraffic="true" android:icon="@mipmap/ic_connectuz">
+    <application android:label="Connectuz Store" android:requestLegacyExternalStorage="true" android:usesCleartextTraffic="true" android:icon="@mipmap/launcher_icon">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCaCSJ0BZItSyXqBv8vpD1N4WBffJeKhLQ"/>
 
         <activity

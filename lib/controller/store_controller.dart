@@ -867,4 +867,16 @@ class StoreController extends GetxController implements GetxService {
     _variationList![vIndex].options!.removeAt(oIndex);
     update();
   }
+
+  String filteringUrl(String slug) {
+    int storeId = Get.find<AuthController>().profileModel!.stores![0].id ?? 0;
+    List<String> routes = Get.currentRoute.split('?');
+    String replace = '';
+    if (slug.isNotEmpty) {
+      replace = '${routes[0]}?slug=$slug';
+    } else {
+      replace = '${routes[0]}?slug=${storeId}';
+    }
+    return replace;
+  }
 }
