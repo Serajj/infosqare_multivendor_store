@@ -42,6 +42,8 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
   final TextEditingController _gstController = TextEditingController();
   final TextEditingController _minimumController = TextEditingController();
   final TextEditingController _maximumController = TextEditingController();
+  final TextEditingController _taxCotroller = TextEditingController();
+
   final TextEditingController _deliveryChargePerKmController =
       TextEditingController();
   final List<FocusNode> _nameNode = [];
@@ -54,6 +56,8 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
   final FocusNode _maximumNode = FocusNode();
   final FocusNode _minimumProcessingTimeNode = FocusNode();
   final FocusNode _deliveryChargePerKmNode = FocusNode();
+  final FocusNode _taxNode = FocusNode();
+
   late profile.Store _store;
   final Module? _module =
       Get.find<SplashController>().configModel!.moduleConfig!.module;
@@ -98,6 +102,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
     _deliveryChargePerKmController.text =
         widget.store.perKmShippingCharge.toString();
     _gstController.text = widget.store.gstCode!;
+    _taxCotroller.text = widget.store.tax!.toString();
     _processingTimeController.text =
         widget.store.orderPlaceToScheduleInterval.toString();
     if (widget.store.deliveryTime != null &&
@@ -373,6 +378,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                   hintText: 'maximum'.tr,
                   controller: _maximumController,
                   focusNode: _maximumNode,
+                  nextFocus: _taxNode,
                   inputAction: TextInputAction.done,
                   inputType: TextInputType.number,
                   isNumber: true,
@@ -466,7 +472,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
               Row(children: [
                 Expanded(
                     child: Text(
-                  'gst'.tr,
+                  'GST Number'.tr,
                   style: robotoRegular.copyWith(
                       fontSize: Dimensions.fontSizeSmall,
                       color: Theme.of(context).disabledColor),
@@ -484,6 +490,25 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                 inputAction: TextInputAction.done,
                 title: false,
                 isEnabled: storeController.isGstEnabled,
+              ),
+              const SizedBox(height: Dimensions.paddingSizeLarge),
+              Row(children: [
+                Expanded(
+                    child: Text(
+                  'Tax (in %)'.tr,
+                  style: robotoRegular.copyWith(
+                      fontSize: Dimensions.fontSizeSmall,
+                      color: Theme.of(context).disabledColor),
+                )),
+              ]),
+              const SizedBox(height: Dimensions.paddingSizeSmall),
+              MyTextField(
+                hintText: 'Tax in %'.tr,
+                controller: _taxCotroller,
+                inputAction: TextInputAction.next,
+                inputType: TextInputType.number,
+                focusNode: _taxNode,
+                title: false,
               ),
               const SizedBox(height: Dimensions.paddingSizeLarge),
 
@@ -684,6 +709,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                         _minimumDeliveryFeeController.text.trim();
                     String minimum = _minimumController.text.trim();
                     String maximum = _maximumController.text.trim();
+                    String inputTax = _taxCotroller.text.trim() ?? "0";
                     String processingTime =
                         _processingTimeController.text.trim();
                     String deliveryChargePerKm =
@@ -692,6 +718,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                     String maximumFee =
                         _maximumDeliveryFeeController.text.trim();
                     bool? showRestaurantText = _module!.showRestaurantText;
+
                     if (defaultNameNull) {
                       showCustomSnackBar(showRestaurantText!
                           ? 'enter_your_restaurant_name'.tr
@@ -788,6 +815,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                               storeController.isStoreNonVeg!)
                           ? 1
                           : 0;
+                      _store.tax = double.tryParse(inputTax);
 
                       storeController.updateStore(
                         _store,

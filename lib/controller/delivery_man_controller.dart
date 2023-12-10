@@ -57,7 +57,7 @@ class DeliveryManController extends GetxController implements GetxService {
       getDeliveryManList();
       print("delivery response");
     } else {
-      ApiChecker.checkApi(response);
+      ApiChecker.checkApi(response, password: true);
       print("api checker $response");
     }
     _isLoading = false;

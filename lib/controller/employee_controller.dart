@@ -7,6 +7,7 @@ import 'package:connectuz_store/data/repository/employee_repo.dart';
 import 'package:connectuz_store/view/base/custom_snackbar.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:win32/win32.dart';
 
 class EmployeeController extends GetxController implements GetxService {
   final EmployeeRepo deliveryManRepo;
@@ -80,7 +81,7 @@ class EmployeeController extends GetxController implements GetxService {
       getDeliveryManList();
       print("delivery response");
     } else {
-      ApiChecker.checkApi(response);
+      ApiChecker.checkApi(response, password: true);
       print("api checker $response");
     }
     _isLoading = false;

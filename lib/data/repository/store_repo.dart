@@ -52,6 +52,7 @@ class StoreRepo {
       'take_away': store.takeAway! ? '1' : '0',
       'gst_status': store.gstStatus! ? '1' : '0',
       'gst': store.gstCode!,
+      'tax': store.tax.toString(),
       'minimum_delivery_charge': store.minimumShippingCharge.toString(),
       'per_km_delivery_charge': store.perKmShippingCharge.toString(),
       'veg': store.veg.toString(),

@@ -4,12 +4,17 @@ import 'package:connectuz_store/view/base/custom_snackbar.dart';
 import 'package:get/get.dart';
 
 class ApiChecker {
-  static void checkApi(Response response) {
+  static void checkApi(Response response, {bool password = false}) {
     if (response.statusCode == 401) {
       Get.find<AuthController>().clearSharedData();
       Get.offAllNamed(RouteHelper.getSignInRoute());
     } else {
-      showCustomSnackBar(response.statusText);
+      if (password) {
+        showCustomSnackBar(
+            "${response.statusText} Make sure entered password should contain AlphaNumeric characters and numbers.");
+      } else {
+        showCustomSnackBar(response.statusText);
+      }
     }
   }
 }
