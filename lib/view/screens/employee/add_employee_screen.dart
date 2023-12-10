@@ -1,5 +1,8 @@
 import 'dart:io';
 
+import 'package:connectuz_store/controller/employee_controller.dart';
+import 'package:connectuz_store/data/model/response/employee_model.dart';
+import 'package:connectuz_store/util/app_constants.dart';
 import 'package:country_code_picker/country_code_picker.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:connectuz_store/controller/auth_controller.dart';
@@ -17,24 +20,26 @@ import 'package:connectuz_store/view/base/my_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:phone_number/phone_number.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-class AddDeliveryManScreen extends StatefulWidget {
-  final DeliveryManModel? deliveryMan;
-  const AddDeliveryManScreen({Key? key, required this.deliveryMan})
+import '../../../controller/store_controller.dart';
+
+class AddEmployeeScreen extends StatefulWidget {
+  final Employee? deliveryMan;
+  const AddEmployeeScreen({Key? key, required this.deliveryMan})
       : super(key: key);
 
   @override
-  State<AddDeliveryManScreen> createState() => _AddDeliveryManScreenState();
+  State<AddEmployeeScreen> createState() => _AddEmployeeScreenState();
 }
 
-class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
+class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final TextEditingController _fNameController = TextEditingController();
   final TextEditingController _lNameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _identityNumberController =
-      TextEditingController();
   final FocusNode _fNameNode = FocusNode();
   final FocusNode _lNameNode = FocusNode();
   final FocusNode _emailNode = FocusNode();
@@ -42,32 +47,31 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
   final FocusNode _passwordNode = FocusNode();
   final FocusNode _identityNumberNode = FocusNode();
   late bool _update;
-  DeliveryManModel? _deliveryMan;
+  Employee? _deliveryMan;
   String? _countryDialCode;
 
   @override
   void initState() {
     super.initState();
-
     _deliveryMan = widget.deliveryMan;
     _update = widget.deliveryMan != null;
     _countryDialCode = CountryCode.fromCountryCode(
             Get.find<SplashController>().configModel!.country!)
         .dialCode;
-    Get.find<DeliveryManController>().pickImage(false, true);
+    Get.find<EmployeeController>().pickImage(false, true);
     if (_update) {
+      print("true editing");
       _fNameController.text = _deliveryMan!.fName!;
       _lNameController.text = _deliveryMan!.lName!;
       _emailController.text = _deliveryMan!.email!;
       _phoneController.text = _deliveryMan!.phone!;
-      _identityNumberController.text = _deliveryMan!.identityNumber!;
-      Get.find<DeliveryManController>()
-          .setIdentityTypeIndex(_deliveryMan!.identityType, false);
+      Get.find<EmployeeController>()
+          .setIdentityTypeIndex(_deliveryMan!.role, false);
       _splitPhone(_deliveryMan!.phone);
     } else {
-      _deliveryMan = DeliveryManModel();
-      Get.find<DeliveryManController>().setIdentityTypeIndex(
-          Get.find<DeliveryManController>().identityTypeList[0], false);
+      _deliveryMan = Employee();
+      Get.find<EmployeeController>().setIdentityTypeIndex(
+          Get.find<EmployeeController>().employeeRoles?[0], false);
       //Get.find<DeliveryManController>().setIdentityTypeIndex(Get.find<DeliveryManController>().identityTypeList[0], false);
       print("deliveryman $_deliveryMan");
     }
@@ -89,9 +93,9 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
     return Scaffold(
       appBar: CustomAppBar(
           title: widget.deliveryMan != null
-              ? 'update_delivery_man'.tr
-              : 'add_delivery_man'.tr),
-      body: GetBuilder<DeliveryManController>(builder: (dmController) {
+              ? 'Update Employee'.tr
+              : 'Add new employee'.tr),
+      body: GetBuilder<EmployeeController>(builder: (dmController) {
         return Column(children: [
           Expanded(
               child: SingleChildScrollView(
@@ -102,7 +106,7 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
               Align(
                   alignment: Alignment.center,
                   child: Text(
-                    'delivery_man_image'.tr,
+                    'Employee Image'.tr,
                     style: robotoRegular.copyWith(
                         fontSize: Dimensions.fontSizeSmall,
                         color: Theme.of(context).disabledColor),
@@ -140,7 +144,7 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
                           : FadeInImage.assetNetwork(
                               placeholder: Images.placeholder,
                               image:
-                                  '${Get.find<SplashController>().configModel!.baseUrls!.deliveryManImageUrl}/${_deliveryMan!.image ?? ''}',
+                                  '${Get.find<SplashController>().configModel!.baseUrls!.employeeImageUrl}/${_deliveryMan!.image ?? ''}',
                               height: 120,
                               width: 150,
                               fit: BoxFit.cover,
@@ -204,6 +208,7 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
               ]),
               const SizedBox(height: Dimensions.paddingSizeLarge),
               MyTextField(
+                isEnabled: !_update,
                 hintText: 'email'.tr,
                 controller: _emailController,
                 focusNode: _emailNode,
@@ -245,6 +250,7 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
                 Expanded(
                     flex: 1,
                     child: MyTextField(
+                      isEnabled: !_update,
                       hintText: 'phone'.tr,
                       controller: _phoneController,
                       focusNode: _phoneNode,
@@ -269,11 +275,32 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                       Text(
-                        'identity_type'.tr,
+                        'Role'.tr,
                         style: robotoRegular.copyWith(
                             fontSize: Dimensions.fontSizeSmall,
                             color: Theme.of(context).disabledColor),
                       ),
+                      const SizedBox(height: Dimensions.paddingSizeExtraSmall),
+                      dmController.employeeRoles!.length == 0
+                          ? Text(
+                              "You don't have roles , click to redirect web pannel and add roles.",
+                              style: TextStyle(color: Colors.red, fontSize: 10),
+                            )
+                          : SizedBox(),
+                      dmController.employeeRoles!.length == 0
+                          ? ElevatedButton(
+                              onPressed: () async {
+                                String shareUrl =
+                                    '${AppConstants.baseUrl}/store-panel/custom-role/create?token=${Get.find<AuthController>().getUserToken()}';
+                                final Uri url = Uri.parse(shareUrl);
+                                if (!await launchUrl(url)) {
+                                  showCustomSnackBar(
+                                      'Error while redirection, please ensure you have browser installed in your device.'
+                                          .tr);
+                                }
+                              },
+                              child: Text("Add role"))
+                          : SizedBox(),
                       const SizedBox(height: Dimensions.paddingSizeExtraSmall),
                       Container(
                         padding: const EdgeInsets.symmetric(
@@ -290,14 +317,18 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
                                 offset: const Offset(0, 5))
                           ],
                         ),
-                        child: DropdownButton<String>(
-                          value: dmController
-                              .identityTypeList[dmController.identityTypeIndex],
-                          items:
-                              dmController.identityTypeList.map((String value) {
-                            return DropdownMenuItem<String>(
+                        child: DropdownButton<Role>(
+                          value: dmController.employeeRoles!.length > 0
+                              ? dmController.employeeRoles?.firstWhereOrNull(
+                                  (element) =>
+                                      element.id ==
+                                      dmController.selectedRole?.id)
+                              : null,
+                          // value: dmController.selectedRole,
+                          items: dmController.employeeRoles?.map((Role value) {
+                            return DropdownMenuItem<Role>(
                               value: value,
-                              child: Text(value.tr),
+                              child: Text(value.name.toString()),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -308,171 +339,16 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
                         ),
                       ),
                     ])),
-                const SizedBox(width: Dimensions.paddingSizeSmall),
-                Expanded(
-                    child: MyTextField(
-                  hintText: 'identity_number'.tr,
-                  controller: _identityNumberController,
-                  focusNode: _identityNumberNode,
-                  inputAction: TextInputAction.done,
-                )),
+                // const SizedBox(width: Dimensions.paddingSizeSmall),
+                // Expanded(
+                //     child: MyTextField(
+                //   hintText: 'identity_number'.tr,
+                //   controller: _identityNumberController,
+                //   focusNode: _identityNumberNode,
+                //   inputAction: TextInputAction.done,
+                // )),
               ]),
               const SizedBox(height: Dimensions.paddingSizeLarge),
-              _update
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                          Row(children: [
-                            Text(
-                              'identity_images'.tr,
-                              style: robotoRegular.copyWith(
-                                  fontSize: Dimensions.fontSizeSmall,
-                                  color: Theme.of(context).disabledColor),
-                            ),
-                            const SizedBox(
-                                width: Dimensions.paddingSizeExtraSmall),
-                            Text(
-                              '(${'previously_added'.tr})',
-                              style: robotoRegular.copyWith(
-                                  fontSize: Dimensions.fontSizeExtraSmall,
-                                  color: Theme.of(context).primaryColor),
-                            ),
-                          ]),
-                          const SizedBox(
-                              height: Dimensions.paddingSizeExtraSmall),
-                          SizedBox(
-                            height: 120,
-                            child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: _deliveryMan!.identityImage!.length,
-                              itemBuilder: (context, index) {
-                                return Container(
-                                  margin: const EdgeInsets.only(
-                                      right: Dimensions.paddingSizeSmall),
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Theme.of(context).primaryColor,
-                                        width: 2),
-                                    borderRadius: BorderRadius.circular(
-                                        Dimensions.radiusSmall),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                        Dimensions.radiusSmall),
-                                    child: CustomImage(
-                                      image:
-                                          '${Get.find<SplashController>().configModel!.baseUrls!.deliveryManImageUrl}/${_deliveryMan!.identityImage![index]}',
-                                      width: 150,
-                                      height: 120,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: Dimensions.paddingSizeLarge),
-                        ])
-                  : const SizedBox(),
-              Text(
-                'identity_images'.tr,
-                style: robotoRegular.copyWith(
-                    fontSize: Dimensions.fontSizeSmall,
-                    color: Theme.of(context).disabledColor),
-              ),
-              const SizedBox(height: Dimensions.paddingSizeExtraSmall),
-              SizedBox(
-                height: 120,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: dmController.pickedIdentities.length + 1,
-                  itemBuilder: (context, index) {
-                    XFile? file = index == dmController.pickedIdentities.length
-                        ? null
-                        : dmController.pickedIdentities[index];
-                    if (index == dmController.pickedIdentities.length) {
-                      return InkWell(
-                        onTap: () {
-                          if (dmController.pickedIdentities.length < 6) {
-                            dmController.pickImage(false, false);
-                          } else {
-                            showCustomSnackBar('maximum_image_limit_is_6'.tr);
-                          }
-                        },
-                        child: Container(
-                          height: 120,
-                          width: 150,
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                BorderRadius.circular(Dimensions.radiusSmall),
-                            border: Border.all(
-                                color: Theme.of(context).primaryColor,
-                                width: 2),
-                          ),
-                          child: Container(
-                            padding: const EdgeInsets.all(
-                                Dimensions.paddingSizeDefault),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                  width: 2,
-                                  color: Theme.of(context).primaryColor),
-                              shape: BoxShape.circle,
-                            ),
-                            child: Icon(Icons.camera_alt,
-                                color: Theme.of(context).primaryColor),
-                          ),
-                        ),
-                      );
-                    }
-                    return Container(
-                      margin: const EdgeInsets.only(
-                          right: Dimensions.paddingSizeSmall),
-                      decoration: BoxDecoration(
-                        border: Border.all(
-                            color: Theme.of(context).primaryColor, width: 2),
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.radiusSmall),
-                      ),
-                      child: Stack(children: [
-                        ClipRRect(
-                          borderRadius:
-                              BorderRadius.circular(Dimensions.radiusSmall),
-                          child: GetPlatform.isWeb
-                              ? Image.network(
-                                  file!.path,
-                                  width: 150,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.file(
-                                  File(file!.path),
-                                  width: 150,
-                                  height: 120,
-                                  fit: BoxFit.cover,
-                                ),
-                        ),
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: InkWell(
-                            onTap: () =>
-                                dmController.removeIdentityImage(index),
-                            child: const Padding(
-                              padding:
-                                  EdgeInsets.all(Dimensions.paddingSizeSmall),
-                              child:
-                                  Icon(Icons.delete_forever, color: Colors.red),
-                            ),
-                          ),
-                        ),
-                      ]),
-                    );
-                  },
-                ),
-              ),
             ]),
           )),
           !dmController.isLoading
@@ -488,13 +364,18 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
     );
   }
 
-  void _addDeliveryMan(DeliveryManController dmController) async {
+  void _addDeliveryMan(EmployeeController dmController) async {
+    if (dmController.employeeRoles!.length == 0) {
+      showCustomSnackBar(
+          'Please create employees role first by login to web pannel');
+    }
+    print(dmController.selectedRole?.name);
     String fName = _fNameController.text.trim();
     String lName = _lNameController.text.trim();
     String email = _emailController.text.trim();
     String phone = _phoneController.text.trim();
     String password = _passwordController.text.trim();
-    String identityNumber = _identityNumberController.text.trim();
+    int? identityNumber = dmController.selectedRole?.id ?? null;
 
     String numberWithCountryCode = _countryDialCode! + phone;
     bool isValid = GetPlatform.isWeb ? true : false;
@@ -510,39 +391,37 @@ class _AddDeliveryManScreenState extends State<AddDeliveryManScreen> {
       }
     }
     if (fName.isEmpty) {
-      showCustomSnackBar('enter_delivery_man_first_name'.tr);
+      showCustomSnackBar('enter_employee_first_name'.tr);
     } else if (lName.isEmpty) {
-      showCustomSnackBar('enter_delivery_man_last_name'.tr);
+      showCustomSnackBar('enter_employee_last_name'.tr);
     } else if (email.isEmpty) {
-      showCustomSnackBar('enter_delivery_man_email_address'.tr);
+      showCustomSnackBar('Enter employee email address'.tr);
     } else if (!GetUtils.isEmail(email)) {
-      showCustomSnackBar('enter_a_valid_email_address'.tr);
+      showCustomSnackBar('Enter valid email address'.tr);
     } else if (phone.isEmpty) {
-      showCustomSnackBar('enter_delivery_man_phone_number'.tr);
+      showCustomSnackBar('enter_employee_phone_number'.tr);
     } else if (!isValid) {
       showCustomSnackBar('enter_a_valid_phone_number'.tr);
-    } else if (password.isEmpty) {
-      showCustomSnackBar('enter_password_for_delivery_man'.tr);
-    } else if (password.length < 6) {
+    } else if (password.isEmpty && !_update) {
+      showCustomSnackBar('enter_password_for_employee'.tr);
+    } else if (password.length < 6 && !_update) {
       showCustomSnackBar('password_should_be'.tr);
-    } else if (identityNumber.isEmpty) {
-      showCustomSnackBar('enter_delivery_man_identity_number'.tr);
+    } else if (identityNumber! == 0) {
+      showCustomSnackBar('Select role ${identityNumber}');
     } else if (!_update && dmController.pickedImage == null) {
-      showCustomSnackBar('upload_delivery_man_image'.tr);
+      showCustomSnackBar('upload_employee_image'.tr);
     } else {
       print("Adding delivery man");
       _deliveryMan!.fName = fName;
       _deliveryMan!.lName = lName;
       _deliveryMan!.email = email;
       _deliveryMan!.phone = numberWithCountryCode;
-      _deliveryMan!.identityType =
-          dmController.identityTypeList[dmController.identityTypeIndex];
-      _deliveryMan!.identityNumber = identityNumber;
+      _deliveryMan!.employeeRoleId = dmController.selectedRole?.id;
       dmController.addDeliveryMan(
         _deliveryMan!,
         password,
         Get.find<AuthController>().getUserToken(),
-        widget.deliveryMan == null,
+        !_update,
       );
     }
   }

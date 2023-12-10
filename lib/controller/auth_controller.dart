@@ -225,7 +225,7 @@ class AuthController extends GetxController implements GetxService {
         addon: module.contains('addon'),
         wallet: module.contains('wallet'),
         bankInfo: module.contains('bank_info'),
-        employee: module.contains('employee'),
+        employee: true, //module.contains('employee'),
         myShop: module.contains('my_shop'),
         customRole: module.contains('custom_role'),
         campaign: module.contains('campaign'),

@@ -5,6 +5,7 @@ import 'package:connectuz_store/data/model/response/campaign_model.dart';
 import 'package:connectuz_store/data/model/response/category_model.dart';
 import 'package:connectuz_store/data/model/response/conversation_model.dart';
 import 'package:connectuz_store/data/model/response/delivery_man_model.dart';
+import 'package:connectuz_store/data/model/response/employee_model.dart';
 import 'package:connectuz_store/data/model/response/item_model.dart';
 import 'package:connectuz_store/data/model/response/profile_model.dart';
 import 'package:connectuz_store/view/screens/addon/addon_screen.dart';
@@ -23,6 +24,9 @@ import 'package:connectuz_store/view/screens/dashboard/dashboard_screen.dart';
 import 'package:connectuz_store/view/screens/deliveryman/add_delivery_man_screen.dart';
 import 'package:connectuz_store/view/screens/deliveryman/delivery_man_details_screen.dart';
 import 'package:connectuz_store/view/screens/deliveryman/delivery_man_screen.dart';
+import 'package:connectuz_store/view/screens/employee/add_employee_screen.dart';
+import 'package:connectuz_store/view/screens/employee/employee_details_screen.dart';
+import 'package:connectuz_store/view/screens/employee/employee_screen.dart';
 import 'package:connectuz_store/view/screens/user_request/subscription_design.dart';
 import 'package:connectuz_store/view/screens/expence/expense_screen.dart';
 import 'package:connectuz_store/view/screens/forget/forget_pass_screen.dart';
@@ -81,6 +85,10 @@ class RouteHelper {
   static const String deliveryMan = '/delivery-man';
   static const String addDeliveryMan = '/add-delivery-man';
   static const String deliveryManDetails = '/delivery-man-details';
+  static const String employee = '/employee';
+  static const String addEmployee = '/add-employee';
+  static const String employeeDetails = '/employee-man-details';
+
   static const String terms = '/terms-and-condition';
   static const String privacy = '/privacy-policy';
   static const String update = '/update';
@@ -185,6 +193,22 @@ class RouteHelper {
     List<int> encoded = utf8.encode(jsonEncode(deliveryMan.toJson()));
     String data = base64Encode(encoded);
     return '$deliveryManDetails?data=$data';
+  }
+
+  static String getEmployeeRoute() => employee;
+  static String getAddEmployeeRoute(Employee? deliveryMan) {
+    if (deliveryMan == null) {
+      return '$addEmployee?data=null';
+    }
+    List<int> encoded = utf8.encode(jsonEncode(deliveryMan.toJson()));
+    String data = base64Encode(encoded);
+    return '$addEmployee?data=$data';
+  }
+
+  static String getEmployeeDetailsRoute(Employee deliveryMan) {
+    List<int> encoded = utf8.encode(jsonEncode(deliveryMan.toJson()));
+    String data = base64Encode(encoded);
+    return '$employeeDetails?data=$data';
   }
 
   static String getTermsRoute() => terms;
@@ -371,6 +395,26 @@ class RouteHelper {
           DeliveryManModel data =
               DeliveryManModel.fromJson(jsonDecode(utf8.decode(decode)));
           return DeliveryManDetailsScreen(deliveryMan: data);
+        }),
+    GetPage(name: employee, page: () => const EmployeeScreen()),
+    GetPage(
+        name: addEmployee,
+        page: () {
+          if (Get.parameters['data'] == 'null') {
+            return const AddEmployeeScreen(deliveryMan: null);
+          }
+          List<int> decode =
+              base64Decode(Get.parameters['data']!.replaceAll(' ', '+'));
+          Employee data = Employee.fromJson(jsonDecode(utf8.decode(decode)));
+          return AddEmployeeScreen(deliveryMan: data);
+        }),
+    GetPage(
+        name: employeeDetails,
+        page: () {
+          List<int> decode =
+              base64Decode(Get.parameters['data']!.replaceAll(' ', '+'));
+          Employee data = Employee.fromJson(jsonDecode(utf8.decode(decode)));
+          return EmployeeDetailsScreen(deliveryMan: data);
         }),
     GetPage(
         name: terms,

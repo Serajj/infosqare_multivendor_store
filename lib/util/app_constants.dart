@@ -2,13 +2,14 @@ import 'package:connectuz_store/data/model/response/language_model.dart';
 import 'package:connectuz_store/util/images.dart';
 
 class AppConstants {
-  static const String appName = 'Manufacturer';
+  static const String appName = 'Connectuz Store';
   static const double appVersion = 2.2;
 
   static const String baseUrl = 'https://api.connectuz.com';
   //static const String baseUrl = 'http://192.168.29.226:3000';
   static const String webHostedUrl = "https://connectuz.com";
   static const String configUri = '/api/v1/config';
+  static const String getSharableLink = '/api/v1/get_link?sid=';
   static const String loginUri = '/api/v1/auth/vendor/login';
   static const String membershipUri = '/api/v1/vendor/get-member';
   static const String uploadpaymentreceipt =
@@ -62,6 +63,13 @@ class AppConstants {
   static const String deleteDmUri = '/api/v1/vendor/delivery-man/delete';
   static const String updateDmStatusUri = '/api/v1/vendor/delivery-man/status';
   static const String dmReviewUri = '/api/v1/vendor/delivery-man/preview';
+
+  static const String emListUri = '/api/v1/vendor/employee/list';
+  static const String addEmUri = '/api/v1/vendor/employee/store';
+  static const String updateEmUri = '/api/v1/vendor/employee/update/';
+  static const String deleteEmUri = '/api/v1/vendor/employee/delete';
+  static const String getEmRoleUri = '/api/v1/vendor/employee/getRole';
+
   static const String addSchedule = '/api/v1/vendor/schedule/store';
   static const String deleteSchedule = '/api/v1/vendor/schedule/';
   static const String unitListUri = '/api/v1/vendor/unit';

@@ -200,6 +200,7 @@ class BaseUrls {
   String? storeImageUrl;
   String? storeCoverPhotoUrl;
   String? deliveryManImageUrl;
+  String? employeeImageUrl;
   String? chatImageUrl;
   String? campaignImageUrl;
   String? moduleImageUrl;
@@ -218,6 +219,7 @@ class BaseUrls {
     this.storeImageUrl,
     this.storeCoverPhotoUrl,
     this.deliveryManImageUrl,
+    this.employeeImageUrl,
     this.chatImageUrl,
     this.campaignImageUrl,
     this.moduleImageUrl,
@@ -237,6 +239,7 @@ class BaseUrls {
     storeImageUrl = json['store_image_url'];
     storeCoverPhotoUrl = json['store_cover_photo_url'];
     deliveryManImageUrl = json['delivery_man_image_url'];
+    employeeImageUrl = json['employee_image_url'];
     chatImageUrl = json['chat_image_url'];
     campaignImageUrl = json['campaign_image_url'];
     moduleImageUrl = json['module_image_url'];
@@ -255,6 +258,7 @@ class BaseUrls {
     data['store_image_url'] = storeImageUrl;
     data['store_cover_photo_url'] = storeCoverPhotoUrl;
     data['delivery_man_image_url'] = deliveryManImageUrl;
+    data['employee_image_url'] = employeeImageUrl;
     data['chat_image_url'] = chatImageUrl;
     data['campaign_image_url'] = campaignImageUrl;
     data['module_image_url'] = moduleImageUrl;

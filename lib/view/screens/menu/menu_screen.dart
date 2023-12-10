@@ -45,12 +45,12 @@ class MenuScreen extends StatelessWidget {
           title: 'campaign'.tr,
           route: RouteHelper.getCampaignRoute()));
     }
-    if (Get.find<AuthController>()
-                .profileModel!
-                .stores![0]
-                .selfDeliverySystem ==
-            1 &&
-        Get.find<AuthController>().getUserType() == 'owner') {
+    // Get.find<AuthController>()
+    //             .profileModel!
+    //             .stores![0]
+    //             .selfDeliverySystem ==
+    //         1 &&
+    if (Get.find<AuthController>().getUserType() == 'owner') {
       menuList.add(MenuModel(
           icon: Images.deliveryMan,
           title: 'delivery_man'.tr,
@@ -66,6 +66,13 @@ class MenuScreen extends StatelessWidget {
           icon: Images.addon,
           title: 'addons'.tr,
           route: RouteHelper.getAddonsRoute()));
+    }
+    if (Get.find<AuthController>().modulePermission!.employee! &&
+        Get.find<AuthController>().getUserType() == 'owner') {
+      menuList.add(MenuModel(
+          icon: Images.addon,
+          title: 'Employee'.tr,
+          route: RouteHelper.employee));
     }
     if (Get.find<AuthController>().modulePermission!.chat!) {
       menuList.add(MenuModel(

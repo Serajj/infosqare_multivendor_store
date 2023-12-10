@@ -141,7 +141,7 @@ class DashboardScreenState extends State<DashboardScreen> {
                         onTap: () => _setPage(1)),
                     const Expanded(child: SizedBox()),
                     BottomNavItem(
-                        iconData: Icons.monetization_on,
+                        iconData: Icons.currency_rupee,
                         isSelected: _pageIndex == 3,
                         onTap: () => _setPage(3)),
                     BottomNavItem(

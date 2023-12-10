@@ -7,6 +7,7 @@ import 'package:connectuz_store/controller/campaign_controller.dart';
 import 'package:connectuz_store/controller/chat_controller.dart';
 import 'package:connectuz_store/controller/coupon_controller.dart';
 import 'package:connectuz_store/controller/delivery_man_controller.dart';
+import 'package:connectuz_store/controller/employee_controller.dart';
 import 'package:connectuz_store/controller/expense_controller.dart';
 import 'package:connectuz_store/controller/localization_controller.dart';
 import 'package:connectuz_store/controller/notification_controller.dart';
@@ -22,6 +23,7 @@ import 'package:connectuz_store/data/repository/campaign_repo.dart';
 import 'package:connectuz_store/data/repository/chat_repo.dart';
 import 'package:connectuz_store/data/repository/coupon_repo.dart';
 import 'package:connectuz_store/data/repository/delivery_man_repo.dart';
+import 'package:connectuz_store/data/repository/employee_repo.dart';
 import 'package:connectuz_store/data/repository/expense_repo.dart';
 import 'package:connectuz_store/data/repository/language_repo.dart';
 import 'package:connectuz_store/data/repository/notification_repo.dart';
@@ -62,6 +64,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => AddonRepo(apiClient: Get.find()));
   Get.lazyPut(() => PosRepo(apiClient: Get.find()));
   Get.lazyPut(() => DeliveryManRepo(apiClient: Get.find()));
+  Get.lazyPut(() => EmployeeRepo(apiClient: Get.find()));
   Get.lazyPut(
       () => ChatRepo(apiClient: Get.find(), sharedPreferences: Get.find()));
   Get.lazyPut(() => CouponRepo(apiClient: Get.find()));
@@ -82,6 +85,7 @@ Future<Map<String, Map<String, String>>> init() async {
   Get.lazyPut(() => AddonController(addonRepo: Get.find()));
   Get.lazyPut(() => PosController(posRepo: Get.find()));
   Get.lazyPut(() => DeliveryManController(deliveryManRepo: Get.find()));
+  Get.lazyPut(() => EmployeeController(deliveryManRepo: Get.find()));
   Get.lazyPut(() => ChatController(chatRepo: Get.find()));
   Get.lazyPut(() => CouponController(couponRepo: Get.find()));
   Get.lazyPut(() => ExpenseController(expenseRepo: Get.find()));
