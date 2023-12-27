@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:connectuz_store/data/api/api_checker.dart';
 import 'package:connectuz_store/data/model/response/delivery_man_model.dart';
 import 'package:connectuz_store/data/model/response/review_model.dart';
@@ -56,12 +58,33 @@ class DeliveryManController extends GetxController implements GetxService {
           isError: false);
       getDeliveryManList();
       print("delivery response");
+    } else if (response.statusCode == 403) {
+      String responseString = await response.body.bytesToString();
+      print(responseString);
+      displayErrorMessages(responseString);
+      _isLoading = false;
     } else {
       ApiChecker.checkApi(response, password: true);
       print("api checker $response");
     }
     _isLoading = false;
     update();
+  }
+
+  void displayErrorMessages(String jsonResponse) {
+    try {
+      Map<String, dynamic> responseMap = json.decode(jsonResponse);
+
+      if (responseMap.containsKey('errors')) {
+        List<dynamic> errors = responseMap['errors'];
+        for (var error in errors) {
+          String errorMessage = error['message'];
+          showCustomSnackBar(errorMessage);
+        }
+      }
+    } catch (e) {
+      print('Error parsing JSON: $e');
+    }
   }
 
   Future<void> deleteDeliveryMan(int? deliveryManID) async {
@@ -135,24 +158,29 @@ class DeliveryManController extends GetxController implements GetxService {
   }
 
   void pickImage(bool isLogo, bool isRemove) async {
-    if (isRemove) {
-      _pickedImage = null;
-      _pickedIdentities = [];
-    } else {
-      if (isLogo) {
-        XFile? picked =
-            await ImagePicker().pickImage(source: ImageSource.gallery);
-        if (picked != null) {
-          _pickedImage = picked;
-        }
+    try {
+      if (isRemove) {
+        _pickedImage = null;
+        _pickedIdentities = [];
       } else {
-        XFile? xFile =
-            await ImagePicker().pickImage(source: ImageSource.gallery);
-        if (xFile != null) {
-          _pickedIdentities.add(xFile);
+        if (isLogo) {
+          XFile? picked =
+              await ImagePicker().pickImage(source: ImageSource.gallery);
+          if (picked != null) {
+            _pickedImage = picked;
+          }
+        } else {
+          XFile? xFile =
+              await ImagePicker().pickImage(source: ImageSource.gallery);
+          if (xFile != null) {
+            _pickedIdentities.add(xFile);
+          }
         }
+        update();
       }
-      update();
+    } catch (e) {
+      showCustomSnackBar(
+          'Something went wrong , try again witn diffrent image'.tr);
     }
   }
 

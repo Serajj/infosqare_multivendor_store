@@ -605,10 +605,11 @@ class StoreController extends GetxController implements GetxService {
     Response response = await storeRepo.getItemReviewList(itemID);
     if (response.statusCode == 200) {
       _itemReviewList = [];
-      response.body.forEach(
+      response.body['reviews'].forEach(
           (review) => _itemReviewList!.add(ReviewModel.fromJson(review)));
     } else {
-      ApiChecker.checkApi(response);
+      _itemReviewList = [];
+      //ApiChecker.checkApi(response);
     }
     update();
   }

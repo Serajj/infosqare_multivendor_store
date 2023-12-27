@@ -74,7 +74,7 @@ class User {
   int? loginMedium;
   int? zoneId;
   String? socialId;
-  int? walletBalance;
+  double? walletBalance;
   int? loyaltyPoint;
   String? refCode;
   String? currentLanguageKey;
@@ -122,12 +122,6 @@ class User {
     loginMedium = json['login_medium'];
     socialId = json['social_id'];
     zoneId = json['zone_id'];
-    walletBalance = json['wallet_balance'];
-    loyaltyPoint = json['loyalty_point'];
-    refCode = json['ref_code'];
-    currentLanguageKey = json['current_language_key'];
-    refBy = json['ref_by'];
-    tempToken = json['temp_token'];
   }
 
   Map<String, dynamic> toJson() {

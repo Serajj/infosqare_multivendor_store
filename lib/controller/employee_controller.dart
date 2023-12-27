@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:connectuz_store/data/api/api_checker.dart';
 import 'package:connectuz_store/data/model/response/delivery_man_model.dart';
 import 'package:connectuz_store/data/model/response/employee_model.dart';
@@ -14,7 +16,7 @@ class EmployeeController extends GetxController implements GetxService {
   EmployeeController({required this.deliveryManRepo});
 
   List<Employee>? _deliveryManList;
-  List<Role>? _roles;
+  List<Role> _roles = [];
   Role? _selectedRole;
   XFile? _pickedImage;
   List<XFile> _pickedIdentities = [];
@@ -29,7 +31,7 @@ class EmployeeController extends GetxController implements GetxService {
   bool _isSuspended = false;
 
   List<Employee>? get deliveryManList => _deliveryManList;
-  List<Role>? get employeeRoles => _roles;
+  List<Role> get employeeRoles => _roles;
   Role? get selectedRole => _selectedRole;
 
   XFile? get pickedImage => _pickedImage;
@@ -41,6 +43,7 @@ class EmployeeController extends GetxController implements GetxService {
   bool get isSuspended => _isSuspended;
 
   Future<void> getDeliveryManList() async {
+    _deliveryManList = [];
     Response response = await deliveryManRepo.getDeliveryManList();
     if (response.statusCode == 200) {
       _deliveryManList = [];
@@ -57,8 +60,9 @@ class EmployeeController extends GetxController implements GetxService {
     if (response.statusCode == 200) {
       _roles = [];
       response.body
-          .forEach((deliveryMan) => _roles!.add(Role.fromJson(deliveryMan)));
+          .forEach((deliveryMan) => _roles.add(Role.fromJson(deliveryMan)));
     } else {
+      _roles = [];
       ApiChecker.checkApi(response);
     }
     update();
@@ -70,22 +74,40 @@ class EmployeeController extends GetxController implements GetxService {
     update();
     Response response = await deliveryManRepo.addDeliveryMan(
         deliveryMan, pass, _pickedImage, _pickedIdentities, token, isAdd);
-    print("=========> $response");
     if (response.statusCode == 200) {
       Get.back();
       showCustomSnackBar(
           isAdd
-              ? 'delivery_man_added_successfully'.tr
-              : 'delivery_man_updated_successfully'.tr,
+              ? 'Employee added successfully!'.tr
+              : 'Employee updated successfully!'.tr,
           isError: false);
       getDeliveryManList();
-      print("delivery response");
+    } else if (response.statusCode == 403) {
+      String responseString = await response.body.bytesToString();
+      print(responseString);
+      displayErrorMessages(responseString);
+      _isLoading = false;
     } else {
       ApiChecker.checkApi(response, password: true);
-      print("api checker $response");
     }
     _isLoading = false;
     update();
+  }
+
+  void displayErrorMessages(String jsonResponse) {
+    try {
+      Map<String, dynamic> responseMap = json.decode(jsonResponse);
+
+      if (responseMap.containsKey('errors')) {
+        List<dynamic> errors = responseMap['errors'];
+        for (var error in errors) {
+          String errorMessage = error['message'];
+          showCustomSnackBar(errorMessage);
+        }
+      }
+    } catch (e) {
+      print('Error parsing JSON: $e');
+    }
   }
 
   Future<void> deleteDeliveryMan(int? deliveryManID) async {
@@ -94,8 +116,7 @@ class EmployeeController extends GetxController implements GetxService {
     Response response = await deliveryManRepo.deleteDeliveryMan(deliveryManID);
     if (response.statusCode == 200) {
       Get.back();
-      showCustomSnackBar('delivery_man_deleted_successfully'.tr,
-          isError: false);
+      showCustomSnackBar('Employee deleted successfully'.tr, isError: false);
       getDeliveryManList();
     } else {
       ApiChecker.checkApi(response);

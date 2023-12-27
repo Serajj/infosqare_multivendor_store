@@ -1,7 +1,5 @@
-import 'package:connectuz_store/controller/delivery_man_controller.dart';
 import 'package:connectuz_store/controller/employee_controller.dart';
 import 'package:connectuz_store/controller/splash_controller.dart';
-import 'package:connectuz_store/data/model/response/delivery_man_model.dart';
 import 'package:connectuz_store/data/model/response/employee_model.dart';
 import 'package:connectuz_store/helper/route_helper.dart';
 import 'package:connectuz_store/util/dimensions.dart';
@@ -120,7 +118,7 @@ class EmployeeScreen extends StatelessWidget {
                       );
                     },
                   )
-                : Center(child: Text('no_delivery_man_found'.tr))
+                : Center(child: Text('No employee found'.tr))
             : const Center(child: CircularProgressIndicator());
       }),
     );

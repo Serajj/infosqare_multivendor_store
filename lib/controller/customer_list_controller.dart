@@ -32,6 +32,12 @@ class CustomerListController extends GetxController {
   List<CustomerModel>? get customerList => _customerList;
 
   Future<void> fetchCustomersList() async {
+    if (search.value.isEmpty) {
+      dataList.clear();
+      isLoading.value = false;
+
+      return;
+    }
     if (offset.value == 1) {
       isLoading.value = true;
       dataList.clear();
@@ -46,6 +52,9 @@ class CustomerListController extends GetxController {
       dataList.addAll(data
           .map<UserFollow>((element) => UserFollow.fromJson(element))
           .toList());
+      if (search.value == "" || search.value == null) {
+        dataList.clear();
+      }
     }
 
     isLoading.value = false;

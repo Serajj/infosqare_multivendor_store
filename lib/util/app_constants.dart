@@ -49,7 +49,7 @@ class AppConstants {
   static const String updateItemUri = '/api/v1/vendor/item/update';
   static const String deleteItemUri = '/api/v1/vendor/item/delete';
   static const String vendorReviewUri = '/api/v1/vendor/item/reviews';
-  static const String itemReviewUri = '/api/v1/items/reviews';
+  static const String itemReviewUri = '/api/v1/vendor/item/reviews';
   static const String updateItemStatusUri = '/api/v1/vendor/item/status';
   static const String updateVendorStatusUri =
       '/api/v1/vendor/update-active-status';

@@ -54,7 +54,9 @@ class EmployeeRepo {
     print(response.statusCode);
 
     return Response(
-        statusCode: response.statusCode, statusText: response.reasonPhrase);
+        statusCode: response.statusCode,
+        statusText: response.reasonPhrase,
+        body: response.stream);
   }
 
   Future<Response> updateDeliveryMan(DeliveryManModel deliveryManModel) async {

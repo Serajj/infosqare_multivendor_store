@@ -70,7 +70,8 @@ class _FollowScreenState extends State<FollowScreen> {
               ),
               Obx(() => customerListController.isLoading.isTrue
                   ? Center(child: CircularProgressIndicator())
-                  : customerListController.dataList.length > 0
+                  : (customerListController.dataList.length > 0 &&
+                          _searchController.text != null)
                       ? Expanded(
                           child: ListView.builder(
                             shrinkWrap: true,
@@ -113,7 +114,11 @@ class _FollowScreenState extends State<FollowScreen> {
                         )
                       : Container(
                           child: Center(
-                            child: Text("No users to show."),
+                            child: Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Text(
+                                  "Search name, email or number & send follow request."),
+                            ),
                           ),
                         )),
             ],

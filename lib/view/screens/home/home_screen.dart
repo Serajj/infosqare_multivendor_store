@@ -37,7 +37,7 @@ class HomeScreen extends StatelessWidget {
             context: context,
             builder: (ctx) => FollowerCountDialog(
                   icon: "",
-                  description: "You don't have followers yet.",
+                  description: "Follow customers to take orders.",
                   title: "No followers",
                 ));
       }

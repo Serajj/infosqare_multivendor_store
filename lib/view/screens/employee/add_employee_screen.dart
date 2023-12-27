@@ -53,6 +53,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   @override
   void initState() {
     super.initState();
+    Get.find<EmployeeController>().getEmployeeRole();
     _deliveryMan = widget.deliveryMan;
     _update = widget.deliveryMan != null;
     _countryDialCode = CountryCode.fromCountryCode(
@@ -71,7 +72,10 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     } else {
       _deliveryMan = Employee();
       Get.find<EmployeeController>().setIdentityTypeIndex(
-          Get.find<EmployeeController>().employeeRoles?[0], false);
+          (Get.find<EmployeeController>().employeeRoles.length > 0
+              ? Get.find<EmployeeController>().employeeRoles[0]
+              : null),
+          false);
       //Get.find<DeliveryManController>().setIdentityTypeIndex(Get.find<DeliveryManController>().identityTypeList[0], false);
       print("deliveryman $_deliveryMan");
     }
@@ -161,7 +165,13 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                       top: 0,
                       left: 0,
                       child: InkWell(
-                        onTap: () => dmController.pickImage(true, false),
+                        onTap: () {
+                          try {
+                            dmController.pickImage(true, false);
+                          } catch (e) {
+                            print(e);
+                          }
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.black.withOpacity(0.3),
@@ -287,20 +297,20 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                               style: TextStyle(color: Colors.red, fontSize: 10),
                             )
                           : SizedBox(),
-                      dmController.employeeRoles!.length == 0
-                          ? ElevatedButton(
-                              onPressed: () async {
-                                String shareUrl =
-                                    '${AppConstants.baseUrl}/store-panel/custom-role/create?token=${Get.find<AuthController>().getUserToken()}';
-                                final Uri url = Uri.parse(shareUrl);
-                                if (!await launchUrl(url)) {
-                                  showCustomSnackBar(
-                                      'Error while redirection, please ensure you have browser installed in your device.'
-                                          .tr);
-                                }
-                              },
-                              child: Text("Add role"))
-                          : SizedBox(),
+                      ElevatedButton(
+                          onPressed: () async {
+                            String shareUrl =
+                                '${AppConstants.baseUrl}/store-panel/custom-role/create?token=${Get.find<AuthController>().getUserToken()}';
+                            final Uri url = Uri.parse(shareUrl);
+                            if (!await launchUrl(url,
+                                mode: LaunchMode.externalApplication)) {
+                              showCustomSnackBar(
+                                  'Error while redirection, please ensure you have browser installed in your device.'
+                                      .tr);
+                            }
+                            Get.back();
+                          },
+                          child: Text("Add new role")),
                       const SizedBox(height: Dimensions.paddingSizeExtraSmall),
                       Container(
                         padding: const EdgeInsets.symmetric(

@@ -256,7 +256,8 @@ class _SignInScreenState extends State<SignInScreen> {
           await Get.find<AuthController>().getProfile();
           Get.offAllNamed(RouteHelper.getInitialRoute());
         } else {
-          showCustomSnackBar(status.message);
+          showCustomSnackBar(
+              "Wrong credentials, kindly check your email or password.");
         }
       });
     }
