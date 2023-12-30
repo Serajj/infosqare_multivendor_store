@@ -447,6 +447,10 @@ class InvoiceDialog extends StatelessWidget {
                     style: robotoRegular.copyWith(fontSize: fontSize)),
                 Text(store.email!,
                     style: robotoRegular.copyWith(fontSize: fontSize)),
+                (store.gstStatus ?? false)
+                    ? Text("GST Reg. : ${store.gstCode!}",
+                        style: robotoRegular.copyWith(fontSize: fontSize))
+                    : SizedBox(),
                 const SizedBox(height: 10),
                 Wrap(children: [
                   Row(children: [
