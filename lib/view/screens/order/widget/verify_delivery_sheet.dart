@@ -113,7 +113,8 @@ class VerifyDeliverySheet extends StatelessWidget {
                             bottom: Dimensions.paddingSizeLarge),
                         onPressed: () {
                           Get.find<OrderController>()
-                              .updateOrderStatus(orderID, 'delivered')
+                              .updateOrderStatus(orderID, 'delivered',
+                                  context: context)
                               .then((success) {
                             if (success) {
                               Get.find<AuthController>().getProfile();

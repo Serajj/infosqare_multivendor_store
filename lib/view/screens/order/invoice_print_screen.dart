@@ -414,6 +414,8 @@ class InvoiceDialog extends StatelessWidget {
             itemsPrice + (orderDetails.price! * orderDetails.quantity!);
       }
     }
+    double additionalCharge = (order?.additionalCharge ?? 0);
+    bool isAdditional = additionalCharge > 0;
 
     return OrientationBuilder(builder: (context, orientation) {
       double fixedSize = MediaQuery.of(context).size.width /
@@ -645,6 +647,13 @@ class InvoiceDialog extends StatelessWidget {
                     title: 'delivery_fee'.tr,
                     value: _priceDecimal(order!.deliveryCharge!),
                     fontSize: fontSize),
+                SizedBox(height: isAdditional ? 5 : 0),
+                isAdditional
+                    ? PriceWidget(
+                        title: 'Platform fee'.tr,
+                        value: _priceDecimal(additionalCharge),
+                        fontSize: fontSize)
+                    : SizedBox(),
                 Divider(
                     color: Theme.of(context).textTheme.bodyLarge!.color,
                     thickness: 1),

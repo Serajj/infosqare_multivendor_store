@@ -117,7 +117,8 @@ class CancellationDialogue extends StatelessWidget {
                             orderController
                                 .updateOrderStatus(orderId, 'canceled',
                                     back: true,
-                                    reason: orderController.cancelReason)
+                                    reason: orderController.cancelReason,
+                                    context: context)
                                 .then((success) {
                               if (success) {
                                 Get.find<AuthController>().getProfile();

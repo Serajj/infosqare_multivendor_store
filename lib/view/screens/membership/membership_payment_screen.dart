@@ -273,119 +273,119 @@ class _MembershipPaymentScreenState extends State<MembershipPaymentScreen> {
                 ],
               ),
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: 40,
-                    child: Text(
-                      "Note : ",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      "Scan/Tap and pay below QR code and submit screenshot.",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w800, fontSize: 11),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24),
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {
-                      print("Opening google pay");
-                      launchGooglePay();
-                    },
-                    child: Container(
-                      height: 200,
-                      width: 200,
-                      color: Colors.white,
-                      child: Image.network(Get.find<SplashController>()
-                          .configModel!
-                          .baseUrls!
-                          .qrImageUrl
-                          .toString()),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: Text(""),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomButton(
-                    buttonText: "Add Screenshot",
-                    onPressed: () {
-                      _pickImage(ImageSource.gallery);
-                    },
-                    width: 140,
-                  ),
-                  if (_imageFile != null)
-                    CustomButton(
-                      width: 140,
-                      buttonText: "View",
-                      onPressed: () {
-                        String happy = "Happy";
-                        showDialog(
-                            context: context,
-                            barrierDismissible: false,
-                            builder: (con) => Dialog(
-                                  child: Container(
-                                    height: 300,
-                                    width: MediaQuery.of(con).size.width - 50,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.end,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                Get.back();
-                                              },
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Icon(Icons.close),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                        if (_imageFile != null)
-                                          Container(
-                                              height: 150,
-                                              child: Image.file(
-                                                  File(_imageFile!.path))),
-                                      ],
-                                    ),
-                                  ),
-                                ));
-                      },
-                    ),
-                ],
-              ),
-            ),
+            // SizedBox(
+            //   height: 20,
+            // ),
+            // Padding(
+            //   padding: const EdgeInsets.symmetric(horizontal: 24),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: [
+            //       Container(
+            //         width: 40,
+            //         child: Text(
+            //           "Note : ",
+            //           style:
+            //               TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+            //         ),
+            //       ),
+            //       Expanded(
+            //         child: Text(
+            //           "Scan/Tap and pay below QR code and submit screenshot.",
+            //           style:
+            //               TextStyle(fontWeight: FontWeight.w800, fontSize: 11),
+            //         ),
+            //       )
+            //     ],
+            //   ),
+            // ),
+            // Padding(
+            //   padding: EdgeInsets.symmetric(horizontal: 24),
+            //   child: Center(
+            //     child: Padding(
+            //       padding: const EdgeInsets.all(8.0),
+            //       child: InkWell(
+            //         onTap: () {
+            //           print("Opening google pay");
+            //           launchGooglePay();
+            //         },
+            //         child: Container(
+            //           height: 200,
+            //           width: 200,
+            //           color: Colors.white,
+            //           child: Image.network(Get.find<SplashController>()
+            //               .configModel!
+            //               .baseUrls!
+            //               .qrImageUrl
+            //               .toString()),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // Center(
+            //   child: Text(""),
+            // ),
+            // SizedBox(
+            //   height: 20,
+            // ),
+            //   Padding(
+            //     padding: const EdgeInsets.symmetric(horizontal: 24),
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //       children: [
+            //         CustomButton(
+            //           buttonText: "Add Screenshot",
+            //           onPressed: () {
+            //             _pickImage(ImageSource.gallery);
+            //           },
+            //           width: 140,
+            //         ),
+            //         if (_imageFile != null)
+            //           CustomButton(
+            //             width: 140,
+            //             buttonText: "View",
+            //             onPressed: () {
+            //               String happy = "Happy";
+            //               showDialog(
+            //                   context: context,
+            //                   barrierDismissible: false,
+            //                   builder: (con) => Dialog(
+            //                         child: Container(
+            //                           height: 300,
+            //                           width: MediaQuery.of(con).size.width - 50,
+            //                           child: Column(
+            //                             children: [
+            //                               Row(
+            //                                 mainAxisAlignment:
+            //                                     MainAxisAlignment.end,
+            //                                 children: [
+            //                                   InkWell(
+            //                                     onTap: () {
+            //                                       Get.back();
+            //                                     },
+            //                                     child: Padding(
+            //                                       padding:
+            //                                           const EdgeInsets.all(8.0),
+            //                                       child: Icon(Icons.close),
+            //                                     ),
+            //                                   ),
+            //                                 ],
+            //                               ),
+            //                               if (_imageFile != null)
+            //                                 Container(
+            //                                     height: 150,
+            //                                     child: Image.file(
+            //                                         File(_imageFile!.path))),
+            //                             ],
+            //                           ),
+            //                         ),
+            //                       ));
+            //             },
+            //           ),
+            //       ],
+            //     ),
+            //   ),
           ],
         ),
       ),
@@ -398,12 +398,12 @@ class _MembershipPaymentScreenState extends State<MembershipPaymentScreen> {
             width: ResponsiveHelper.isDesktop(context)
                 ? MediaQuery.of(context).size.width / 2.0
                 : null,
-            buttonText: "Submit",
+            buttonText: "Buy Now",
             onPressed: () async {
-              if (_imageFile == null) {
-                showCustomSnackBar("Please select payment screenshot first.");
-                return;
-              }
+              // if (_imageFile == null) {
+              //   showCustomSnackBar("Please select payment screenshot first.");
+              //   return;
+              // }
               String model_id =
                   membershipController.selectedMembership.value.id.toString();
               String amount = membershipController
@@ -413,19 +413,21 @@ class _MembershipPaymentScreenState extends State<MembershipPaymentScreen> {
                   membershipController.selectedMembership.value.title
                       .toString() +
                   " plan.";
-              String image = iurl.toString();
-              bool isUploaded = await membershipController.uploadPaymentReciept(
-                  model_id, amount, desc, image);
-              if (isUploaded) {
-                showCustomSnackBar(
-                    "Payment image added please wait for admin approval , we will get back to you shortly.",
-                    isError: false);
-                Get.back();
-                Get.offAndToNamed(RouteHelper.initial);
-              } else {
-                showCustomSnackBar("Failed to upload payment reciept",
-                    isError: true);
-              }
+              String image = 98.toString();
+              String paymentMethod = "razor_pay";
+
+              bool isUploaded = await membershipController.purchaseMembership(
+                  amount, paymentMethod, model_id);
+              // if (isUploaded) {
+              //   showCustomSnackBar(
+              //       "Payment image added please wait for admin approval , we will get back to you shortly.",
+              //       isError: false);
+              //   Get.back();
+              //   Get.offAndToNamed(RouteHelper.initial);
+              // } else {
+              //   showCustomSnackBar("Failed to upload payment reciept",
+              //       isError: true);
+              // }
             },
           )),
         ),

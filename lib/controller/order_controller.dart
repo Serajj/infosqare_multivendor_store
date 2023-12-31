@@ -9,7 +9,11 @@ import 'package:connectuz_store/data/model/response/order_model.dart';
 import 'package:connectuz_store/data/model/response/running_order_model.dart';
 import 'package:connectuz_store/data/repository/order_repo.dart';
 import 'package:connectuz_store/view/base/custom_snackbar.dart';
+import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
+
+import '../helper/route_helper.dart';
+import '../util/app_constants.dart';
 
 class OrderController extends GetxController implements GetxService {
   final OrderRepo orderRepo;
@@ -200,7 +204,10 @@ class OrderController extends GetxController implements GetxService {
   }
 
   Future<bool> updateOrderStatus(int? orderID, String status,
-      {bool back = false, String? reason, String? processingTime}) async {
+      {bool back = false,
+      String? reason,
+      String? processingTime,
+      required BuildContext context}) async {
     _isLoading = true;
     update();
     UpdateStatusBody updateStatusBody = UpdateStatusBody(
@@ -210,6 +217,7 @@ class OrderController extends GetxController implements GetxService {
       processingTime: processingTime,
       reason: reason,
     );
+
     Response response = await orderRepo.updateOrderStatus(updateStatusBody);
     Get.back();
     bool isSuccess;
@@ -222,7 +230,7 @@ class OrderController extends GetxController implements GetxService {
       showCustomSnackBar(response.body['message'], isError: false);
       isSuccess = true;
     } else {
-      ApiChecker.checkApi(response);
+      ApiChecker.checkApi(response, context: context);
       isSuccess = false;
     }
     _isLoading = false;
@@ -381,5 +389,42 @@ class OrderController extends GetxController implements GetxService {
           '$addOnText${(addOnText.isEmpty) ? '' : ',  '}${addOn.name} X ${addOn.quantity} = ${addOn.price! * addOn.quantity!}';
     }
     return addOnText;
+  }
+
+  void paymentRedirect(
+      {required String url,
+      required bool canRedirect,
+      required String? contactNumber,
+      required Function onClose,
+      required final String? addFundUrl,
+      required final String orderID}) {
+    if (canRedirect) {
+      bool isSuccess =
+          url.contains('success') && url.contains(AppConstants.baseUrl);
+      bool isFailed =
+          url.contains('fail') && url.contains(AppConstants.baseUrl);
+      bool isCancel =
+          url.contains('cancel') && url.contains(AppConstants.baseUrl);
+      if (isSuccess || isFailed || isCancel) {
+        canRedirect = false;
+        onClose();
+      }
+
+      if ((addFundUrl == '' && addFundUrl!.isEmpty)) {
+        if (isSuccess) {
+          Get.offNamed(RouteHelper.getInitialRoute());
+        } else if (isFailed || isCancel) {
+          Get.offNamed(RouteHelper.getInitialRoute());
+        }
+      } else {
+        if (isSuccess || isFailed || isCancel) {
+          if (Get.currentRoute.contains(RouteHelper.payment)) {
+            Get.back();
+          }
+          Get.back();
+          Get.toNamed(RouteHelper.getInitialRoute());
+        }
+      }
+    }
   }
 }

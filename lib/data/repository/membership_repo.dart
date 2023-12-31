@@ -1,7 +1,10 @@
+import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
 
+import '../../helper/route_helper.dart';
 import '../../util/app_constants.dart';
 import '../api/api_client.dart';
+import 'package:universal_html/html.dart' as html;
 
 class MembershipRepo {
   final ApiClient apiClient;
@@ -25,5 +28,19 @@ class MembershipRepo {
 
   Future<Response> getSubmittedStatus() async {
     return await apiClient.getData(AppConstants.getmanualPayment);
+  }
+
+  Future<Response> purchaseMembership(
+      String amount, String paymentMethod, String planId) async {
+    String? hostname = html.window.location.hostname;
+    String protocol = html.window.location.protocol;
+
+    return await apiClient.postData(AppConstants.addMembershipPurchaseUri, {
+      "amount": amount,
+      "planId": planId,
+      "payment_method": paymentMethod,
+      "payment_platform": GetPlatform.isWeb ? 'web' : '',
+      "callback": '$protocol//$hostname${RouteHelper.membership}',
+    });
   }
 }

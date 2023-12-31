@@ -49,6 +49,8 @@ import 'package:connectuz_store/view/screens/splash/splash_screen.dart';
 import 'package:connectuz_store/view/screens/update/update_screen.dart';
 import 'package:get/get.dart';
 import 'package:connectuz_store/view/screens/user_request/user_request.dart';
+import '../data/model/response/order_model.dart';
+import '../view/base/payment_screen.dart';
 import '../view/screens/membership/membership_payment_screen.dart';
 import '../view/screens/membership/membership_screen.dart';
 import '../view/screens/user_request/follow_screen.dart';
@@ -88,6 +90,8 @@ class RouteHelper {
   static const String employee = '/employee';
   static const String addEmployee = '/add-employee';
   static const String employeeDetails = '/employee-man-details';
+
+  static const String payment = '/payment';
 
   static const String terms = '/terms-and-condition';
   static const String privacy = '/privacy-policy';
@@ -144,6 +148,13 @@ class RouteHelper {
     String data = base64Encode(encoded);
     return '$item?data=$data';
   }
+
+  static String getPaymentRoute(String id, int? user, String? type,
+          double amount, bool? codDelivery, String? paymentMethod,
+          {required String guestId,
+          String? contactNumber,
+          String? addFundUrl}) =>
+      '$payment?id=$id&user=$user&type=$type&amount=$amount&cod-delivery=$codDelivery&add-fund-url=$addFundUrl&payment-method=$paymentMethod&guest-id=$guestId&number=$contactNumber';
 
   static String getAddItemRoute(
       Item? itemModel, List<Translation> translations) {
@@ -465,5 +476,32 @@ class RouteHelper {
     GetPage(name: membership, page: () => const MembershipScreen()),
     GetPage(
         name: membershipPayment, page: () => const MembershipPaymentScreen()),
+    GetPage(
+        name: payment,
+        page: () {
+          OrderModel order = OrderModel(
+            id: int.parse(Get.parameters['id']!),
+            orderType: Get.parameters['type'],
+            userId: Get.parameters['user'],
+            orderAmount: double.parse(Get.parameters['amount']!),
+          );
+          bool isCodActive = Get.parameters['cod-delivery'] == 'true';
+          String addFundUrl = '';
+          String paymentMethod = Get.parameters['payment-method']!;
+          if (Get.parameters['add-fund-url'] != null &&
+              Get.parameters['add-fund-url'] != 'null') {
+            addFundUrl = Get.parameters['add-fund-url']!;
+          }
+          String guestId = Get.parameters['guest-id']!;
+          String number = Get.parameters['number']!;
+          return PaymentScreen(
+            orderModel: order,
+            isCashOnDelivery: isCodActive,
+            addFundUrl: addFundUrl,
+            paymentMethod: paymentMethod,
+            guestId: guestId,
+            contactNumber: number,
+          );
+        }),
   ];
 }

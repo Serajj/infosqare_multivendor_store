@@ -104,7 +104,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
             .stores![0]
             .selfDeliverySystem ==
         1;
-
     return WillPopScope(
       onWillPop: () async {
         if (widget.fromNotification) {
@@ -188,14 +187,16 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
             }
           }
           double subTotal = itemsPrice + addOns;
+          double additionalCharge = (order?.additionalCharge ?? 0);
           double total = itemsPrice +
               addOns -
               discount! +
               (taxIncluded! ? 0 : tax!) +
               deliveryCharge! -
               couponDiscount! +
-              dmTips!;
-
+              dmTips! +
+              additionalCharge;
+          bool isAdditional = (order?.additionalCharge ?? 0) > 0;
           return (orderController.orderDetailsModel != null &&
                   controllerOrderModer != null)
               ? Column(children: [
@@ -1053,6 +1054,21 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                             style: robotoRegular),
                                       ]),
 
+                                  const SizedBox(height: 10),
+
+                                  isAdditional
+                                      ? Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                              Text('Platform fee'.tr,
+                                                  style: robotoRegular),
+                                              Text(
+                                                  '(+) ${PriceConverter.convertPrice(additionalCharge)}',
+                                                  style: robotoRegular),
+                                            ])
+                                      : SizedBox(),
+
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: Dimensions.paddingSizeSmall),
@@ -1181,7 +1197,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                               widget.orderId,
                                                               AppConstants
                                                                   .confirmed,
-                                                              back: true);
+                                                              back: true,
+                                                              context: context);
                                                     },
                                                   ),
                                                   barrierDismissible: false);
@@ -1215,7 +1232,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                           widget.orderId,
                                                           AppConstants
                                                               .confirmed,
-                                                          back: true);
+                                                          back: true,
+                                                          context: context);
                                                 },
                                                 onNoPressed: () {
                                                   if (cancelPermission!) {
@@ -1224,7 +1242,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                             widget.orderId,
                                                             AppConstants
                                                                 .canceled,
-                                                            back: true);
+                                                            back: true,
+                                                            context: context);
                                                   } else {
                                                     Get.back();
                                                   }
@@ -1236,7 +1255,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                             'processing') {
                                           Get.find<OrderController>()
                                               .updateOrderStatus(widget.orderId,
-                                                  AppConstants.handover);
+                                                  AppConstants.handover,
+                                                  context: context);
                                         } else if (controllerOrderModer
                                                     .orderStatus ==
                                                 'confirmed' ||
@@ -1259,7 +1279,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                   .updateOrderStatus(
                                                       controllerOrderModer.id,
                                                       AppConstants.processing,
-                                                      processingTime: time)
+                                                      processingTime: time,
+                                                      context: context)
                                                   .then((success) {
                                                 if (success) {
                                                   Get.find<AuthController>()
@@ -1302,7 +1323,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                             Get.find<OrderController>()
                                                 .updateOrderStatus(
                                                     controllerOrderModer.id,
-                                                    AppConstants.delivered);
+                                                    AppConstants.delivered,
+                                                    context: context);
                                           }
                                         }
                                       },

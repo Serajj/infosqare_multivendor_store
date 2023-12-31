@@ -30,12 +30,12 @@ class PaginatedOrderModel {
     }
     return data;
   }
-
 }
 
 class OrderModel {
   int? id;
   double? orderAmount;
+  double? additionalCharge;
   double? couponDiscountAmount;
   String? couponDiscountTitle;
   String? paymentStatus;
@@ -68,6 +68,7 @@ class OrderModel {
   String? storeLat;
   String? storeLng;
   String? storeLogo;
+  String? userId;
   int? itemCampaign;
   int? detailsCount;
   List<String>? orderAttachment;
@@ -82,55 +83,57 @@ class OrderModel {
   String? unavailableItemNote;
   String? deliveryInstruction;
 
-  OrderModel(
-      {this.id,
-        this.orderAmount,
-        this.couponDiscountAmount,
-        this.couponDiscountTitle,
-        this.paymentStatus,
-        this.orderStatus,
-        this.totalTaxAmount,
-        this.paymentMethod,
-        this.orderNote,
-        this.orderType,
-        this.createdAt,
-        this.updatedAt,
-        this.deliveryCharge,
-        this.scheduleAt,
-        this.otp,
-        this.pending,
-        this.accepted,
-        this.confirmed,
-        this.processing,
-        this.handover,
-        this.pickedUp,
-        this.delivered,
-        this.canceled,
-        this.refundRequested,
-        this.refunded,
-        this.deliveryAddress,
-        this.scheduled,
-        this.storeDiscountAmount,
-        this.storeName,
-        this.storeAddress,
-        this.storePhone,
-        this.storeLat,
-        this.storeLng,
-        this.storeLogo,
-        this.itemCampaign,
-        this.detailsCount,
-        this.prescriptionOrder,
-        this.customer,
-        this.orderAttachment,
-        this.moduleType,
-        this.dmTips,
-        this.processingTime,
-        this.deliveryMan,
-        this.taxStatus,
-        this.cutlery,
-        this.unavailableItemNote,
-        this.deliveryInstruction,
-      });
+  OrderModel({
+    this.id,
+    this.orderAmount,
+    this.couponDiscountAmount,
+    this.couponDiscountTitle,
+    this.paymentStatus,
+    this.orderStatus,
+    this.totalTaxAmount,
+    this.paymentMethod,
+    this.orderNote,
+    this.orderType,
+    this.createdAt,
+    this.updatedAt,
+    this.userId,
+    this.deliveryCharge,
+    this.scheduleAt,
+    this.additionalCharge,
+    this.otp,
+    this.pending,
+    this.accepted,
+    this.confirmed,
+    this.processing,
+    this.handover,
+    this.pickedUp,
+    this.delivered,
+    this.canceled,
+    this.refundRequested,
+    this.refunded,
+    this.deliveryAddress,
+    this.scheduled,
+    this.storeDiscountAmount,
+    this.storeName,
+    this.storeAddress,
+    this.storePhone,
+    this.storeLat,
+    this.storeLng,
+    this.storeLogo,
+    this.itemCampaign,
+    this.detailsCount,
+    this.prescriptionOrder,
+    this.customer,
+    this.orderAttachment,
+    this.moduleType,
+    this.dmTips,
+    this.processingTime,
+    this.deliveryMan,
+    this.taxStatus,
+    this.cutlery,
+    this.unavailableItemNote,
+    this.deliveryInstruction,
+  });
 
   OrderModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -152,6 +155,9 @@ class OrderModel {
     accepted = json['accepted'];
     confirmed = json['confirmed'];
     processing = json['processing'];
+    additionalCharge = json['additional_charge'] != null
+        ? double.parse(json['additional_charge'].toString())
+        : double.parse("0");
     handover = json['handover'];
     pickedUp = json['picked_up'];
     delivered = json['delivered'];
@@ -171,28 +177,27 @@ class OrderModel {
     storeLogo = json['store_logo'];
     itemCampaign = json['item_campaign'];
     detailsCount = json['details_count'];
-    if(json['order_attachment'] != null){
-      if(json['order_attachment'].toString().startsWith('[')){
+    if (json['order_attachment'] != null) {
+      if (json['order_attachment'].toString().startsWith('[')) {
         orderAttachment = [];
-        if(json['order_attachment'] is String) {
+        if (json['order_attachment'] is String) {
           jsonDecode(json['order_attachment']).forEach((v) {
             orderAttachment!.add(v);
           });
-        }else{
+        } else {
           json['order_attachment'].forEach((v) {
             orderAttachment!.add(v);
           });
         }
-      }else{
+      } else {
         orderAttachment = [];
         orderAttachment!.add(json['order_attachment'].toString());
       }
     }
     moduleType = json['module_type'];
     prescriptionOrder = json['prescription_order'];
-    customer = json['customer'] != null
-        ? Customer.fromJson(json['customer'])
-        : null;
+    customer =
+        json['customer'] != null ? Customer.fromJson(json['customer']) : null;
     dmTips = json['dm_tips'].toDouble();
     processingTime = json['processing_time'];
     deliveryMan = json['delivery_man'] != null
@@ -271,17 +276,17 @@ class DeliveryMan {
   int? active;
   String? status;
 
-  DeliveryMan(
-      {this.id,
-        this.fName,
-        this.lName,
-        this.phone,
-        this.email,
-        this.image,
-        this.zoneId,
-        this.active,
-        this.status,
-      });
+  DeliveryMan({
+    this.id,
+    this.fName,
+    this.lName,
+    this.phone,
+    this.email,
+    this.image,
+    this.zoneId,
+    this.active,
+    this.status,
+  });
 
   DeliveryMan.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -323,14 +328,14 @@ class DeliveryAddress {
 
   DeliveryAddress(
       {this.contactPersonName,
-        this.contactPersonNumber,
-        this.addressType,
-        this.address,
-        this.longitude,
-        this.latitude,
-        this.streetNumber,
-        this.house,
-        this.floor});
+      this.contactPersonNumber,
+      this.addressType,
+      this.address,
+      this.longitude,
+      this.latitude,
+      this.streetNumber,
+      this.house,
+      this.floor});
 
   DeliveryAddress.fromJson(Map<String, dynamic> json) {
     contactPersonName = json['contact_person_name'];
@@ -371,13 +376,13 @@ class Customer {
 
   Customer(
       {this.id,
-        this.fName,
-        this.lName,
-        this.phone,
-        this.email,
-        this.image,
-        this.createdAt,
-        this.updatedAt});
+      this.fName,
+      this.lName,
+      this.phone,
+      this.email,
+      this.image,
+      this.createdAt,
+      this.updatedAt});
 
   Customer.fromJson(Map<String, dynamic> json) {
     id = json['id'];

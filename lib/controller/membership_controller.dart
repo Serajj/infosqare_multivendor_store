@@ -1,8 +1,11 @@
+import 'package:connectuz_store/helper/route_helper.dart';
 import 'package:get/get.dart';
 
+import '../data/api/api_checker.dart';
 import '../data/model/response/manual_payment.dart';
 import '../data/model/response/membership_model.dart';
 import '../data/repository/membership_repo.dart';
+import 'package:universal_html/html.dart' as html;
 
 class MembershipController extends GetxController implements GetxService {
   final MembershipRepo membershipRepo;
@@ -43,6 +46,25 @@ class MembershipController extends GetxController implements GetxService {
   void setSelectedmembership(Membership membership) {
     print("selecting membership");
     selectedMembership.value = membership;
+  }
+
+  Future<bool> purchaseMembership(
+      String amount, String paymentMethod, String planId) async {
+    Response response =
+        await membershipRepo.purchaseMembership(amount, paymentMethod, planId);
+    if (response.statusCode == 200) {
+      String redirectUrl = response.body['redirect_link'];
+      Get.back();
+      if (GetPlatform.isWeb) {
+        html.window.open(redirectUrl, "_self");
+      } else {
+        Get.toNamed(RouteHelper.getPaymentRoute('0', 0, '', 0, false, '',
+            addFundUrl: redirectUrl, guestId: ''));
+      }
+    } else {
+      ApiChecker.checkApi(response);
+    }
+    return true;
   }
 
   Future<bool> uploadPaymentReciept(
