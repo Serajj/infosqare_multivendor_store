@@ -1175,13 +1175,43 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                           buttonText: 'confirm'.tr,
                                           height: 40,
                                           onPressed: () {
-                                            print(Get.find<AuthController>()
-                                                .profileModel!
-                                                .membershipId);
-                                            if (Get.find<AuthController>()
-                                                    .profileModel!
-                                                    .membershipId !=
-                                                null) {
+                                            if (Get.find<SplashController>()
+                                                    .configModel!
+                                                    .isMembershipEnabled ??
+                                                false) {
+                                              print(Get.find<AuthController>()
+                                                  .profileModel!
+                                                  .membershipId);
+                                              if (Get.find<AuthController>()
+                                                      .profileModel!
+                                                      .membershipId !=
+                                                  null) {
+                                                Get.dialog(
+                                                    ConfirmationDialog(
+                                                      icon: Images.warning,
+                                                      title:
+                                                          'are_you_sure_to_confirm'
+                                                              .tr,
+                                                      description:
+                                                          'you_want_to_confirm_this_order'
+                                                              .tr,
+                                                      onYesPressed: () {
+                                                        orderController
+                                                            .updateOrderStatus(
+                                                                widget.orderId,
+                                                                AppConstants
+                                                                    .confirmed,
+                                                                back: true,
+                                                                context:
+                                                                    context);
+                                                      },
+                                                    ),
+                                                    barrierDismissible: false);
+                                              } else {
+                                                showCustomSnackBar(
+                                                    "Please became member first to accept orders");
+                                              }
+                                            } else {
                                               Get.dialog(
                                                   ConfirmationDialog(
                                                     icon: Images.warning,
@@ -1202,9 +1232,6 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen>
                                                     },
                                                   ),
                                                   barrierDismissible: false);
-                                            } else {
-                                              showCustomSnackBar(
-                                                  "Please became member first to accept orders");
                                             }
                                           },
                                         )),

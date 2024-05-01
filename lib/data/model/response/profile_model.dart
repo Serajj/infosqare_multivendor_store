@@ -176,6 +176,7 @@ class Store {
   bool? gstStatus;
   String? gstCode;
   int? selfDeliverySystem;
+  bool? isPublic;
   bool? posSystem;
   double? minimumShippingCharge;
   double? maximumShippingCharge;
@@ -218,6 +219,7 @@ class Store {
     this.gstStatus,
     this.gstCode,
     this.selfDeliverySystem,
+    this.isPublic,
     this.posSystem,
     this.minimumShippingCharge,
     this.maximumShippingCharge,
@@ -261,6 +263,7 @@ class Store {
     gstStatus = json['gst_status'];
     gstCode = json['gst_code'];
     selfDeliverySystem = json['self_delivery_system'];
+    isPublic = (json['is_public'] ?? 0) == 1 ? true : false;
     posSystem = json['pos_system'];
     minimumShippingCharge = json['minimum_shipping_charge'] != null
         ? json['minimum_shipping_charge'].toDouble()
@@ -297,6 +300,7 @@ class Store {
     data['latitude'] = latitude;
     data['longitude'] = longitude;
     data['address'] = address;
+    data['is_public'] = (isPublic ?? false) ? 1 : 0;
     data['minimum_order'] = minimumOrder;
     data['schedule_order'] = scheduleOrder;
     data['currency'] = currency;

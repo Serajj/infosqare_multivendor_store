@@ -20,6 +20,8 @@ import 'package:connectuz_store/view/screens/store/widget/daily_time_widget.dart
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../base/confirmation_dialog.dart';
+
 class StoreSettingsScreen extends StatefulWidget {
   final profile.Store store;
   const StoreSettingsScreen({Key? key, required this.store}) : super(key: key);
@@ -555,6 +557,28 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                       Get.find<SplashController>().configModel!.scheduleOrder!
                           ? Dimensions.paddingSizeSmall
                           : 0),
+              SwitchButton(
+                  icon: Icons.private_connectivity,
+                  title: 'Public Store',
+                  isButtonActive: widget.store.isPublic,
+                  onTap: () {
+                    _store.isPublic = !(_store.isPublic ?? true);
+                    Get.dialog(
+                        ConfirmationInfoDialog(
+                            icon: Images.warning,
+                            title: "Alert",
+                            description: (_store.isPublic ??
+                                    (widget.store.isPublic ?? false))
+                                ? "You store will be public and it will be visible to all customers in Connectuz customer App . Everyone can place orders to your store ."
+                                : "Your store will be private now and will be visible only to those customers who follows your store & you need accept their follow request from Request Section.",
+                            isLogOut: true,
+                            onYesPressed: () {
+                              print(_store.isPublic);
+
+                              Get.back();
+                            }),
+                        useSafeArea: false);
+                  }),
 
               SwitchButton(
                   icon: Icons.delivery_dining,
@@ -588,6 +612,7 @@ class _StoreSettingsScreenState extends State<StoreSettingsScreen> {
                         _store.freeDelivery = !_store.freeDelivery!;
                       })
                   : const SizedBox(),
+
               SizedBox(
                   height: _store.selfDeliverySystem == 1
                       ? Dimensions.paddingSizeSmall

@@ -22,6 +22,10 @@ import 'package:connectuz_store/view/screens/auth/widget/custom_time_picker.dart
 import 'package:connectuz_store/view/screens/auth/widget/pass_view.dart';
 import 'package:connectuz_store/view/screens/auth/widget/select_location_module_view.dart';
 
+import '../../../util/images.dart';
+import '../../base/confirmation_dialog.dart';
+import '../../base/switch_button.dart';
+
 class StoreRegistrationScreen extends StatefulWidget {
   const StoreRegistrationScreen({Key? key}) : super(key: key);
 
@@ -39,6 +43,8 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _storePublicController =
+      TextEditingController(text: "0");
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final List<FocusNode> _nameFocus = [];
@@ -335,6 +341,30 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> {
                             ),
                           );
                         }),
+                    SwitchButton(
+                        icon: Icons.private_connectivity,
+                        title: 'Public Store',
+                        isButtonActive: false,
+                        onTap: () {
+                          _storePublicController.text =
+                              _storePublicController.text == "0" ? "1" : "0";
+                          Get.dialog(
+                              ConfirmationInfoDialog(
+                                  icon: Images.warning,
+                                  title: "Alert",
+                                  description: (_storePublicController.text !=
+                                          "0")
+                                      ? "You store will be public and it will be visible to all customers in Connectuz customer App . Everyone can place orders to your store ."
+                                      : "Your store will be private now and will be visible only to those customers who follows your store & you need accept their follow request from Request Section.",
+                                  isLogOut: true,
+                                  onYesPressed: () {
+                                    Get.back();
+                                  }),
+                              useSafeArea: false);
+                        }),
+                    SizedBox(
+                      height: 10,
+                    ),
                     CustomTextField(
                       hintText: 'vat_tax'.tr,
                       controller: _vatController,
@@ -505,6 +535,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> {
                     String confirmPassword =
                         _confirmPasswordController.text.trim();
                     bool valid = false;
+                    String isPublic = _storePublicController.text;
                     try {
                       double.parse(maxTime);
                       double.parse(minTime);
@@ -597,6 +628,7 @@ class _StoreRegistrationScreenState extends State<StoreRegistrationScreen> {
                           fName: fName,
                           lName: lName,
                           phone: phone,
+                          isPublic: isPublic,
                           password: password,
                           zoneId: authController
                               .zoneList![authController.selectedZoneIndex!].id

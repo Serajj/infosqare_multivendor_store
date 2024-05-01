@@ -1,11 +1,14 @@
 class Images {
   static const String logo = 'assets/image/logo.png';
+  static const String splashLogo = 'assets/image/splash_scr.png';
+
   static const String arabic = 'assets/image/arabic.png';
   static const String english = 'assets/image/english.png';
   static const String call = 'assets/image/call.png';
   static const String mail = 'assets/image/mail.png';
   static const String placeholder = 'assets/image/placeholder.jpg';
-  static const String notificationPlaceholder = 'assets/image/notification_placeholder.jpg';
+  static const String notificationPlaceholder =
+      'assets/image/notification_placeholder.jpg';
   static const String logOut = 'assets/image/log_out.png';
   static const String profileBg = 'assets/image/profile_bg.png';
   static const String warning = 'assets/image/warning.png';

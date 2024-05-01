@@ -131,11 +131,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
                     Column(children: [
                       CustomTextField(
-                        hintText: 'email'.tr,
+                        hintText: "Email / Phone",
                         controller: _emailController,
                         focusNode: _emailFocus,
                         nextFocus: _passwordFocus,
-                        inputType: TextInputType.emailAddress,
+                        inputType: TextInputType.text,
                         prefixIcon: Images.mail,
                       ),
                       const SizedBox(height: 20),
@@ -238,10 +238,13 @@ class _SignInScreenState extends State<SignInScreen> {
     String password = _passwordController.text.trim();
     String type = authController.vendorTypeIndex == 0 ? 'owner' : 'employee';
     if (email.isEmpty) {
-      showCustomSnackBar('enter_email_address'.tr);
-    } else if (!GetUtils.isEmail(email)) {
-      showCustomSnackBar('enter_a_valid_email_address'.tr);
-    } else if (password.isEmpty) {
+      showCustomSnackBar('Enter email/Phone'.tr);
+    }
+    // else if (!GetUtils.isEmail(email)) {
+    //   showCustomSnackBar('enter_a_valid_email_address'.tr);
+    // }
+
+    else if (password.isEmpty) {
       showCustomSnackBar('enter_password'.tr);
     } else if (password.length < 6) {
       showCustomSnackBar('password_should_be'.tr);
@@ -257,7 +260,7 @@ class _SignInScreenState extends State<SignInScreen> {
           Get.offAllNamed(RouteHelper.getInitialRoute());
         } else {
           showCustomSnackBar(
-              "Wrong credentials, kindly check your email or password.");
+              "Wrong credentials, kindly check your email/phone or password.");
         }
       });
     }

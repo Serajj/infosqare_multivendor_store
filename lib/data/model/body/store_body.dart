@@ -8,28 +8,30 @@ class StoreBody {
   String? fName;
   String? lName;
   String? phone;
+  String? isPublic;
   String? email;
   String? password;
   String? zoneId;
   String? moduleId;
   String? deliveryTimeType;
 
-  StoreBody(
-      {this.translation,
-        this.tax,
-        this.minDeliveryTime,
-        this.maxDeliveryTime,
-        this.lat,
-        this.lng,
-        this.fName,
-        this.lName,
-        this.phone,
-        this.email,
-        this.password,
-        this.zoneId,
-        this.moduleId,
-        this.deliveryTimeType,
-      });
+  StoreBody({
+    this.translation,
+    this.tax,
+    this.minDeliveryTime,
+    this.maxDeliveryTime,
+    this.lat,
+    this.lng,
+    this.fName,
+    this.lName,
+    this.phone,
+    this.isPublic,
+    this.email,
+    this.password,
+    this.zoneId,
+    this.moduleId,
+    this.deliveryTimeType,
+  });
 
   StoreBody.fromJson(Map<String, dynamic> json) {
     translation = json['translations'];
@@ -43,6 +45,7 @@ class StoreBody {
     phone = json['phone'];
     email = json['email'];
     password = json['password'];
+    isPublic = json['is_public'] ?? "0";
     zoneId = json['zone_id'];
     moduleId = json['module_id'];
     deliveryTimeType = json['delivery_time_type'];
@@ -59,6 +62,7 @@ class StoreBody {
     data['f_name'] = fName!;
     data['l_name'] = lName!;
     data['phone'] = phone!;
+    data['is_public'] = isPublic!;
     data['email'] = email!;
     data['password'] = password!;
     data['zone_id'] = zoneId!;

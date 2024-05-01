@@ -15,10 +15,12 @@ class MenuButton extends StatelessWidget {
   final MenuModel menu;
   final bool isProfile;
   final bool isLogout;
+  final void Function()? onTap;
   const MenuButton(
       {Key? key,
       required this.menu,
       required this.isProfile,
+      this.onTap,
       required this.isLogout})
       : super(key: key);
 
@@ -27,32 +29,33 @@ class MenuButton extends StatelessWidget {
     double size = (context.width / 4) - Dimensions.paddingSizeDefault;
 
     return InkWell(
-      onTap: () {
-        if (menu.isBlocked) {
-          showCustomSnackBar('this_feature_is_blocked_by_admin'.tr);
-        } else {
-          if (isLogout) {
-            Get.back();
-            if (Get.find<AuthController>().isLoggedIn()) {
-              Get.dialog(
-                  ConfirmationDialog(
-                      icon: Images.support,
-                      description: 'are_you_sure_to_logout'.tr,
-                      isLogOut: true,
-                      onYesPressed: () {
-                        Get.find<AuthController>().clearSharedData();
-                        Get.offAllNamed(RouteHelper.getSignInRoute());
-                      }),
-                  useSafeArea: false);
+      onTap: onTap ??
+          () {
+            if (menu.isBlocked) {
+              showCustomSnackBar('this_feature_is_blocked_by_admin'.tr);
             } else {
-              Get.find<AuthController>().clearSharedData();
-              Get.toNamed(RouteHelper.getSignInRoute());
+              if (isLogout) {
+                Get.back();
+                if (Get.find<AuthController>().isLoggedIn()) {
+                  Get.dialog(
+                      ConfirmationDialog(
+                          icon: Images.support,
+                          description: 'are_you_sure_to_logout'.tr,
+                          isLogOut: true,
+                          onYesPressed: () {
+                            Get.find<AuthController>().clearSharedData();
+                            Get.offAllNamed(RouteHelper.getSignInRoute());
+                          }),
+                      useSafeArea: false);
+                } else {
+                  Get.find<AuthController>().clearSharedData();
+                  Get.toNamed(RouteHelper.getSignInRoute());
+                }
+              } else {
+                Get.offNamed(menu.route);
+              }
             }
-          } else {
-            Get.offNamed(menu.route);
-          }
-        }
-      },
+          },
       child: Column(children: [
         Container(
           height: size - (size * 0.2),

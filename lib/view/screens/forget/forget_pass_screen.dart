@@ -34,12 +34,12 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
             child: SizedBox(
                 width: 1170,
                 child: Column(children: [
-                  Text('please_enter_email'.tr,
+                  Text('Please enter email or phone'.tr,
                       style: robotoRegular, textAlign: TextAlign.center),
                   const SizedBox(height: 50),
                   CustomTextField(
                     controller: _emailController,
-                    inputType: TextInputType.emailAddress,
+                    inputType: TextInputType.text,
                     inputAction: TextInputAction.done,
                     hintText: 'email'.tr,
                     prefixIcon: Images.mail,
@@ -63,10 +63,12 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
   void _forgetPass() {
     String email = _emailController.text.trim();
     if (email.isEmpty) {
-      showCustomSnackBar('enter_email_address'.tr);
-    } else if (!GetUtils.isEmail(email)) {
-      showCustomSnackBar('enter_a_valid_email_address'.tr);
-    } else {
+      showCustomSnackBar('Enter email/Phone'.tr);
+    }
+    // else if (!GetUtils.isEmail(email)) {
+    //   showCustomSnackBar('Enter'.tr);
+    // }
+    else {
       Get.find<AuthController>().forgetPassword(email).then((status) async {
         if (status.isSuccess) {
           Get.toNamed(RouteHelper.getVerificationRoute(email));

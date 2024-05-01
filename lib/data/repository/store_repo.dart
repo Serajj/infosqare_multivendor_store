@@ -49,6 +49,8 @@ class StoreRepo {
       'address': store.address!,
       'minimum_order': store.minimumOrder.toString(),
       'delivery': store.delivery! ? '1' : '0',
+      'free_delivery': store.freeDelivery! ? '1' : '0',
+      'is_public': store.isPublic! ? '1' : '0',
       'take_away': store.takeAway! ? '1' : '0',
       'gst_status': store.gstStatus! ? '1' : '0',
       'gst': store.gstCode!,

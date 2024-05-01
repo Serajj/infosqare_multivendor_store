@@ -37,6 +37,7 @@ class ConfigModel {
   bool? canceledByStore;
   ModuleConfig? moduleConfig;
   bool? prescriptionOrderStatus;
+  bool? isMembershipEnabled;
 
   ConfigModel({
     this.businessName,
@@ -76,6 +77,7 @@ class ConfigModel {
     this.digitAfterDecimalPoint,
     this.moduleConfig,
     this.canceledByStore,
+    this.isMembershipEnabled,
     this.prescriptionOrderStatus,
   });
 
@@ -85,6 +87,8 @@ class ConfigModel {
     logo = json['logo'];
     address = json['address'];
     phone = json['phone'];
+    isMembershipEnabled =
+        json['order_membership_store_status'] == 1 ? true : false;
     email = json['email'];
     baseUrls =
         json['base_urls'] != null ? BaseUrls.fromJson(json['base_urls']) : null;

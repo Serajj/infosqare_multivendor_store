@@ -15,6 +15,7 @@ import 'package:connectuz_store/view/base/custom_dropdown.dart';
 import 'package:connectuz_store/view/base/custom_snackbar.dart';
 import 'package:connectuz_store/view/screens/auth/widget/location_search_dialog.dart';
 import 'package:connectuz_store/view/screens/auth/widget/module_view.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class SelectLocationAndModuleView extends StatefulWidget {
   final bool fromView;
@@ -181,7 +182,8 @@ class _SelectLocationAndModuleViewState
                   compassEnabled: false,
                   indoorViewEnabled: true,
                   mapToolbarEnabled: false,
-                  myLocationEnabled: false,
+                  myLocationButtonEnabled: true,
+                  myLocationEnabled: true,
                   zoomGesturesEnabled: true,
                   polygons: _polygons,
                   onCameraIdle: () {
@@ -293,9 +295,53 @@ class _SelectLocationAndModuleViewState
                         ),
                       )
                     : const SizedBox(),
+                Positioned(
+                  bottom: 10,
+                  right: 20,
+                  child: InkWell(
+                    onTap: () {
+                      getCurrentLocation();
+                    },
+                    child: const Icon(
+                      Icons.location_searching_rounded,
+                      color: Colors.green,
+                    ),
+                  ),
+                )
               ]),
             ),
           )
         : const SizedBox();
+  }
+
+  void getCurrentLocation() async {
+    final PermissionStatus status = await Permission.location.request();
+    if (status == PermissionStatus.granted) {
+      // Permission granted, proceed with location-related tasks
+    } else {
+      // Permission denied, handle accordingly
+      return;
+    }
+
+    Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high);
+
+    if (widget.fromView) {
+      _mapController?.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          bearing: 0,
+          target: LatLng(position.latitude, position.longitude),
+          zoom: 17.0,
+        ),
+      ));
+    } else {
+      _screenMapController?.animateCamera(CameraUpdate.newCameraPosition(
+        CameraPosition(
+          bearing: 0,
+          target: LatLng(position.latitude ?? 0, position.longitude ?? 0),
+          zoom: 17.0,
+        ),
+      ));
+    }
   }
 }

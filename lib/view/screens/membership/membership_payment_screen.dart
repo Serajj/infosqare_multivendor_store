@@ -393,8 +393,7 @@ class _MembershipPaymentScreenState extends State<MembershipPaymentScreen> {
         height: 60,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Expanded(
-              child: CustomButton(
+          child: CustomButton(
             width: ResponsiveHelper.isDesktop(context)
                 ? MediaQuery.of(context).size.width / 2.0
                 : null,
@@ -429,7 +428,7 @@ class _MembershipPaymentScreenState extends State<MembershipPaymentScreen> {
               //       isError: true);
               // }
             },
-          )),
+          ),
         ),
       ),
     );

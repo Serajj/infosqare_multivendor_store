@@ -21,6 +21,7 @@ import 'package:shimmer_animation/shimmer_animation.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../../../controller/store_controller.dart';
+import '../../../data/model/response/profile_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -68,16 +69,29 @@ class HomeScreen extends StatelessWidget {
           IconButton(
             onPressed: () async {
               String? storeId = Get.find<AuthController>()
-                      .profileModel!
-                      .stores![0]
-                      .id
-                      .toString() ??
-                  "";
+                  .profileModel!
+                  .stores![0]
+                  .id
+                  .toString();
+              Store store = Get.find<AuthController>().profileModel!.stores![0];
               String id =
                   await FirebaseDynamicLinkService.createDynamicLink(storeId);
               // String shareUrl =
               //     '${AppConstants.webHostedUrl}${Get.find<StoreController>().filteringUrl(slug ?? '')}';
-              Share.share(id);
+
+              String msgToShare = '''Hello ! 
+
+We have launched our online store in Connectuz Store App .
+
+You can now place your orders online by following our store from below link -
+
+${id}
+
+If you still have any doubts about ordering , please call ${store.phone} and we would be happy to help you .
+
+Thanks 
+${store.name}''';
+              Share.share(msgToShare);
             },
             icon: Container(
               child: Icon(

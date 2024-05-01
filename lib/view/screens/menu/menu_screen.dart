@@ -7,6 +7,8 @@ import 'package:connectuz_store/util/images.dart';
 import 'package:connectuz_store/view/screens/menu/widget/menu_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MenuScreen extends StatelessWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -100,6 +102,62 @@ class MenuScreen extends StatelessWidget {
         icon: Images.expense,
         title: 'expense_report'.tr,
         route: RouteHelper.getExpenseRoute()));
+
+    menuList.add(MenuModel(
+        icon: Images.support,
+        title: 'WhatsApp Support',
+        onTap: () async {
+          String message = "Hi connectuz";
+          String url =
+              "https://wa.me/919063447157?text=${Uri.encodeFull(message)}";
+
+          if (await canLaunch(url)) {
+            await launch(url);
+          } else {
+            throw 'Could not launch $url';
+          }
+        },
+        route: RouteHelper.getExpenseRoute()));
+
+    menuList.add(MenuModel(
+        icon: Images.restaurantCover,
+        title: 'Refer',
+        onTap: () {
+          String msgToShare = '''Hey ! Sharing is caring .
+
+I have launched my Online Store in Connectuz Store & accepting orders online .
+
+Are you are looking to launch your first online store for your business ?
+
+Check out this App & enjoy amazing features .
+
+Happy online store @ Connectuz 
+
+Download App from playstore ⬇️
+
+https://play.google.com/store/apps/details?id=com.connectuz.store
+
+Checkout YouTube link on how to set up your store account :
+
+https://youtu.be/LWTMuf4i2Jg ''';
+          Share.share(msgToShare);
+        },
+        route: RouteHelper.getExpenseRoute()));
+
+    menuList.add(MenuModel(
+        icon: Images.call,
+        title: 'Contact Us',
+        onTap: () async {
+          String url = 'tel:+919063447157';
+
+          if (await canLaunch(url)) {
+            await launch(url);
+          } else {
+            throw 'Could not launch $url';
+          }
+        },
+        route: RouteHelper.getExpenseRoute()));
+
     menuList.add(MenuModel(
         icon: Images.policy,
         title: 'privacy_policy'.tr,
@@ -137,6 +195,7 @@ class MenuScreen extends StatelessWidget {
             return MenuButton(
                 menu: menuList[index],
                 isProfile: index == 0,
+                onTap: menuList[index].onTap,
                 isLogout: index == menuList.length - 1);
           },
         ),
